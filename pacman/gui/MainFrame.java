@@ -1,4 +1,4 @@
-package gui;
+package pacman.gui;
 
 import javax.swing.*;
 import java.awt.*;
