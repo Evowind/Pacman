@@ -50,19 +50,9 @@ public class MainFrame extends JFrame {
                 {1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1},
                 {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
         };
-        for (int i = 0; i < maze.length; i++) {
-            for (int j = 0; j < maze[i].length; j++) {
-                JPanel cell = new JPanel();
-                if (maze[i][j] == 1) {
-                    cell.setBackground(Color.BLACK); // Couleur pour les murs
-                } else if (maze[i][j] == 2) {
-                    // Créez un JLabel pour représenter une pac-gomme
-                    JLabel pacDot = new JLabel(new ImageIcon("resources/sprites/food/pacdot.png"));
-                    cell.setBackground(Color.BLUE); // Couleur pour les espaces vides
-                    cell.add(pacDot);
-                } else {
-                    cell.setBackground(Color.BLUE); // Couleur pour les espaces vides
-                }
+        for (int[] ints : maze) {
+            for (int j = 0; j < ints.length; j++) {
+                JPanel cell = getjPanel(ints, j);
                 gamePanel.add(cell);
             }
 
@@ -75,7 +65,39 @@ public class MainFrame extends JFrame {
         // Ajout des composants à la fenêtre
         getContentPane().add(gamePanel, BorderLayout.CENTER);
         getContentPane().add(scoreLabel, BorderLayout.SOUTH);
+
+
     }
+
+    private static JPanel getjPanel(int[] ints, int j) {
+        JPanel cell = new JPanel();
+        cell.setLayout(new BorderLayout());
+
+        if (ints[j] == 1) {
+            cell.setBackground(Color.BLACK); // Couleur pour les murs
+        } else if (ints[j] == 2) {
+            // Créez un JPanel pour représenter une pacdot
+            JPanel pacdot = new JPanel() {
+                @Override
+                protected void paintComponent(Graphics g) {
+                    super.paintComponent(g);
+                    int diameter = 5;
+                    int x = (getWidth() - diameter) / 2;
+                    int y = (getHeight() - diameter) / 2;
+                    g.setColor(Color.WHITE); // Couleur de la pacdot
+                    g.fillOval(x, y, diameter, diameter);
+                }
+            };
+            pacdot.setOpaque(false); // Rendre le JPanel pacdot transparent
+            cell.setBackground(Color.BLUE); // Couleur pour les espaces vides
+            cell.add(pacdot, BorderLayout.CENTER);
+        } else {
+            cell.setBackground(Color.BLUE); // Couleur pour les espaces vides
+        }
+
+        return cell;
+    }
+
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
