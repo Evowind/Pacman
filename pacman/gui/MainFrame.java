@@ -1,9 +1,14 @@
 package pacman.gui;
 
+import pacman.entities.PacMan;
+
 import javax.swing.*;
 import java.awt.*;
 
+
 public class MainFrame extends JFrame {
+    private PacMan pacMan; // Ajoutez un champ pour le personnage Pac-Man
+
 
     public MainFrame() {
         // Initialisation de la fenêtre du jeu
@@ -41,7 +46,7 @@ public class MainFrame extends JFrame {
                 {1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1},
                 {1, 2, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 2, 1},
                 {1, 2, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 2, 1},
-                {1, 2, 2, 2, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 2, 2, 2, 1},
+                {1, 2, 2, 2, 1, 1, 2, 2, 2, 2, 2, 2, 2, 0, 0, 2, 2, 2, 2, 2, 2, 2, 1, 1, 2, 2, 2, 1},
                 {1, 1, 1, 2, 1, 1, 2, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 2, 1, 1, 2, 1, 1, 1},
                 {1, 1, 1, 2, 1, 1, 2, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 2, 1, 1, 2, 1, 1, 1},
                 {1, 2, 2, 2, 2, 2, 2, 1, 1, 2, 2, 2, 2, 1, 1, 2, 2, 2, 2, 1, 1, 2, 2, 2, 2, 2, 2, 1},
@@ -57,6 +62,14 @@ public class MainFrame extends JFrame {
             }
 
         }
+        // Créez une instance de PacMan
+        pacMan = new PacMan();
+
+        // Positionnez Pac-Man dans la grille
+        int pacManRow = 24; // Ligne initiale de Pac-Man
+        int pacManCol = 9; // Colonne initiale de Pac-Man
+        JPanel pacManCell = (JPanel) gamePanel.getComponent(pacManRow * 27 + pacManCol);
+        pacManCell.add(pacMan);
 
         // Création d'une étiquette pour afficher le score
         JLabel scoreLabel = new JLabel("Score: 0");
