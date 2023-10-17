@@ -4,17 +4,16 @@ import pacman.entities.PacMan;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 
 public class MainFrame extends JFrame {
     private PacMan pacMan; // Ajoutez un champ pour le personnage Pac-Man
+    private JPanel gamePanel;
     int pacManSpeed = 2; // Vitesse de Pac-Man
-
-    private static MazeCell getMazeCell(int cellType) {
-        return new MazeCell(cellType);
-    }
 
     public MainFrame() {
         // Initialisation de la fenêtre du jeu
@@ -22,10 +21,11 @@ public class MainFrame extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1000, 1000); // Taille de la fenêtre pour correspondre au labyrinthe Pac-Man
         setLocationRelativeTo(null); // Centrer la fenêtre sur l'écran
+        JLayeredPane layeredPane = new JLayeredPane();
 
         // Création d'un panneau pour le terrain de jeu
-        JPanel gamePanel = new JPanel();
-        gamePanel.setLayout(new GridLayout(31, 27)); // Utilisez une grille 31x28 pour créer le labyrinthe Pac-Man
+        gamePanel = new JPanel();
+        gamePanel.setLayout(new GridLayout(31, 27));
 
         // Définition du labyrinthe (0 pour espace vide, 1 pour mur, 2 pour points)
         int[][] maze = {
@@ -69,16 +69,28 @@ public class MainFrame extends JFrame {
 
         }
         // Créez une instance de PacMan
-        pacMan = new PacMan();
+        pacMan = new PacMan(maze);
+        layeredPane.add(pacMan, JLayeredPane.PALETTE_LAYER); // Set PacMan in the foreground
+        // Add layeredPane to the content pane
+        getContentPane().add(layeredPane, BorderLayout.CENTER);
+        Timer pacManTimer = new Timer(100, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                pacMan.move(); // Déplacez Pac-Man
+                pacMan.repaint(); // Redessinez Pac-Man
+            }
+        });
+
+        pacManTimer.start();
 
         // Positionnez Pac-Man dans la grille
         int cellSize = 30; // Taille d'une cellule dans la grille
         int pacManRow = 24; // Ligne initiale de Pac-Man
         int pacManCol = 9; // Colonne initiale de Pac-Man
         JPanel pacManCell = (JPanel) gamePanel.getComponent(pacManRow * 27 + pacManCol);
+        pacManCell.add(pacMan);
         int pacManX = pacManCol * cellSize;
         int pacManY = pacManRow * cellSize;
-        pacManCell.add(pacMan);
         pacMan.setBounds(pacManX, pacManY, cellSize, cellSize);
 
 
@@ -109,6 +121,8 @@ public class MainFrame extends JFrame {
 
                 if (newDirection != -1) {
                     pacMan.setDirection(newDirection);
+                    pacMan.move(); // Déplacez Pac-Man immédiatement après avoir défini la direction
+                    repaint(); // Rafraîchissez la fenêtre pour afficher le nouveau positionnement de Pac-Man
                 }
             }
         });
