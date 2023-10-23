@@ -13,7 +13,6 @@ import java.awt.event.KeyEvent;
 public class MainFrame extends JFrame {
     private PacMan pacMan; // Ajoutez un champ pour le personnage Pac-Man
     private JPanel gamePanel;
-    int pacManSpeed = 2; // Vitesse de Pac-Man
 
     public MainFrame() {
         // Initialisation de la fenêtre du jeu
@@ -73,18 +72,10 @@ public class MainFrame extends JFrame {
         layeredPane.add(pacMan, JLayeredPane.PALETTE_LAYER); // Set PacMan in the foreground
         // Add layeredPane to the content pane
         getContentPane().add(layeredPane, BorderLayout.CENTER);
-        Timer pacManTimer = new Timer(100, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                pacMan.move(); // Déplacez Pac-Man
-                pacMan.repaint(); // Redessinez Pac-Man
-            }
-        });
 
-        pacManTimer.start();
 
         // Positionnez Pac-Man dans la grille
-        int cellSize = 30; // Taille d'une cellule dans la grille
+        int cellSize = 10; // Taille d'une cellule dans la grille
         int pacManRow = 24; // Ligne initiale de Pac-Man
         int pacManCol = 9; // Colonne initiale de Pac-Man
         JPanel pacManCell = (JPanel) gamePanel.getComponent(pacManRow * 27 + pacManCol);
@@ -121,13 +112,16 @@ public class MainFrame extends JFrame {
 
                 if (newDirection != -1) {
                     pacMan.setDirection(newDirection);
-                    pacMan.move(); // Déplacez Pac-Man immédiatement après avoir défini la direction
-                    repaint(); // Rafraîchissez la fenêtre pour afficher le nouveau positionnement de Pac-Man
                 }
             }
         });
+
         setFocusable(true);
         setFocusTraversalKeysEnabled(false);
+
+        // Assurez-vous que PacMan a le focus
+        pacMan.setFocusable(true);
+        pacMan.requestFocus();
     }
 
     private static JPanel getjPanel(int[] ints, int j) {
