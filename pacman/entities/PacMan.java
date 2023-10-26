@@ -6,27 +6,29 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class PacMan extends JPanel {
+    private static final int CELL_SIZE = 10;
+    private static final int DIAMETER = 25;
+    private static final int SPEED = 1;
 
-    private int cellSize = 10;
     private int x;
     private int y;
-    private int diameter;
     private int direction;
     private Timer timer;
-    private int speed;
-    private int[][] maze; // La grille du labyrinthe
-    private int mouthAngle; // Angle de la bouche de Pac-Man
-    private boolean mouthClosing; // Indique si la bouche se ferme
+    private int[][] maze;
+    private int mouthAngle;
+    private boolean mouthClosing;
+
+    public static final int RIGHT = 0;
+    public static final int UP = 1;
+    public static final int LEFT = 2;
+    public static final int DOWN = 3;
 
     public PacMan(int[][] maze) {
-        diameter = 25;
-        direction = 0; // Droite par défaut
-        speed = 1; // Ajustez la vitesse selon vos besoins
-        this.maze = maze; // Initialisez la grille du labyrinthe
-        mouthAngle = 45; // Angle initial de la bouche
-        mouthClosing = true; // La bouche commence à se fermer
+        this.maze = maze;
+        direction = RIGHT;
+        mouthAngle = 45;
+        mouthClosing = true;
 
-        // Créer une minuterie pour mettre à jour la position de Pac-Man et l'animation de la bouche
         timer = new Timer(200, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -39,7 +41,6 @@ public class PacMan extends JPanel {
     }
 
     private void animateMouth() {
-        // Anime l'ouverture et la fermeture de la bouche
         if (mouthClosing) {
             mouthAngle -= 10;
             if (mouthAngle <= 0) {
@@ -56,61 +57,58 @@ public class PacMan extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-
-        // Set the background color to blue
         setBackground(Color.BLUE);
+        g.setColor(Color.YELLOW);
 
-        g.setColor(Color.YELLOW); // Couleur de Pac-Man
-
-        // Dessiner Pac-Man en fonction de la direction
-        if (direction == 0) { // Vers la droite
-            g.fillArc(x, y, diameter, diameter, mouthAngle, 360 - (2 * mouthAngle));
-        } else if (direction == 1) { // Vers le haut
-            g.fillArc(x, y, diameter, diameter, 90 + mouthAngle, 360 - (2 * mouthAngle));
-        } else if (direction == 2) { // Vers la gauche
-            g.fillArc(x, y, diameter, diameter, 180 + mouthAngle, 360 - (2 * mouthAngle));
-        } else if (direction == 3) { // Vers le bas
-            g.fillArc(x, y, diameter, diameter, -90 + mouthAngle, 360 - (2 * mouthAngle));
+        if (direction == RIGHT) {
+            g.fillArc(x, y, DIAMETER, DIAMETER, mouthAngle, 360 - (2 * mouthAngle));
+        } else if (direction == UP) {
+            g.fillArc(x, y, DIAMETER, DIAMETER, 90 + mouthAngle, 360 - (2 * mouthAngle));
+        } else if (direction == LEFT) {
+            g.fillArc(x, y, DIAMETER, DIAMETER, 180 + mouthAngle, 360 - (2 * mouthAngle));
+        } else if (direction == DOWN) {
+            g.fillArc(x, y, DIAMETER, DIAMETER, -90 + mouthAngle, 360 - (2 * mouthAngle));
         }
-    }
-
-    public void printPosition() {
-        System.out.println("Position de Pac-Man - X: " + x + ", Y: " + y);
     }
 
     public void setDirection(int newDirection) {
         direction = newDirection;
     }
 
-
     public void move() {
         int newX = x;
         int newY = y;
-        int gridSize = 30; // Taille d'une cellule dans la grille
+        int gridSize = CELL_SIZE;
 
-        if (direction == 0) {
-            newX += gridSize; // Vers la droite
-        } else if (direction == 1) {
-            newY -= gridSize; // Vers le haut
-        } else if (direction == 2) {
-            newX -= gridSize; // Vers la gauche
-        } else if (direction == 3) {
-            newY += gridSize; // Vers le bas
+        if (direction == RIGHT) {
+            newX += gridSize;
+        } else if (direction == UP) {
+            newY -= gridSize;
+        } else if (direction == LEFT) {
+            newX -= gridSize;
+        } else if (direction == DOWN) {
+            newY += gridSize;
         }
 
-        // Vérifiez si la nouvelle position est dans une case sans mur (0 ou 2)
-        int gridX = newX / gridSize; // Calculez la colonne dans la grille
-        int gridY = newY / gridSize; // Calculez la ligne dans la grille
+        int gridX = newX / gridSize;
+        int gridY = newY / gridSize;
 
-        // Assurez-vous que les indices de grille sont valides
+        if (isValidPosition(gridX, gridY)) {
+            x = newX;
+            y = newY;
+            printPosition();
+        }
+    }
+
+    private boolean isValidPosition(int gridX, int gridY) {
         if (gridX >= 0 && gridX < maze[0].length && gridY >= 0 && gridY < maze.length) {
             int cellValue = maze[gridY][gridX];
-            if (cellValue == 0 || cellValue == 2) {
-                // La nouvelle position est valide, mettez à jour la position de Pac-Man
-                x = newX;
-                y = newY;
-                printPosition();
-            }
+            return cellValue == 0 || cellValue == 2;
         }
+        return false;
+    }
+
+    public void printPosition() {
+        System.out.println("Position de Pac-Man - X: " + x + ", Y: " + y);
     }
 }
