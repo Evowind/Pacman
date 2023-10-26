@@ -27,10 +27,10 @@ public class PacMan extends JPanel {
         mouthClosing = true; // La bouche commence à se fermer
 
         // Créer une minuterie pour mettre à jour la position de Pac-Man et l'animation de la bouche
-        timer = new Timer(100 / speed, new ActionListener() {
+        timer = new Timer(200, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                animateMouth(); // Anime la bouche de Pac-Man
+                animateMouth();
                 move();
                 repaint();
             }
@@ -74,9 +74,14 @@ public class PacMan extends JPanel {
         }
     }
 
+    public void printPosition() {
+        System.out.println("Position de Pac-Man - X: " + x + ", Y: " + y);
+    }
+
     public void setDirection(int newDirection) {
         direction = newDirection;
     }
+
 
     public void move() {
         int newX = x;
@@ -93,21 +98,19 @@ public class PacMan extends JPanel {
             newY += gridSize; // Vers le bas
         }
 
-        // Vérification des limites de la grille
-        int gridRows = maze.length;
-        int gridCols = maze[0].length;
+        // Vérifiez si la nouvelle position est dans une case sans mur (0 ou 2)
+        int gridX = newX / gridSize; // Calculez la colonne dans la grille
+        int gridY = newY / gridSize; // Calculez la ligne dans la grille
 
-        if (newX >= 0 && newX <= (gridCols - 1) * gridSize && newY >= 0 && newY <= (gridRows - 1) * gridSize) {
-            int cellX = newX / gridSize;
-            int cellY = newY / gridSize;
-
-            if (maze[cellY][cellX] != 1) {
+        // Assurez-vous que les indices de grille sont valides
+        if (gridX >= 0 && gridX < maze[0].length && gridY >= 0 && gridY < maze.length) {
+            int cellValue = maze[gridY][gridX];
+            if (cellValue == 0 || cellValue == 2) {
+                // La nouvelle position est valide, mettez à jour la position de Pac-Man
                 x = newX;
                 y = newY;
+                printPosition();
             }
         }
     }
-
-
-
 }

@@ -13,6 +13,8 @@ import java.awt.event.KeyEvent;
 public class MainFrame extends JFrame {
     private PacMan pacMan; // Ajoutez un champ pour le personnage Pac-Man
     private JPanel gamePanel;
+    JLayeredPane layeredPane = new JLayeredPane();
+
 
     public MainFrame() {
         // Initialisation de la fenêtre du jeu
@@ -28,8 +30,8 @@ public class MainFrame extends JFrame {
 
         // Définition du labyrinthe (0 pour espace vide, 1 pour mur, 2 pour points)
         int[][] maze = {
-                {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-                {1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1},
+                {0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+                {0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1},
                 {1, 2, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 2, 1},
                 {1, 2, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 2, 1},
                 {1, 2, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 2, 1},
@@ -69,15 +71,18 @@ public class MainFrame extends JFrame {
         }
         // Créez une instance de PacMan
         pacMan = new PacMan(maze);
-        layeredPane.add(pacMan, JLayeredPane.PALETTE_LAYER); // Set PacMan in the foreground
-        // Add layeredPane to the content pane
+        // Add gamePanel to the DEFAULT_LAYER
+        layeredPane.add(gamePanel, JLayeredPane.DEFAULT_LAYER);
+        // Add pacMan to the PALETTE_LAYER (higher layer)
+        layeredPane.add(pacMan, JLayeredPane.PALETTE_LAYER);
+
         getContentPane().add(layeredPane, BorderLayout.CENTER);
 
 
         // Positionnez Pac-Man dans la grille
         int cellSize = 10; // Taille d'une cellule dans la grille
-        int pacManRow = 24; // Ligne initiale de Pac-Man
-        int pacManCol = 9; // Colonne initiale de Pac-Man
+        int pacManRow = 0; // Ligne initiale de Pac-Man
+        int pacManCol = 0; // Colonne initiale de Pac-Man
         JPanel pacManCell = (JPanel) gamePanel.getComponent(pacManRow * 27 + pacManCol);
         pacManCell.add(pacMan);
         int pacManX = pacManCol * cellSize;
