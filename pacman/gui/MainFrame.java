@@ -21,6 +21,7 @@ public class MainFrame extends JFrame {
         addKeyListenerForPacMan();
     }
 
+    // need to add timer somewhere
     private void initializeWindow() {
         setTitle("Pac-Man");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -28,6 +29,8 @@ public class MainFrame extends JFrame {
         setLocationRelativeTo(null);
     }
 
+    // make a Maze class to handle all board methods ?
+    // such as Create Board, Change Board (PacGum vert)
     private void createGamePanel() {
         gamePanel = new JPanel();
         gamePanel.setLayout(new GridLayout(MAZE_HEIGHT, MAZE_WIDTH));

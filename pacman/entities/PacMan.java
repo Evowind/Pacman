@@ -4,8 +4,89 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import pacman.game.Maze;
 
-public class PacMan extends JPanel {
+// its PacMan
+public class PacMan{ //JPanel
+    // 0 = right
+    // 1 = up
+    // 2 = left
+    // 3 = down
+    public int direction;
+
+    // coords
+    public int x;
+    public int y;
+
+    // need a copy of maze to verify if movement is possible
+    public Maze maze;
+
+    // for drawing
+    private int mouthAngle;
+    private boolean mouthClosing;
+
+    public PacMan(int x, int y){
+        this.x = x;
+        this.y = y;
+        this.direction = 0;
+        mouthAngle = 45;
+        mouthClosing = true;
+    }
+
+    public void setDirection(int newDirection) {
+        direction = newDirection;
+    }
+
+    public void move() {
+        if (direction == 0) { //right
+            if (isValidPosition(x+1, y)) x += x;
+
+        } else if (direction == 1) { //up
+            if (isValidPosition(y-1, y)) y -= y;
+
+        } else if (direction == 2) { //left
+            if (isValidPosition(x-1, y)) x -= x;
+
+        } else if (direction == 3) { //down
+            if (isValidPosition(y+1, y)) y += y;
+        }
+
+        printPosition(); // for testing
+    }
+
+    // to do
+    private boolean isValidPosition(int gridX, int gridY) {
+        if (gridX >= 0 && gridX < maze[0].length && gridY >= 0 && gridY < maze.length) {
+            int cellValue = maze[gridY][gridX];
+            return cellValue == 0 || cellValue == 2;
+        }
+        return false;
+    }
+
+    // for testing
+    public void printPosition() {
+        System.out.println("Position de Pac-Man - X: " + x + ", Y: " + y);
+    }
+
+
+    private void animateMouth() {
+        if (mouthClosing) {
+            mouthAngle -= 10;
+            if (mouthAngle <= 0) {
+                mouthClosing = false;
+            }
+        } else {
+            mouthAngle += 10;
+            if (mouthAngle >= 45) {
+                mouthClosing = true;
+            }
+        }
+    }
+
+
+
+
+    /*
     private static final int CELL_SIZE = 10;
     private static final int DIAMETER = 25;
     private static final int SPEED = 1;
@@ -40,20 +121,6 @@ public class PacMan extends JPanel {
         timer.start();
     }
 
-    private void animateMouth() {
-        if (mouthClosing) {
-            mouthAngle -= 10;
-            if (mouthAngle <= 0) {
-                mouthClosing = false;
-            }
-        } else {
-            mouthAngle += 10;
-            if (mouthAngle >= 45) {
-                mouthClosing = true;
-            }
-        }
-    }
-
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -71,44 +138,5 @@ public class PacMan extends JPanel {
         }
     }
 
-    public void setDirection(int newDirection) {
-        direction = newDirection;
-    }
-
-    public void move() {
-        int newX = x;
-        int newY = y;
-        int gridSize = CELL_SIZE;
-
-        if (direction == RIGHT) {
-            newX += gridSize;
-        } else if (direction == UP) {
-            newY -= gridSize;
-        } else if (direction == LEFT) {
-            newX -= gridSize;
-        } else if (direction == DOWN) {
-            newY += gridSize;
-        }
-
-        int gridX = newX / gridSize;
-        int gridY = newY / gridSize;
-
-        if (isValidPosition(gridX, gridY)) {
-            x = newX;
-            y = newY;
-            printPosition();
-        }
-    }
-
-    private boolean isValidPosition(int gridX, int gridY) {
-        if (gridX >= 0 && gridX < maze[0].length && gridY >= 0 && gridY < maze.length) {
-            int cellValue = maze[gridY][gridX];
-            return cellValue == 0 || cellValue == 2;
-        }
-        return false;
-    }
-
-    public void printPosition() {
-        System.out.println("Position de Pac-Man - X: " + x + ", Y: " + y);
-    }
+*/
 }
