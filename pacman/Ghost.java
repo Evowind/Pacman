@@ -81,6 +81,12 @@ public class Ghost {
         if (LabyrinthGame.isValidMove(newX, newY)) {
             x = newX;
             y = newY;
+            // Teste si la nouvelle case est un téléporteur
+            if(newX == 27 && newY == 14) {
+        		newX = 0;
+        	} else if (newX == 0 && newY == 14) {
+        		newX = 27;
+        	}
         } else {
             // Si la nouvelle position n'est pas valide, réinitialisez "wall" à true pour choisir une nouvelle direction
             wall = true;
