@@ -365,17 +365,18 @@ public class LabyrinthGame extends JPanel implements ActionListener, KeyListener
         // Nécessaire en tant que partie de l'interface KeyListener
     }
 
+    // Vérifie si la première case dans la nouvelle direction n'est pas un mur
     @Override
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
         if (key == KeyEvent.VK_LEFT) {
-            playerDirection = 1;
+        	if (labyrinth[playerY][playerX-1] != WALL) playerDirection = 1;
         } else if (key == KeyEvent.VK_RIGHT) {
-            playerDirection = 0;
+        	if (labyrinth[playerY][playerX+1] != WALL) playerDirection = 0;
         } else if (key == KeyEvent.VK_UP) {
-            playerDirection = 2;
+        	if (labyrinth[playerY-1][playerX] != WALL) playerDirection = 2;
         } else if (key == KeyEvent.VK_DOWN) {
-            playerDirection = 3;
+        	if (labyrinth[playerY+1][playerX] != WALL) playerDirection = 3;
         }
     }
 
