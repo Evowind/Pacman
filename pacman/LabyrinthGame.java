@@ -121,6 +121,7 @@ public class LabyrinthGame extends JPanel implements ActionListener, KeyListener
     	swapValues(23,17,25,15);
     	repaint();
     	resetGhostsToCenter();
+    	initializePacdots();
     }
     
     private static void swapValues(int srcRow, int srcCol, int destRow, int destCol) {
