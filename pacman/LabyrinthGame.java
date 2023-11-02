@@ -380,6 +380,9 @@ public class LabyrinthGame extends JPanel implements ActionListener, KeyListener
     private void activateSuperPacMan() {
         isSuperPacMan = true;
         superPacManStartTime = System.currentTimeMillis();
+        for (Ghost ghost : ghosts) {
+        	ghost.setVulnerable(true);
+        }
     }
 
     private void updateSuperPacMan() {
@@ -436,6 +439,7 @@ public class LabyrinthGame extends JPanel implements ActionListener, KeyListener
     }
 
     private void moveGhosts() {
+        // could also do the canMove thing here
         for (Ghost ghost : ghosts) {
             ghost.moveRandomly();
         }
