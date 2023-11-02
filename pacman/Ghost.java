@@ -8,8 +8,8 @@ public class Ghost {
     private Color color;
     private int currentDirection;
     private boolean wall;
-
-    private boolean isVulnerable;
+    private boolean isVulnerable = false;
+    private boolean canMove = true;
 
     public Ghost(int x, int y, Color color) {
         this.x = x;
@@ -32,14 +32,40 @@ public class Ghost {
     }
 
     public void moveRandomly() {
-        if (wall) {
-            Random random = new Random();
-            int newDirection = random.nextInt(4); // Choisir une nouvelle direction aléatoirement
+    	if (!isVulnerable) canMove = true;
+    	if (canMove) {
+    		if (isVulnerable) canMove = false;
+    		if (wall) {
+                Random random = new Random();
+                int newDirection = random.nextInt(4); // Choisir une nouvelle direction aléatoirement
 
-            // Assurez-vous que la nouvelle direction est valide
+                // Assurez-vous que la nouvelle direction est valide
+                int newX = x;
+                int newY = y;
+                switch (newDirection) {
+                    case 0: // Droite
+                        newX++;
+                        break;
+                    case 1: // Gauche
+                        newX--;
+                        break;
+                    case 2: // Haut
+                        newY--;
+                        break;
+                    case 3: // Bas
+                        newY++;
+                        break;
+                }
+
+                if (LabyrinthGame.isValidMove(newX, newY)) {
+                    currentDirection = newDirection;
+                    wall = false; // Réinitialisez "wall" à false lorsqu'une nouvelle direction est choisie
+                }
+            }
+
             int newX = x;
             int newY = y;
-            switch (newDirection) {
+            switch (currentDirection) {
                 case 0: // Droite
                     newX++;
                     break;
@@ -54,43 +80,24 @@ public class Ghost {
                     break;
             }
 
+            // Vérifiez que la nouvelle position est valide avant de déplacer le fantôme
             if (LabyrinthGame.isValidMove(newX, newY)) {
-                currentDirection = newDirection;
-                wall = false; // Réinitialisez "wall" à false lorsqu'une nouvelle direction est choisie
+            	x = newX;
+                y = newY;
+            	if(newX == 27 && newY == 14) {
+            		newX = 0;
+            	} else if (newX == 0 && newY == 14) {
+            		newX = 27;
+            	}
+
+
+            } else {
+                // Si la nouvelle position n'est pas valide, réinitialisez "wall" à true pour choisir une nouvelle direction
+                wall = true;
             }
-        }
-
-        int newX = x;
-        int newY = y;
-        switch (currentDirection) {
-            case 0: // Droite
-                newX++;
-                break;
-            case 1: // Gauche
-                newX--;
-                break;
-            case 2: // Haut
-                newY--;
-                break;
-            case 3: // Bas
-                newY++;
-                break;
-        }
-
-        // Vérifiez que la nouvelle position est valide avant de déplacer le fantôme
-        if (LabyrinthGame.isValidMove(newX, newY)) {
-            x = newX;
-            y = newY;
-            // Teste si la nouvelle case est un téléporteur
-            if(newX == 27 && newY == 14) {
-        		newX = 0;
-        	} else if (newX == 0 && newY == 14) {
-        		newX = 27;
-        	}
-        } else {
-            // Si la nouvelle position n'est pas valide, réinitialisez "wall" à true pour choisir une nouvelle direction
-            wall = true;
-        }
+    	} else {
+    		canMove = true;
+    	}
     }
 
     public void setX(int newX) {
