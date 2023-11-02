@@ -33,6 +33,7 @@ public class LabyrinthGame extends JPanel implements ActionListener, KeyListener
     private static final int GREEN = 4;
     private static final int PATH = 5;
     private static final int TELEPORTER = 7;
+    private Color collision;
 
     private static final int[][] labyrinth = {
             {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -197,19 +198,26 @@ public class LabyrinthGame extends JPanel implements ActionListener, KeyListener
         }
         movePlayer();
         updateInvisibility();
+        updateSuperPacMan();
         checkCollisions();
         moveGhosts();
         if (checkCollisionWithGhosts()) {
-            lives--;
-            if (lives > 0) {
-                // Le joueur a encore des vies, réinitialisez la position du joueur
-                playerX = 13;
-                playerY = 17;
-            } else {
-                // Gérer la fin de la partie ici (défaite)
-                // Réinitialiser le jeu ou afficher un message de défaite
-                return;
-            }
+        	if(!isSuperPacMan) {
+        		lives--;
+                if (lives > 0) {
+                    // Le joueur a encore des vies, réinitialisez la position du joueur
+                    playerX = 13;
+                    playerY = 17;
+                } else {
+                    // Gérer la fin de la partie ici (défaite)
+                    // Réinitialiser le jeu ou afficher un message de défaite
+                    return;
+                }
+        	} else {
+        		//partie 2 compteur pour 200, 400, 800, 1600
+        		score += 400;
+        		resetGhostToCenter(collision);
+        	}  
         }
         repaint();
     }
@@ -278,13 +286,13 @@ public class LabyrinthGame extends JPanel implements ActionListener, KeyListener
 
 
         // Dessiner le joueur
-        g.setColor(isPacManInvisible ? Color.RED : Color.YELLOW);
-        //g.setColor(isSuperPacMan ? Color.ORANGE : Color.YELLOW);
+        g.setColor(isPacManInvisible ? Color.ORANGE : Color.YELLOW);
+        g.setColor(isSuperPacMan ? Color.RED : Color.YELLOW);
         g.fillOval(playerX * cellSize, playerY * cellSize, cellSize, cellSize);
 
         // Dessiner les fantômes
         for (Ghost ghost : ghosts) {
-            g.setColor(ghost.getColor());
+            g.setColor(isSuperPacMan ? Color.BLUE.darker() : ghost.getColor());
             g.fillOval(ghost.getX() * cellSize, ghost.getY() * cellSize, cellSize, cellSize);
         }
 
@@ -347,6 +355,7 @@ public class LabyrinthGame extends JPanel implements ActionListener, KeyListener
     private boolean checkCollisionWithGhosts() {
         for (Ghost ghost : ghosts) {
             if (!isPacManInvisible && playerX == ghost.getX() && playerY == ghost.getY()) {
+            	collision = ghost.getColor();
                 return true;
             }
         }
