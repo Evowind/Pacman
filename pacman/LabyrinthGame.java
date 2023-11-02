@@ -9,6 +9,7 @@ import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class LabyrinthGame extends JPanel implements ActionListener, KeyListener {
     private int playerX, playerY;
     private int cellSize = 30;
@@ -119,8 +120,9 @@ public class LabyrinthGame extends JPanel implements ActionListener, KeyListener
     	//
     	swapValues(23,16,24,15);
     	swapValues(23,17,25,15);
+        initializePacdots();
     	repaint();
-    	resetGhostsToCenter();
+    	resetAllGhostsToCenter();
     	initializePacdots();
     }
     
@@ -179,7 +181,6 @@ public class LabyrinthGame extends JPanel implements ActionListener, KeyListener
         if (lives <= 0) {
             // Gérer la fin de la partie ici (défaite)
             // Réinitialiser le jeu ou afficher un message de défaite
-            // Par exemple, vous pouvez afficher un message de défaite ici
             JOptionPane.showMessageDialog(this, "Vous avez perdu !", "Partie terminée", JOptionPane.INFORMATION_MESSAGE);
             // Réinitialiser le jeu
             resetGame();
@@ -189,7 +190,6 @@ public class LabyrinthGame extends JPanel implements ActionListener, KeyListener
         if (pacdotsRemaining == 0) {
             // Gérer la fin de la partie ici (victoire)
             // Réinitialiser le jeu ou afficher un message de victoire
-            // Par exemple, vous pouvez afficher un message de victoire ici
             JOptionPane.showMessageDialog(this, "Vous avez gagné !", "Partie terminée", JOptionPane.INFORMATION_MESSAGE);
             // Réinitialiser le jeu
             resetGame();
@@ -214,11 +214,21 @@ public class LabyrinthGame extends JPanel implements ActionListener, KeyListener
         repaint();
     }
 
-    private void resetGhostsToCenter() {
+    private void resetAllGhostsToCenter() {
         for (Ghost ghost : ghosts) {
             ghost.setX(12);
             ghost.setY(11);
             ghost.setVulnerable(false);
+        }
+    }
+
+    private void resetGhostToCenter(Color color) {
+        for (Ghost ghost : ghosts) {
+            if (ghost.getColor() == color) {
+                ghost.setX(12);
+                ghost.setY(11);
+                ghost.setVulnerable(false);
+            }
         }
     }
 
