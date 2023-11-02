@@ -196,13 +196,21 @@ public class LabyrinthGame extends JPanel implements ActionListener, KeyListener
             resetGame();
             return;
         }
-        movePlayer();
         updateInvisibility();
         updateSuperPacMan();
+        
+        movePlayer();
+        checkGhostCollision();
         checkCollisions();
+        
         moveGhosts();
-        if (checkCollisionWithGhosts()) {
-        	if(!isSuperPacMan) {
+        checkGhostCollision();
+        repaint();
+    }
+    
+    private void checkGhostCollision() {
+    	if (checkCollisionWithGhosts()) {
+    		if(!isSuperPacMan) {
         		lives--;
                 if (lives > 0) {
                     // Le joueur a encore des vies, réinitialisez la position du joueur
@@ -218,8 +226,7 @@ public class LabyrinthGame extends JPanel implements ActionListener, KeyListener
         		score += 400;
         		resetGhostToCenter(collision);
         	}  
-        }
-        repaint();
+    	}
     }
 
     private void resetAllGhostsToCenter() {
