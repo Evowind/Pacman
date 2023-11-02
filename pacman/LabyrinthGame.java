@@ -67,6 +67,67 @@ public class LabyrinthGame extends JPanel implements ActionListener, KeyListener
             {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
     };// 0 = mur, 1 = pacdot, 2 = violet, 3 = orange, 4 = vert,  5 = chemin vide, 9 = La zone bizzare, 7 = teleport
 
+    public void greenPacGum() {
+    	/// search old and swap with new
+    	swapValues(1,7,9,1);
+    	swapValues(1,8,10,1);
+    	swapValues(1,9,11,1);
+    	swapValues(1,10,12,1);
+    	swapValues(1,11,13,1);
+    	//
+    	swapValues(1,16,9,26);
+    	swapValues(1,17,10,26);
+    	swapValues(1,18,11,26);
+    	swapValues(1,19,12,26);
+    	swapValues(1,20,13,26);
+    	///
+    	swapValues(5,13,1,13);
+    	swapValues(5,14,1,14);
+    	///
+    	swapValues(6,9,6,12);
+    	swapValues(7,9,7,12);
+    	//
+    	swapValues(9,9,9,12);
+    	swapValues(10,9,10,12);
+    	//
+    	swapValues(6,15,6,18);
+    	swapValues(7,15,7,18);
+    	//
+    	swapValues(9,15,9,18);
+    	swapValues(10,15,10,18);
+    	///
+    	swapValues(20,7,23,4);
+    	swapValues(20,8,23,5);
+    	//
+    	swapValues(20,13,23,13);
+    	swapValues(20,14,23,14);
+    	//
+    	swapValues(20,19,23,22);
+    	swapValues(20,20,23,23);
+    	///
+    	swapValues(26,10,26,7);
+    	swapValues(26,11,26,8);
+    	//
+    	swapValues(29,13,26,13);
+    	swapValues(29,14,26,14);
+    	//
+    	swapValues(26,16,26,19);
+    	swapValues(26,17,26,20);
+    	///
+    	swapValues(23,10,24,12);
+    	swapValues(23,11,25,12);
+    	//
+    	swapValues(23,16,24,15);
+    	swapValues(23,17,25,15);
+    	repaint();
+    	resetGhostsToCenter();
+    }
+    
+    private static void swapValues(int srcRow, int srcCol, int destRow, int destCol) {
+        int temp = labyrinth[srcRow][srcCol];
+        labyrinth[srcRow][srcCol] = labyrinth[destRow][destCol];
+        labyrinth[destRow][destCol] = temp;
+    }
 
     public LabyrinthGame() {
         Timer timer = new Timer(100, this);
@@ -254,7 +315,7 @@ public class LabyrinthGame extends JPanel implements ActionListener, KeyListener
                 score += 1000;
                 labyrinth[playerCellY][playerCellX] = PATH;
                 pacdotsRemaining--;
-                //TODO
+                greenPacGum();
                 break;
             case TELEPORTER:
             	// checks which teleporter we are on, so we can teleporter to the other
