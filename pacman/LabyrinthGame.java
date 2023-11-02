@@ -286,8 +286,8 @@ public class LabyrinthGame extends JPanel implements ActionListener, KeyListener
 
 
         // Dessiner le joueur
-        g.setColor(isPacManInvisible ? Color.ORANGE : Color.YELLOW);
         g.setColor(isSuperPacMan ? Color.RED : Color.YELLOW);
+        if(isPacManInvisible) g.setColor(Color.ORANGE);
         g.fillOval(playerX * cellSize, playerY * cellSize, cellSize, cellSize);
 
         // Dessiner les fantômes
