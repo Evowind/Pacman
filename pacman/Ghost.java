@@ -15,7 +15,7 @@ public class Ghost {
         this.x = x;
         this.y = y;
         this.color = color;
-        this.currentDirection = 0; // 0: droite, 1: gauche, 2: haut, 3: bas
+        this.currentDirection = 2;
         this.wall = false;
     }
 
@@ -57,7 +57,7 @@ public class Ghost {
                         break;
                 }
 
-                if (LabyrinthGame.isValidMove(newX, newY)) {
+                if (Game.isValidMove(newX, newY)) {
                     currentDirection = newDirection;
                     wall = false; // Réinitialisez "wall" à false lorsqu'une nouvelle direction est choisie
                 }
@@ -81,7 +81,7 @@ public class Ghost {
             }
 
             // Vérifiez que la nouvelle position est valide avant de déplacer le fantôme
-            if (LabyrinthGame.isValidMove(newX, newY)) {
+            if (Game.isValidMove(newX, newY)) {
             	x = newX;
                 y = newY;
             	if(newX == 27 && newY == 14) {
@@ -109,5 +109,9 @@ public class Ghost {
 
     public void setVulnerable(boolean vulnerable) {
         isVulnerable = vulnerable;
+    }
+
+    public boolean isVulnerable() {
+        return isVulnerable;
     }
 }

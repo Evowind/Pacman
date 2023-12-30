@@ -11,6 +11,17 @@ import java.util.List;
 
 
 public class LabyrinthGame extends JPanel implements ActionListener, KeyListener {
+    private static final int WALL = 0;
+    private static final int PACDOT = 1;
+    private static final int VIOLET = 2;
+    private static final int ORANGE = 3;
+    private static final int GREEN = 4;
+    private static final int PATH = 5;
+    private static final int TELEPORTER = 7;
+
+    private static final long INVISIBLE_DURATION = 10000;
+    private static final long SUPER_PACMAN_DURATION = 10000;
+
     private int playerX, playerY;
     private int cellSize = 30;
     private int[][] originalLabyrinth;
@@ -20,19 +31,10 @@ public class LabyrinthGame extends JPanel implements ActionListener, KeyListener
     private int score = 0;
     private boolean isPacManInvisible;
     private long invisibleStartTime = 0;
-    private static final long INVISIBLE_DURATION = 10000;
     private boolean isSuperPacMan = false;
     private long superPacManStartTime = 0;
-    private static final long SUPER_PACMAN_DURATION = 10000;
     private int lives = 3;
     private int playerDirection;
-    private static final int WALL = 0;
-    private static final int PACDOT = 1;
-    private static final int VIOLET = 2;
-    private static final int ORANGE = 3;
-    private static final int GREEN = 4;
-    private static final int PATH = 5;
-    private static final int TELEPORTER = 7;
     private Color collision;
 
     private static final int[][] labyrinth = {
@@ -69,84 +71,22 @@ public class LabyrinthGame extends JPanel implements ActionListener, KeyListener
             {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
     };// 0 = mur, 1 = pacdot, 2 = violet, 3 = orange, 4 = vert,  5 = chemin vide, 9 = La zone bizzare, 7 = teleport
 
-    public void greenPacGum() {
-    	/// search old and swap with new
-    	swapValues(1,7,9,1);
-    	swapValues(1,8,10,1);
-    	swapValues(1,9,11,1);
-    	swapValues(1,10,12,1);
-    	swapValues(1,11,13,1);
-    	//
-    	swapValues(1,16,9,26);
-    	swapValues(1,17,10,26);
-    	swapValues(1,18,11,26);
-    	swapValues(1,19,12,26);
-    	swapValues(1,20,13,26);
-    	///
-    	swapValues(5,13,1,13);
-    	swapValues(5,14,1,14);
-    	///
-    	swapValues(6,9,6,12);
-    	swapValues(7,9,7,12);
-    	//
-    	swapValues(9,9,9,12);
-    	swapValues(10,9,10,12);
-    	//
-    	swapValues(6,15,6,18);
-    	swapValues(7,15,7,18);
-    	//
-    	swapValues(9,15,9,18);
-    	swapValues(10,15,10,18);
-    	///
-    	swapValues(20,7,23,4);
-    	swapValues(20,8,23,5);
-    	//
-    	swapValues(20,13,23,13);
-    	swapValues(20,14,23,14);
-    	//
-    	swapValues(20,19,23,22);
-    	swapValues(20,20,23,23);
-    	///
-    	swapValues(26,10,26,7);
-    	swapValues(26,11,26,8);
-    	//
-    	swapValues(29,13,26,13);
-    	swapValues(29,14,26,14);
-    	//
-    	swapValues(26,16,26,19);
-    	swapValues(26,17,26,20);
-    	///
-    	swapValues(23,10,24,12);
-    	swapValues(23,11,25,12);
-    	//
-    	swapValues(23,16,24,15);
-    	swapValues(23,17,25,15);
-        initializePacdots();
-    	repaint();
-    	resetAllGhostsToCenter();
-    	initializePacdots();
-    }
-    
-    private static void swapValues(int srcRow, int srcCol, int destRow, int destCol) {
-        int temp = labyrinth[srcRow][srcCol];
-        labyrinth[srcRow][srcCol] = labyrinth[destRow][destCol];
-        labyrinth[destRow][destCol] = temp;
-    }
-
     public LabyrinthGame() {
         Timer timer = new Timer(100, this);
         timer.start();
         playerX = 15;
         playerY = 17;
         playerDirection = 0;
-        isPacManInvisible = false; // Ajout de cette ligne pour initialiser la visibilité de Pac-Man
+        isPacManInvisible = false;
         setFocusable(true);
         addKeyListener(this);
+        initializeGame();
+    }
+
+    private void initializeGame() {
         originalLabyrinth = new int[labyrinth.length][labyrinth[0].length];
         for (int i = 0; i < labyrinth.length; i++) {
-            for (int j = 0; j < labyrinth[i].length; j++) {
-                originalLabyrinth[i][j] = labyrinth[i][j];
-            }
+            System.arraycopy(labyrinth[i], 0, originalLabyrinth[i], 0, labyrinth[i].length);
         }
 
         pacdots = new boolean[labyrinth.length][labyrinth[0].length];
@@ -154,7 +94,6 @@ public class LabyrinthGame extends JPanel implements ActionListener, KeyListener
         ghosts = new ArrayList<>();
         initializeGhosts();
     }
-
 
     // Méthode pour initialiser les pacdots
     private void initializePacdots() {
@@ -177,41 +116,101 @@ public class LabyrinthGame extends JPanel implements ActionListener, KeyListener
         ghosts.add(new Ghost(15, 11, Color.PINK));
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if (lives <= 0) {
-            // Gérer la fin de la partie ici (défaite)
-            // Réinitialiser le jeu ou afficher un message de défaite
-            JOptionPane.showMessageDialog(this, "Vous avez perdu !", "Partie terminée", JOptionPane.INFORMATION_MESSAGE);
-            // Réinitialiser le jeu
-            resetGame();
-            return;
+    public void greenPacGum() {
+        int[][] swaps = {
+                {1, 7, 9, 1},
+                {1, 8, 10, 1},
+                {1, 9, 11, 1},
+                {1, 10, 12, 1},
+                {1, 11, 13, 1},
+                {1, 16, 9, 26},
+                {1, 17, 10, 26},
+                {1, 18, 11, 26},
+                {1, 19, 12, 26},
+                {1, 20, 13, 26},
+                {5, 13, 1, 13},
+                {5, 14, 1, 14},
+                {6, 9, 6, 12},
+                {7, 9, 7, 12},
+                {9, 9, 9, 12},
+                {10, 9, 10, 12},
+                {6, 15, 6, 18},
+                {7, 15, 7, 18},
+                {9, 15, 9, 18},
+                {20, 7, 23, 4},
+                {20, 8, 23, 5},
+                {20, 13, 23, 13},
+                {20, 14, 23, 14},
+                {20, 19, 23, 22},
+                {20, 20, 23, 23},
+                {26, 10, 26, 7},
+                {26, 11, 26, 8},
+                {29, 13, 26, 13},
+                {29, 14, 26, 14},
+                {26, 16, 26, 19},
+                {26, 17, 26, 20},
+                {23, 10, 24, 12},
+                {23, 11, 25, 12},
+                {23, 16, 24, 15},
+                {23, 17, 25, 15}
+        };
+
+        for (int[] swap : swaps) {
+            swapValues(swap[0], swap[1], swap[2], swap[3]);
         }
 
-        if (pacdotsRemaining == 0) {
-            // Gérer la fin de la partie ici (victoire)
-            // Réinitialiser le jeu ou afficher un message de victoire
-            JOptionPane.showMessageDialog(this, "Vous avez gagné !", "Partie terminée", JOptionPane.INFORMATION_MESSAGE);
-            // Réinitialiser le jeu
-            resetGame();
+        initializePacdots();
+        repaint();
+        resetAllGhostsToCenter();
+        initializePacdots();
+    }
+
+
+    private static void swapValues(int srcRow, int srcCol, int destRow, int destCol) {
+        int[][] labyrinth = LabyrinthGame.labyrinth;
+        // Utilisation de la décomposition de tuples pour échanger les valeurs
+        int temp = labyrinth[srcRow][srcCol];
+        labyrinth[srcRow][srcCol] = labyrinth[destRow][destCol];
+        labyrinth[destRow][destCol] = temp;
+    }
+
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (lives <= 0 || pacdotsRemaining == 0) {
+            handleGameEnd();
             return;
         }
         updateInvisibility();
         updateSuperPacMan();
-        
+
         movePlayer();
         checkGhostCollision();
         checkCollisions();
-        
+
         moveGhosts();
         checkGhostCollision();
         repaint();
     }
-    
+
+    private void handleGameEnd() {
+        // Gérer la fin de la partie ici
+        if (lives <= 0) {
+            // Gérer la fin de la partie ici (défaite)
+            JOptionPane.showMessageDialog(this, "Vous avez perdu !", "Partie terminée", JOptionPane.INFORMATION_MESSAGE);
+            resetGame();
+        }
+        else{
+            // Gérer la fin de la partie ici (victoire)
+            JOptionPane.showMessageDialog(this, "Vous avez gagné !", "Partie terminée", JOptionPane.INFORMATION_MESSAGE);
+            resetGame();
+        }
+    }
+
     private void checkGhostCollision() {
-    	if (checkCollisionWithGhosts()) {
-    		if(!isSuperPacMan) {
-        		lives--;
+        if (checkCollisionWithGhosts()) {
+            if (!isSuperPacMan) {
+                lives--;
                 if (lives > 0) {
                     // Le joueur a encore des vies, réinitialisez la position du joueur
                     playerX = 13;
@@ -221,12 +220,12 @@ public class LabyrinthGame extends JPanel implements ActionListener, KeyListener
                     // Réinitialiser le jeu ou afficher un message de défaite
                     return;
                 }
-        	} else {
-        		//partie 2 compteur pour 200, 400, 800, 1600
-        		score += 400;
-        		resetGhostToCenter(collision);
-        	}  
-    	}
+            } else {
+                //partie 2 compteur pour 200, 400, 800, 1600
+                score += 400;
+                resetGhostToCenter(collision);
+            }
+        }
     }
 
     private void resetAllGhostsToCenter() {
@@ -262,9 +261,9 @@ public class LabyrinthGame extends JPanel implements ActionListener, KeyListener
                 } else {
                     g.setColor(Color.BLUE);
                 }
-                
+
                 if (cellValue == TELEPORTER) {
-                	g.setColor(Color.RED);
+                    g.setColor(Color.RED);
                 }
 
                 g.fillRect(j * cellSize, i * cellSize, cellSize, cellSize);
@@ -294,7 +293,7 @@ public class LabyrinthGame extends JPanel implements ActionListener, KeyListener
 
         // Dessiner le joueur
         g.setColor(isSuperPacMan ? Color.RED : Color.YELLOW);
-        if(isPacManInvisible) g.setColor(Color.ORANGE);
+        if (isPacManInvisible) g.setColor(Color.ORANGE);
         g.fillOval(playerX * cellSize, playerY * cellSize, cellSize, cellSize);
 
         // Dessiner les fantômes
@@ -344,13 +343,13 @@ public class LabyrinthGame extends JPanel implements ActionListener, KeyListener
                 greenPacGum();
                 break;
             case TELEPORTER:
-            	// checks which teleporter we are on, so we can teleporter to the other
-            	if(playerCellX == 27) {
-            		playerX = 0;
-            	} else {
-            		playerX = 27;
-            	}
-            	break;
+                // checks which teleporter we are on, so we can teleporter to the other
+                if (playerCellX == 27) {
+                    playerX = 0;
+                } else {
+                    playerX = 27;
+                }
+                break;
         }
         // Vérification pour obtenir une vie supplémentaire si le score dépasse 5000 points
         if (score >= 5000) {
@@ -362,7 +361,7 @@ public class LabyrinthGame extends JPanel implements ActionListener, KeyListener
     private boolean checkCollisionWithGhosts() {
         for (Ghost ghost : ghosts) {
             if (!isPacManInvisible && playerX == ghost.getX() && playerY == ghost.getY()) {
-            	collision = ghost.getColor();
+                collision = ghost.getColor();
                 return true;
             }
         }
@@ -388,7 +387,7 @@ public class LabyrinthGame extends JPanel implements ActionListener, KeyListener
         isSuperPacMan = true;
         superPacManStartTime = System.currentTimeMillis();
         for (Ghost ghost : ghosts) {
-        	ghost.setVulnerable(true);
+            ghost.setVulnerable(true);
         }
     }
 
@@ -460,15 +459,15 @@ public class LabyrinthGame extends JPanel implements ActionListener, KeyListener
     // Vérifie si la première case dans la nouvelle direction n'est pas un mur
     @Override
     public void keyPressed(KeyEvent e) {
-    	int key = e.getKeyCode();
+        int key = e.getKeyCode();
         if (key == KeyEvent.VK_LEFT) {
-        	if (playerX != 0 && (labyrinth[playerY][playerX-1] != WALL)) playerDirection = 1;
+            if (playerX != 0 && (labyrinth[playerY][playerX - 1] != WALL)) playerDirection = 1;
         } else if (key == KeyEvent.VK_RIGHT) {
-        	if (playerX != 27 && (labyrinth[playerY][playerX+1] != WALL)) playerDirection = 0;
+            if (playerX != 27 && (labyrinth[playerY][playerX + 1] != WALL)) playerDirection = 0;
         } else if (key == KeyEvent.VK_UP) {
-        	if (playerY != 0 && (labyrinth[playerY-1][playerX] != WALL)) playerDirection = 2;
+            if (playerY != 0 && (labyrinth[playerY - 1][playerX] != WALL)) playerDirection = 2;
         } else if (key == KeyEvent.VK_DOWN) {
-        	if (playerY != 30 && (labyrinth[playerY+1][playerX] != WALL)) playerDirection = 3;
+            if (playerY != 30 && (labyrinth[playerY + 1][playerX] != WALL)) playerDirection = 3;
         }
     }
 
