@@ -39,7 +39,7 @@ public class Ghost {
                 Random random = new Random();
                 int newDirection = random.nextInt(4); // Choisir une nouvelle direction aléatoirement
 
-                // Assurez-vous que la nouvelle direction est valide
+                // Assurez que la nouvelle direction est valide
                 int newX = x;
                 int newY = y;
                 switch (newDirection) {

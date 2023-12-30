@@ -248,7 +248,32 @@ public class Game extends JPanel implements ActionListener, KeyListener {
         } else {
             g2d.setColor(pacGum.isPacManInvisible() ? Color.ORANGE : Color.YELLOW);
         }
-        g2d.fillArc(playerX * CELL_SIZE, playerY * CELL_SIZE, CELL_SIZE, CELL_SIZE, 45, 270);
+        int startAngle;
+        int extentAngle;
+
+        switch (playerDirection) {
+            case 0: // Droite
+                startAngle = 45;
+                extentAngle = 270;
+                break;
+            case 1: // Gauche
+                startAngle = 225;
+                extentAngle = 270;
+                break;
+            case 2: // Haut
+                startAngle = 135;
+                extentAngle = 270;
+                break;
+            case 3: // Bas
+                startAngle = 315;
+                extentAngle = 270;
+                break;
+            default:
+                startAngle = 0;
+                extentAngle = 360;
+                break;
+        }
+        g2d.fillArc(playerX * CELL_SIZE, playerY * CELL_SIZE, CELL_SIZE, CELL_SIZE, startAngle, extentAngle);
 
         // Dessiner les fantômes
         for (Ghost ghost : ghosts) {
@@ -262,10 +287,21 @@ public class Game extends JPanel implements ActionListener, KeyListener {
 
         // Dessiner le score et le nombre de vies restantes
         g2d.setColor(Color.WHITE);
-        g2d.setFont(new Font("Arial", Font.PLAIN, 20));
-        g2d.drawString("Score: " + score, 10, 20);
-        g2d.drawString("Lives: " + lives, 10, 50);
-        g2d.drawString("Pacdots remaining: " + pacdotsRemaining, 10, 80);
+        g2d.setFont(new Font("Segoe UI", Font.BOLD, 18));
+
+        String scoreText = "Score: " + score;
+        String livesText = "Lives: " + lives;
+        String pacdotsRemainingText = "Pacdots restantes: " + pacdotsRemaining;
+
+        int lineHeight = 25;
+        int margin = 15;
+        int startY = 25;
+
+        g2d.drawString(scoreText, margin, startY);
+        g2d.drawString(livesText, margin + (5*lineHeight), startY );
+        g2d.drawString(pacdotsRemainingText, margin + (9 * lineHeight), startY );
+
+
     }
 
     private void drawCell(Graphics2D g2d, int x, int y, int cellValue) {
@@ -278,19 +314,25 @@ public class Game extends JPanel implements ActionListener, KeyListener {
             case Labyrinth.PACDOT:
                 g2d.setColor(Color.BLACK);
                 g2d.fillRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
-                drawPacdot(g2d, x, y);
+                drawPacdot(g2d, x, y, Color.WHITE);
                 break;
 
             case Labyrinth.VIOLET:
-                drawGhost(g2d, x, y, Color.MAGENTA);
+                g2d.setColor(Color.BLACK);
+                g2d.fillRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+                drawPacdot(g2d, x, y, Color.MAGENTA);
                 break;
 
             case Labyrinth.ORANGE:
-                drawGhost(g2d, x, y, Color.ORANGE);
+                g2d.setColor(Color.BLACK);
+                g2d.fillRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+                drawPacdot(g2d, x, y, Color.ORANGE);
                 break;
 
             case Labyrinth.GREEN:
-                drawGhost(g2d, x, y, Color.GREEN);
+                g2d.setColor(Color.BLACK);
+                g2d.fillRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+                drawPacdot(g2d, x, y, Color.GREEN);
                 break;
 
             case Labyrinth.PATH:
@@ -308,17 +350,12 @@ public class Game extends JPanel implements ActionListener, KeyListener {
         }
     }
 
-    private void drawPacdot(Graphics2D g2d, int x, int y) {
-        g2d.setColor(Color.WHITE);
+    private void drawPacdot(Graphics2D g2d, int x, int y, Color color) {
+        g2d.setColor(color);
         int pacdotSize = CELL_SIZE / 3;
         g2d.fillOval((x * CELL_SIZE) + (CELL_SIZE / 2) - pacdotSize / 2,
                 (y * CELL_SIZE) + (CELL_SIZE / 2) - pacdotSize / 2,
                 pacdotSize, pacdotSize);
-    }
-
-    private void drawGhost(Graphics2D g2d, int x, int y, Color color) {
-        g2d.setColor(color);
-        g2d.fillRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
     }
 
     @Override
@@ -338,19 +375,19 @@ public class Game extends JPanel implements ActionListener, KeyListener {
 
         switch (key) {
             case KeyEvent.VK_UP:
-                playerDirection = 2;
+                if (playerY != 0 && (originalLabyrinth[playerY - 1][playerX] != Labyrinth.WALL)) playerDirection = 2;
                 break;
 
             case KeyEvent.VK_DOWN:
-                playerDirection = 3;
+                if (playerY != 30 && (originalLabyrinth[playerY + 1][playerX] != Labyrinth.WALL)) playerDirection = 3;
                 break;
 
             case KeyEvent.VK_LEFT:
-                playerDirection = 1;
+                if (playerX != 0 && (originalLabyrinth[playerY][playerX - 1] != Labyrinth.WALL)) playerDirection = 1;
                 break;
 
             case KeyEvent.VK_RIGHT:
-                playerDirection = 0;
+                if (playerX != 27 && (originalLabyrinth[playerY][playerX + 1] != Labyrinth.WALL)) playerDirection = 0;
                 break;
 
             case KeyEvent.VK_R:

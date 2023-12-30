@@ -5,10 +5,10 @@ public class PacGum {
     private static final long INVISIBLE_DURATION = 10000;
     private static final long SUPER_PACMAN_DURATION = 10000;
 
-    private boolean isPacManInvisible = false;
-    private long invisibleStartTime = 0;
-    private boolean isSuperPacMan = false;
-    private long superPacManStartTime = 0;
+    private boolean isPacManInvisible;
+    private long invisibleStartTime;
+    private boolean isSuperPacMan;
+    private long superPacManStartTime;
 
     PacGum() {
         isPacManInvisible = false;
