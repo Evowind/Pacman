@@ -5,13 +5,16 @@ public class PacGum {
     private static final long INVISIBLE_DURATION = 10000;
     private static final long SUPER_PACMAN_DURATION = 10000;
 
-    private boolean isPacManInvisible;
+    private boolean isPacManInvisible = false;
     private long invisibleStartTime = 0;
     private boolean isSuperPacMan = false;
     private long superPacManStartTime = 0;
 
     PacGum() {
         isPacManInvisible = false;
+        isSuperPacMan = false;
+        invisibleStartTime = 0;
+        superPacManStartTime = 0;
     }
 
     boolean isPacManInvisible() {
@@ -21,6 +24,11 @@ public class PacGum {
     void activateInvisibility() {
         isPacManInvisible = true;
         invisibleStartTime = System.currentTimeMillis();
+    }
+
+    void resetInvisibility() {
+        isPacManInvisible = false;
+        invisibleStartTime = 0;
     }
 
     void updateInvisibility() {
@@ -34,6 +42,11 @@ public class PacGum {
 
     boolean isSuperPacMan() {
         return isSuperPacMan;
+    }
+
+    void resetSuperPacMan() {
+        isSuperPacMan = false;
+        superPacManStartTime = 0;
     }
 
     void activateSuperPacMan() {

@@ -90,7 +90,6 @@ public class Ghost {
             		newX = 27;
             	}
 
-
             } else {
                 // Si la nouvelle position n'est pas valide, réinitialisez "wall" à true pour choisir une nouvelle direction
                 wall = true;

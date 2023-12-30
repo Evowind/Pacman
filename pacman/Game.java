@@ -36,6 +36,18 @@ public class Game extends JPanel implements ActionListener, KeyListener {
         initializeGame();
     }
 
+    public void resetGame() {
+        pacGum.resetSuperPacMan();
+        pacGum.resetInvisibility();
+        playerX = 15;
+        playerY = 17;
+        playerDirection = 0;
+        initializeGame();
+        score = 0;
+        lives = 3;
+        repaint();
+    }
+
     private void initializeGame() {
         originalLabyrinth = Labyrinth.getCopy();
         pacdots = new boolean[originalLabyrinth.length][originalLabyrinth[0].length];
@@ -58,10 +70,19 @@ public class Game extends JPanel implements ActionListener, KeyListener {
     }
 
     void initializeGhosts() {
-        ghosts.add(new Ghost(12, 11, Color.CYAN));
-        ghosts.add(new Ghost(13, 11, Color.WHITE));
-        ghosts.add(new Ghost(14, 11, Color.GRAY));
-        ghosts.add(new Ghost(15, 11, Color.PINK));
+        // Le cas d'un reset
+        if (ghosts.size() > 0) {
+            for (Ghost ghost : ghosts) {
+                ghost.setX(12);
+                ghost.setY(11);
+            }
+            // Le cas d'une nouvelle partie
+        } else {
+            ghosts.add(new Ghost(12, 11, Color.CYAN));
+            ghosts.add(new Ghost(13, 11, Color.WHITE));
+            ghosts.add(new Ghost(14, 11, Color.GRAY));
+            ghosts.add(new Ghost(15, 11, Color.PINK));
+        }
     }
 
     private void movePlayer() {
@@ -82,7 +103,10 @@ public class Game extends JPanel implements ActionListener, KeyListener {
                 newY += playerSpeed;
                 break;
         }
-
+        if (pacdotsRemaining == 0) {
+            JOptionPane.showMessageDialog(this, "Vous avez gagné !", "Partie terminée", JOptionPane.INFORMATION_MESSAGE);
+            resetGame();
+        }
         if (isValidMove(newX, newY)) {
             playerX = newX;
             playerY = newY;
@@ -91,11 +115,8 @@ public class Game extends JPanel implements ActionListener, KeyListener {
             int cellY = playerY;
             if (pacdots[cellY][cellX]) {
                 pacdots[cellY][cellX] = false;
-
-                if (pacdotsRemaining == 0) {
-                    // All pacdots have been collected (victory)
-                }
             }
+
         }
     }
 
@@ -133,6 +154,23 @@ public class Game extends JPanel implements ActionListener, KeyListener {
         int playerCellX = playerX;
         int playerCellY = playerY;
 
+        // Cheque les collisions avec les fantomes
+        for (Ghost ghost : ghosts) {
+            int ghostCellX = ghost.getX();
+            int ghostCellY = ghost.getY();
+
+            if (playerCellX == ghostCellX && playerCellY == ghostCellY) {
+                if (pacGum.isSuperPacMan()) {
+                    // Le fantom est mangé par le Super PacMan
+                    score += 400;
+                    resetGhostToCenter(ghost.getColor());
+                } else if (!pacGum.isPacManInvisible()) {
+                    // PacMan est mangeé
+                    handlePlayerCaught();
+                }
+            }
+        }
+
         int cellValue = originalLabyrinth[playerCellY][playerCellX];
         switch (cellValue) {
             case Labyrinth.PACDOT:
@@ -169,31 +207,21 @@ public class Game extends JPanel implements ActionListener, KeyListener {
                 break;
         }
 
-        // Check for collisions with ghosts
-        for (Ghost ghost : ghosts) {
-            int ghostCellX = ghost.getX();
-            int ghostCellY = ghost.getY();
-
-            if (playerCellX == ghostCellX && playerCellY == ghostCellY) {
-                if (ghost.isVulnerable()) {
-                    // Ghost is eaten by super pacman
-                    // Increase score
-                } else {
-                    // Pacman is caught by ghost
-                    handlePlayerCaught();
-                }
-            }
+        // Vérification pour obtenir une vie supplémentaire si le score dépasse 5000 points
+        if (score >= 5000) {
+            lives++;
+            score -= 5000; // Soustrayez 5000 points pour éviter d'obtenir des vies supplémentaires à chaque vérification
         }
     }
 
     private void handlePlayerCaught() {
         lives--;
-        if (lives == 0) {
+        if (lives <= 0) {
             // Game over
             JOptionPane.showMessageDialog(this, "Vous avez perdu !", "Partie terminée", JOptionPane.INFORMATION_MESSAGE);
-            new Game();
+            resetGame();
         } else {
-            // Reset player position and continue
+            // Reset la position du joueur
             playerX = 15;
             playerY = 17;
             playerDirection = 0;
@@ -201,13 +229,12 @@ public class Game extends JPanel implements ActionListener, KeyListener {
     }
 
 
-
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
 
-        // Draw the labyrinth
+        // Dessiner le labyrinthe
         for (int i = 0; i < originalLabyrinth.length; i++) {
             for (int j = 0; j < originalLabyrinth[i].length; j++) {
                 int cellValue = originalLabyrinth[i][j];
@@ -215,21 +242,30 @@ public class Game extends JPanel implements ActionListener, KeyListener {
             }
         }
 
-        // Draw the player
-        g2d.setColor(Color.YELLOW);
+        // Dessiner le joueur
+        if (pacGum.isSuperPacMan()) {
+            g2d.setColor(Color.RED);
+        } else {
+            g2d.setColor(pacGum.isPacManInvisible() ? Color.ORANGE : Color.YELLOW);
+        }
         g2d.fillArc(playerX * CELL_SIZE, playerY * CELL_SIZE, CELL_SIZE, CELL_SIZE, 45, 270);
 
-        // Draw ghosts
+        // Dessiner les fantômes
         for (Ghost ghost : ghosts) {
-            g2d.setColor(ghost.isVulnerable() ? Color.BLUE : ghost.getColor());
+            if (pacGum.isSuperPacMan()) {
+                g2d.setColor(Color.BLUE.darker());
+            } else {
+                g2d.setColor(ghost.isVulnerable() ? Color.BLUE.darker() : ghost.getColor());
+            }
             g2d.fillRoundRect(ghost.getX() * CELL_SIZE, ghost.getY() * CELL_SIZE, CELL_SIZE, CELL_SIZE, 10, 10);
         }
 
-        // Draw the score and lives
+        // Dessiner le score et le nombre de vies restantes
         g2d.setColor(Color.WHITE);
         g2d.setFont(new Font("Arial", Font.PLAIN, 20));
         g2d.drawString("Score: " + score, 10, 20);
         g2d.drawString("Lives: " + lives, 10, 50);
+        g2d.drawString("Pacdots remaining: " + pacdotsRemaining, 10, 80);
     }
 
     private void drawCell(Graphics2D g2d, int x, int y, int cellValue) {
@@ -315,6 +351,10 @@ public class Game extends JPanel implements ActionListener, KeyListener {
 
             case KeyEvent.VK_RIGHT:
                 playerDirection = 0;
+                break;
+
+            case KeyEvent.VK_R:
+                resetGame();
                 break;
         }
     }

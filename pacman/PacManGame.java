@@ -4,7 +4,7 @@ import javax.swing.*;
 
 public class PacManGame {
     public static void main(String[] args) {
-        JFrame frame = new JFrame("Pac-Man Game");
+        JFrame frame = new JFrame("Jeu Pac-Man");
         Game game = new Game();
         frame.add(game);
         int windowWidth = (Game.originalLabyrinth[0].length * Game.CELL_SIZE) + 19;

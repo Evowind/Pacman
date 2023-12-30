@@ -1,3 +1,4 @@
+/*
 package pacman;
 
 import javax.swing.*;
@@ -514,3 +515,4 @@ public class LabyrinthGame extends JPanel implements ActionListener, KeyListener
         });
     }
 }
+*/
