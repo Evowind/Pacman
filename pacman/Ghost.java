@@ -33,7 +33,7 @@ public class Ghost {
 
     public void moveRandomly() {
     	if (!isVulnerable) canMove = true;
-    	if (canMove) {
+    	else if (canMove) {
     		if (isVulnerable) canMove = false;
     		if (wall) {
                 Random random = new Random();
