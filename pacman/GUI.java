@@ -1,13 +1,11 @@
 package pacman;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import static pacman.Game.CELL_SIZE;
 
 public class GUI extends JPanel implements GameObserver {
-    private Game game;
+    private final Game game;
 
     public GUI(Game game) {
         this.game = game;

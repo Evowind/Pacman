@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Game extends JPanel implements ActionListener, KeyListener {
-    private List<GameObserver> observers = new ArrayList<>();
+    private final List<GameObserver> observers = new ArrayList<>();
 
     public static final int CELL_SIZE = 30;
     private int playerX, playerY;
@@ -19,11 +19,10 @@ public class Game extends JPanel implements ActionListener, KeyListener {
     List<Ghost> ghosts;
     private int pacdotsRemaining;
     private int score;
-    private PacGum pacGum;
+    private final PacGum pacGum;
     private int lives;
     private int playerDirection;
     private GUI gui;
-    private Color color;
 
     Game() {
         Timer timer = new Timer(100, this);
@@ -36,10 +35,14 @@ public class Game extends JPanel implements ActionListener, KeyListener {
         pacGum = new PacGum();
         setFocusable(true);
         addKeyListener(this);
+        setFocusTraversalKeysEnabled(false);
         initializeGame();
+        requestFocus();
 
-        gui = new GUI(this);
-        addObserver(gui);
+        SwingUtilities.invokeLater(() -> {
+            gui = new GUI(this);
+            addObserver(gui);
+        });
     }
 
 
@@ -171,23 +174,23 @@ public class Game extends JPanel implements ActionListener, KeyListener {
         int playerCellX = playerX;
         int playerCellY = playerY;
 
-        // Cheque les collisions avec les fantomes
+        checkGhostCollisions(playerCellX, playerCellY);
+        checkCellCollisions(playerCellX, playerCellY);
+        handleScoreForExtraLife();
+    }
+
+    private void checkGhostCollisions(int playerCellX, int playerCellY) {
         for (Ghost ghost : ghosts) {
             int ghostCellX = ghost.getX();
             int ghostCellY = ghost.getY();
 
             if (playerCellX == ghostCellX && playerCellY == ghostCellY) {
-                if (pacGum.isSuperPacMan()) {
-                    // Le fantom est mangé par le Super PacMan
-                    score += 400;
-                    resetGhostToCenter(ghost.getColor());
-                } else if (!pacGum.isPacManInvisible()) {
-                    // PacMan est mangeé
-                    handlePlayerCaught();
-                }
+                handleGhostCollision(ghost);
             }
         }
+    }
 
+    private void checkCellCollisions(int playerCellX, int playerCellY) {
         Cell cellValue = originalLabyrinth[playerCellY][playerCellX];
         switch (cellValue) {
             case PACDOT:
@@ -223,12 +226,6 @@ public class Game extends JPanel implements ActionListener, KeyListener {
             default:
                 break;
         }
-
-        // Vérification pour obtenir une vie supplémentaire si le score dépasse 5000 points
-        if (score >= 5000) {
-            lives++;
-            score -= 5000; // Soustrayez 5000 points pour éviter d'obtenir des vies supplémentaires à chaque vérification
-        }
     }
 
     private void handlePlayerCaught() {
@@ -242,6 +239,24 @@ public class Game extends JPanel implements ActionListener, KeyListener {
             playerX = 15;
             playerY = 17;
             playerDirection = 0;
+        }
+    }
+
+    private void handleGhostCollision(Ghost ghost) {
+        if (pacGum.isSuperPacMan()) {
+            // Le fantome est mangé par le Super PacMan
+            score += 400;
+            resetGhostToCenter(ghost.getColor());
+        } else if (!pacGum.isPacManInvisible()) {
+            // PacMan est mangé
+            handlePlayerCaught();
+        }
+    }
+
+    private void handleScoreForExtraLife() {
+        if (score >= 5000) {
+            lives++;
+            score -= 5000;
         }
     }
 
@@ -293,26 +308,24 @@ public class Game extends JPanel implements ActionListener, KeyListener {
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
 
-        switch (key) {
-            case KeyEvent.VK_UP:
-                if (playerY != 0 && (originalLabyrinth[playerY - 1][playerX] != Cell.WALL)) playerDirection = 2;
-                break;
-
-            case KeyEvent.VK_DOWN:
-                if (playerY != 30 && (originalLabyrinth[playerY + 1][playerX] != Cell.WALL)) playerDirection = 3;
-                break;
-
-            case KeyEvent.VK_LEFT:
-                if (playerX != 0 && (originalLabyrinth[playerY][playerX - 1] != Cell.WALL)) playerDirection = 1;
-                break;
-
-            case KeyEvent.VK_RIGHT:
-                if (playerX != 27 && (originalLabyrinth[playerY][playerX + 1] != Cell.WALL)) playerDirection = 0;
-                break;
-
-            case KeyEvent.VK_R:
-                resetGame();
-                break;
+        if (key == KeyEvent.VK_UP) {
+            if (playerY > 0 && originalLabyrinth[playerY - 1][playerX] != Cell.WALL) {
+                playerDirection = 2;
+            }
+        } else if (key == KeyEvent.VK_DOWN) {
+            if (playerY < originalLabyrinth.length - 1 && originalLabyrinth[playerY + 1][playerX] != Cell.WALL) {
+                playerDirection = 3;
+            }
+        } else if (key == KeyEvent.VK_LEFT) {
+            if (playerX > 0 && originalLabyrinth[playerY][playerX - 1] != Cell.WALL) {
+                playerDirection = 1;
+            }
+        } else if (key == KeyEvent.VK_RIGHT) {
+            if (playerX < originalLabyrinth[0].length - 1 && originalLabyrinth[playerY][playerX + 1] != Cell.WALL) {
+                playerDirection = 0;
+            }
+        } else if (key == KeyEvent.VK_R) {
+            resetGame();
         }
     }
 

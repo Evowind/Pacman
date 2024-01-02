@@ -6,7 +6,7 @@ public class Main {
     public static void main(String[] args) {
         JFrame frame = new JFrame("Jeu Pac-Man");
         Game game = new Game();
-        GUI gui = new GUI(game); // Ajoutez le composant GUI explicitement
+        GUI gui = new GUI(game);
         frame.add(gui);
 
         int windowWidth = (Game.originalLabyrinth[0].length * Game.CELL_SIZE) + 19;
@@ -15,5 +15,6 @@ public class Main {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
     }
+
 }
 
