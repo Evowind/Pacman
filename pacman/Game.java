@@ -12,7 +12,7 @@ import java.util.List;
 public class Game extends JPanel implements ActionListener, KeyListener {
     public static final int CELL_SIZE = 30;
     private int playerX, playerY;
-    static int[][] originalLabyrinth;
+    static Cell[][] originalLabyrinth;
     private boolean[][] pacdots;
     List<Ghost> ghosts;
     private int pacdotsRemaining;
@@ -60,8 +60,8 @@ public class Game extends JPanel implements ActionListener, KeyListener {
         pacdotsRemaining = 0;
         for (int i = 0; i < originalLabyrinth.length; i++) {
             for (int j = 0; j < originalLabyrinth[i].length; j++) {
-                if (originalLabyrinth[i][j] == Labyrinth.PACDOT || originalLabyrinth[i][j] == Labyrinth.VIOLET ||
-                        originalLabyrinth[i][j] == Labyrinth.GREEN || originalLabyrinth[i][j] == Labyrinth.ORANGE) {
+                if (originalLabyrinth[i][j] == Cell.PACDOT || originalLabyrinth[i][j] == Cell.PURPLE ||
+                        originalLabyrinth[i][j] == Cell.GREEN || originalLabyrinth[i][j] == Cell.ORANGE) {
                     pacdots[i][j] = true;
                     pacdotsRemaining++;
                 }
@@ -123,7 +123,7 @@ public class Game extends JPanel implements ActionListener, KeyListener {
     static boolean isValidMove(int x, int y) {
         return x >= 0 && x < originalLabyrinth[0].length &&
                 y >= 0 && y < originalLabyrinth.length &&
-                originalLabyrinth[y][x] != Labyrinth.WALL;
+                originalLabyrinth[y][x] != Cell.WALL;
     }
 
     private void moveGhosts() {
@@ -171,32 +171,32 @@ public class Game extends JPanel implements ActionListener, KeyListener {
             }
         }
 
-        int cellValue = originalLabyrinth[playerCellY][playerCellX];
+        Cell cellValue = originalLabyrinth[playerCellY][playerCellX];
         switch (cellValue) {
-            case Labyrinth.PACDOT:
+            case PACDOT:
                 score += 100;
-                originalLabyrinth[playerCellY][playerCellX] = Labyrinth.PATH;
+                originalLabyrinth[playerCellY][playerCellX] = Cell.EMPTY;
                 pacdotsRemaining--;
                 break;
-            case Labyrinth.VIOLET:
+            case PURPLE:
                 score += 300;
-                originalLabyrinth[playerCellY][playerCellX] = Labyrinth.PATH;
+                originalLabyrinth[playerCellY][playerCellX] = Cell.EMPTY;
                 pacdotsRemaining--;
                 pacGum.activateInvisibility();
                 break;
-            case Labyrinth.ORANGE:
+            case ORANGE:
                 score += 500;
-                originalLabyrinth[playerCellY][playerCellX] = Labyrinth.PATH;
+                originalLabyrinth[playerCellY][playerCellX] = Cell.EMPTY;
                 pacdotsRemaining--;
                 pacGum.activateSuperPacMan();
                 break;
-            case Labyrinth.GREEN:
+            case GREEN:
                 score += 1000;
-                originalLabyrinth[playerCellY][playerCellX] = Labyrinth.PATH;
+                originalLabyrinth[playerCellY][playerCellX] = Cell.EMPTY;
                 pacdotsRemaining--;
                 pacGum.activateGreenPacGum(this);
                 break;
-            case Labyrinth.TELEPORTER:
+            case TELEPORTER:
                 if (playerCellX == 27) {
                     playerX = 1;
                 } else {
@@ -237,7 +237,7 @@ public class Game extends JPanel implements ActionListener, KeyListener {
         // Dessiner le labyrinthe
         for (int i = 0; i < originalLabyrinth.length; i++) {
             for (int j = 0; j < originalLabyrinth[i].length; j++) {
-                int cellValue = originalLabyrinth[i][j];
+                Cell cellValue = originalLabyrinth[i][j];
                 drawCell(g2d, j, i, cellValue);
             }
         }
@@ -304,43 +304,43 @@ public class Game extends JPanel implements ActionListener, KeyListener {
 
     }
 
-    private void drawCell(Graphics2D g2d, int x, int y, int cellValue) {
+    private void drawCell(Graphics2D g2d, int x, int y, Cell cellValue) {
         switch (cellValue) {
-            case Labyrinth.WALL:
+            case WALL:
                 g2d.setColor(Color.BLUE);
                 g2d.fillRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
                 break;
 
-            case Labyrinth.PACDOT:
+            case PACDOT:
                 g2d.setColor(Color.BLACK);
                 g2d.fillRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
                 drawPacdot(g2d, x, y, Color.WHITE);
                 break;
 
-            case Labyrinth.VIOLET:
+            case PURPLE:
                 g2d.setColor(Color.BLACK);
                 g2d.fillRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
                 drawPacdot(g2d, x, y, Color.MAGENTA);
                 break;
 
-            case Labyrinth.ORANGE:
+            case ORANGE:
                 g2d.setColor(Color.BLACK);
                 g2d.fillRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
                 drawPacdot(g2d, x, y, Color.ORANGE);
                 break;
 
-            case Labyrinth.GREEN:
+            case GREEN:
                 g2d.setColor(Color.BLACK);
                 g2d.fillRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
                 drawPacdot(g2d, x, y, Color.GREEN);
                 break;
 
-            case Labyrinth.PATH:
+            case EMPTY:
                 g2d.setColor(Color.BLACK);
                 g2d.fillRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
                 break;
 
-            case Labyrinth.TELEPORTER:
+            case TELEPORTER:
                 g2d.setColor(Color.RED);
                 g2d.fillRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
                 break;
@@ -375,19 +375,19 @@ public class Game extends JPanel implements ActionListener, KeyListener {
 
         switch (key) {
             case KeyEvent.VK_UP:
-                if (playerY != 0 && (originalLabyrinth[playerY - 1][playerX] != Labyrinth.WALL)) playerDirection = 2;
+                if (playerY != 0 && (originalLabyrinth[playerY - 1][playerX] != Cell.WALL)) playerDirection = 2;
                 break;
 
             case KeyEvent.VK_DOWN:
-                if (playerY != 30 && (originalLabyrinth[playerY + 1][playerX] != Labyrinth.WALL)) playerDirection = 3;
+                if (playerY != 30 && (originalLabyrinth[playerY + 1][playerX] != Cell.WALL)) playerDirection = 3;
                 break;
 
             case KeyEvent.VK_LEFT:
-                if (playerX != 0 && (originalLabyrinth[playerY][playerX - 1] != Labyrinth.WALL)) playerDirection = 1;
+                if (playerX != 0 && (originalLabyrinth[playerY][playerX - 1] != Cell.WALL)) playerDirection = 1;
                 break;
 
             case KeyEvent.VK_RIGHT:
-                if (playerX != 27 && (originalLabyrinth[playerY][playerX + 1] != Labyrinth.WALL)) playerDirection = 0;
+                if (playerX != 27 && (originalLabyrinth[playerY][playerX + 1] != Cell.WALL)) playerDirection = 0;
                 break;
 
             case KeyEvent.VK_R:

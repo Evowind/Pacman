@@ -92,9 +92,9 @@ public class PacGum {
     }
 
     private static void swapValues(int srcRow, int srcCol, int destRow, int destCol) {
-        int[][] labyrinth = Game.originalLabyrinth;
+        Cell[][] labyrinth = Game.originalLabyrinth;
         // Utilisation de la décomposition de tuples pour échanger les valeurs
-        int temp = labyrinth[srcRow][srcCol];
+        Cell temp = labyrinth[srcRow][srcCol];
         labyrinth[srcRow][srcCol] = labyrinth[destRow][destCol];
         labyrinth[destRow][destCol] = temp;
     }
