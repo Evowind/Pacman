@@ -2,7 +2,7 @@ package pacman;
 
 import javax.swing.*;
 
-public class PacManGame {
+public class Main {
     public static void main(String[] args) {
         JFrame frame = new JFrame("Jeu Pac-Man");
         Game game = new Game();
