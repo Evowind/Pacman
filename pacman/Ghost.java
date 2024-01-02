@@ -32,40 +32,15 @@ public class Ghost {
     }
 
     public void moveRandomly() {
-    	if (!isVulnerable) canMove = true;
-    	else if (canMove) {
-    		if (isVulnerable) canMove = false;
-    		if (wall) {
-                Random random = new Random();
-                int newDirection = random.nextInt(4); // Choisir une nouvelle direction aléatoirement
+        if (isVulnerable) canMove = false;
+        if (wall) {
+            Random random = new Random();
+            int newDirection = random.nextInt(4); // Choisir une nouvelle direction aléatoirement
 
-                // Assurez que la nouvelle direction est valide
-                int newX = x;
-                int newY = y;
-                switch (newDirection) {
-                    case 0: // Droite
-                        newX++;
-                        break;
-                    case 1: // Gauche
-                        newX--;
-                        break;
-                    case 2: // Haut
-                        newY--;
-                        break;
-                    case 3: // Bas
-                        newY++;
-                        break;
-                }
-
-                if (Game.isValidMove(newX, newY)) {
-                    currentDirection = newDirection;
-                    wall = false; // Réinitialisez "wall" à false lorsqu'une nouvelle direction est choisie
-                }
-            }
-
+            // Assurez que la nouvelle direction est valide
             int newX = x;
             int newY = y;
-            switch (currentDirection) {
+            switch (newDirection) {
                 case 0: // Droite
                     newX++;
                     break;
@@ -80,23 +55,43 @@ public class Ghost {
                     break;
             }
 
-            // Vérifiez que la nouvelle position est valide avant de déplacer le fantôme
             if (Game.isValidMove(newX, newY)) {
-            	x = newX;
-                y = newY;
-            	if(newX == 27 && newY == 14) {
-            		newX = 0;
-            	} else if (newX == 0 && newY == 14) {
-            		newX = 27;
-            	}
-
-            } else {
-                // Si la nouvelle position n'est pas valide, réinitialisez "wall" à true pour choisir une nouvelle direction
-                wall = true;
+                currentDirection = newDirection;
+                wall = false; // Réinitialisez "wall" à false lorsqu'une nouvelle direction est choisie
             }
-    	} else {
-    		canMove = true;
-    	}
+        }
+
+        int newX = x;
+        int newY = y;
+        switch (currentDirection) {
+            case 0: // Droite
+                newX++;
+                break;
+            case 1: // Gauche
+                newX--;
+                break;
+            case 2: // Haut
+                newY--;
+                break;
+            case 3: // Bas
+                newY++;
+                break;
+        }
+
+        // Vérifiez que la nouvelle position est valide avant de déplacer le fantôme
+        if (Game.isValidMove(newX, newY)) {
+            x = newX;
+            y = newY;
+            if(newX == 27 && newY == 14) {
+                newX = 0;
+            } else if (newX == 0 && newY == 14) {
+                newX = 27;
+            }
+
+        } else {
+            // Si la nouvelle position n'est pas valide, réinitialisez "wall" à true pour choisir une nouvelle direction
+            wall = true;
+        }
     }
 
     public void setX(int newX) {
@@ -106,10 +101,16 @@ public class Ghost {
         this.y = newY;
     }
 
+    public void setCanMove(boolean canMove) {
+        this.canMove = canMove;
+    }
+    public boolean isCanMove() {
+        return canMove;
+    }
+
     public void setVulnerable(boolean vulnerable) {
         isVulnerable = vulnerable;
     }
-
     public boolean isVulnerable() {
         return isVulnerable;
     }

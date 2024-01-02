@@ -144,7 +144,8 @@ public class Game extends JPanel implements ActionListener, KeyListener {
 
     private void moveGhosts() {
         for (Ghost ghost : ghosts) {
-            ghost.moveRandomly();
+            if(ghost.isCanMove()) ghost.moveRandomly();
+            else ghost.setCanMove(true);
         }
     }
 
