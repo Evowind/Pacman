@@ -35,10 +35,11 @@ public class Labyrinth {
         {Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL},
     };
     static Cell[][] getCopy() {
-            Cell[][] copy = new Cell[LABYRINTH_DATA.length][LABYRINTH_DATA[0].length];
-            for (int i = 0; i < LABYRINTH_DATA.length; i++) {
-                System.arraycopy(LABYRINTH_DATA[i], 0, copy[i], 0, LABYRINTH_DATA[i].length);
-            }
-            return copy;
+        Cell[][] copy = new Cell[LABYRINTH_DATA.length][LABYRINTH_DATA[0].length];
+        for (int i = 0; i < LABYRINTH_DATA.length; i++) {
+            System.arraycopy(LABYRINTH_DATA[i], 0, copy[i], 0, LABYRINTH_DATA[i].length);
         }
+        return copy;
     }
+
+}

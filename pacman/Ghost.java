@@ -94,6 +94,7 @@ public class Ghost {
         }
     }
 
+
     public void setX(int newX) {
         this.x = newX;
     }

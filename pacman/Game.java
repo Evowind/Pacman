@@ -9,40 +9,30 @@ import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Game extends JPanel implements ActionListener, KeyListener {
+public class Game implements ActionListener, KeyListener {
     private final List<GameObserver> observers = new ArrayList<>();
 
+    public PacManObservable pacman;
     public static final int CELL_SIZE = 30;
-    private int playerX, playerY;
-    static Cell[][] originalLabyrinth;
-    private boolean[][] pacdots;
+    static Cell[][] labyrinth;
     List<Ghost> ghosts;
     private int pacdotsRemaining;
     private int score;
-    private final PacGum pacGum;
+    public final PacGum pacGum;
     private int lives;
-    private int playerDirection;
     private GUI gui;
 
     Game() {
         Timer timer = new Timer(100, this);
         timer.start();
-        playerX = 15;
-        playerY = 17;
-        playerDirection = 0;
+        pacman = new PacManObservable(15, 17, 0, this);
         lives = 3;
         score = 0;
         pacGum = new PacGum();
-        setFocusable(true);
-        addKeyListener(this);
-        setFocusTraversalKeysEnabled(false);
         initializeGame();
-        requestFocus();
 
-        SwingUtilities.invokeLater(() -> {
-            gui = new GUI(this);
-            addObserver(gui);
-        });
+        gui = new GUI(this);
+        addObserver(gui);
     }
 
 
@@ -56,15 +46,14 @@ public class Game extends JPanel implements ActionListener, KeyListener {
     }
 
     public void resetGame() {
+        // put in state
         pacGum.resetSuperPacMan();
         pacGum.resetInvisibility();
-        playerX = 15;
-        playerY = 17;
-        playerDirection = 0;
+        pacman = new PacManObservable(15, 17, 0, this);
         initializeGame();
         score = 0;
         lives = 3;
-        repaint();
+        notifyObservers();
     }
 
     private void initializeGame() {
@@ -77,11 +66,10 @@ public class Game extends JPanel implements ActionListener, KeyListener {
 
     void initializePacdots() {
         pacdotsRemaining = 0;
-        for (int i = 0; i < originalLabyrinth.length; i++) {
-            for (int j = 0; j < originalLabyrinth[i].length; j++) {
-                if (originalLabyrinth[i][j] == Cell.PACDOT || originalLabyrinth[i][j] == Cell.PURPLE ||
-                        originalLabyrinth[i][j] == Cell.GREEN || originalLabyrinth[i][j] == Cell.ORANGE) {
-                    pacdots[i][j] = true;
+        for (int i = 0; i < labyrinth.length; i++) {
+            for (int j = 0; j < labyrinth[i].length; j++) {
+                if (labyrinth[i][j] == Cell.PACDOT || labyrinth[i][j] == Cell.PURPLE ||
+                        labyrinth[i][j] == Cell.GREEN || labyrinth[i][j] == Cell.ORANGE) {
                     pacdotsRemaining++;
                 }
             }
@@ -104,45 +92,10 @@ public class Game extends JPanel implements ActionListener, KeyListener {
         }
     }
 
-    private void movePlayer() {
-        int newX = playerX;
-        int newY = playerY;
-        int playerSpeed = 1;
-        switch (playerDirection) {
-            case 0:
-                newX += playerSpeed;
-                break;
-            case 1:
-                newX -= playerSpeed;
-                break;
-            case 2:
-                newY -= playerSpeed;
-                break;
-            case 3:
-                newY += playerSpeed;
-                break;
-        }
-        if (pacdotsRemaining == 0) {
-            JOptionPane.showMessageDialog(this, "Vous avez gagné !", "Partie terminée", JOptionPane.INFORMATION_MESSAGE);
-            resetGame();
-        }
-        if (isValidMove(newX, newY)) {
-            playerX = newX;
-            playerY = newY;
-
-            int cellX = playerX;
-            int cellY = playerY;
-            if (pacdots[cellY][cellX]) {
-                pacdots[cellY][cellX] = false;
-            }
-
-        }
-    }
-
     static boolean isValidMove(int x, int y) {
-        return x >= 0 && x < originalLabyrinth[0].length &&
-                y >= 0 && y < originalLabyrinth.length &&
-                originalLabyrinth[y][x] != Cell.WALL;
+        return x >= 0 && x < labyrinth[0].length &&
+                y >= 0 && y < labyrinth.length &&
+                labyrinth[y][x] != Cell.WALL;
     }
 
     private void moveGhosts() {
@@ -175,10 +128,11 @@ public class Game extends JPanel implements ActionListener, KeyListener {
         int playerCellY = playerY;
 
         checkGhostCollisions(playerCellX, playerCellY);
-        checkCellCollisions(playerCellX, playerCellY);
+        pacman.checkCellCollisions(playerCellX, playerCellY);
         handleScoreForExtraLife();
     }
 
+    // maybe do something with this in Ghost class
     private void checkGhostCollisions(int playerCellX, int playerCellY) {
         for (Ghost ghost : ghosts) {
             int ghostCellX = ghost.getX();
@@ -190,49 +144,11 @@ public class Game extends JPanel implements ActionListener, KeyListener {
         }
     }
 
-    private void checkCellCollisions(int playerCellX, int playerCellY) {
-        Cell cellValue = originalLabyrinth[playerCellY][playerCellX];
-        switch (cellValue) {
-            case PACDOT:
-                score += 100;
-                originalLabyrinth[playerCellY][playerCellX] = Cell.EMPTY;
-                pacdotsRemaining--;
-                break;
-            case PURPLE:
-                score += 300;
-                originalLabyrinth[playerCellY][playerCellX] = Cell.EMPTY;
-                pacdotsRemaining--;
-                pacGum.activateInvisibility();
-                break;
-            case ORANGE:
-                score += 500;
-                originalLabyrinth[playerCellY][playerCellX] = Cell.EMPTY;
-                pacdotsRemaining--;
-                pacGum.activateSuperPacMan();
-                break;
-            case GREEN:
-                score += 1000;
-                originalLabyrinth[playerCellY][playerCellX] = Cell.EMPTY;
-                pacdotsRemaining--;
-                pacGum.activateGreenPacGum(this);
-                break;
-            case TELEPORTER:
-                if (playerCellX == 27) {
-                    playerX = 1;
-                } else {
-                    playerX = 26;
-                }
-                break;
-            default:
-                break;
-        }
-    }
-
     private void handlePlayerCaught() {
         lives--;
         if (lives <= 0) {
             // Game over
-            JOptionPane.showMessageDialog(this, "Vous avez perdu !", "Partie terminée", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(gui, "Vous avez perdu !", "Partie terminée", JOptionPane.INFORMATION_MESSAGE);
             resetGame();
         } else {
             // Reset la position du joueur
@@ -242,7 +158,12 @@ public class Game extends JPanel implements ActionListener, KeyListener {
         }
     }
 
+    public void handleWin(){
+        JOptionPane.showMessageDialog(gui, "Vous avez gagné !", "Partie terminée", JOptionPane.INFORMATION_MESSAGE);
+    }
+
     private void handleGhostCollision(Ghost ghost) {
+        // state
         if (pacGum.isSuperPacMan()) {
             // Le fantome est mangé par le Super PacMan
             score += 400;
@@ -263,9 +184,10 @@ public class Game extends JPanel implements ActionListener, KeyListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        // state
         pacGum.updateInvisibility();
         pacGum.updateSuperPacMan();
-        movePlayer();
+        pacman.movePlayer();
         checkCollisions();
         moveGhosts();
         checkCollisions();
@@ -306,6 +228,8 @@ public class Game extends JPanel implements ActionListener, KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
+        int playerY = pacman.getPlayerY();
+        int playerX = pacman.getPlayerX();
         int key = e.getKeyCode();
 
         if (key == KeyEvent.VK_UP) {

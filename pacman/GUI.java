@@ -12,6 +12,8 @@ public class GUI extends JPanel implements GameObserver {
         addKeyListener(game);
         setFocusable(true);
         game.addObserver(this);
+        setFocusTraversalKeysEnabled(false);
+        requestFocus();
     }
     public void update() {
         repaint();
@@ -28,9 +30,9 @@ public class GUI extends JPanel implements GameObserver {
     }
 
     private void drawLabyrinth(Graphics2D g2d) {
-        for (int i = 0; i < Game.originalLabyrinth.length; i++) {
-            for (int j = 0; j < Game.originalLabyrinth[i].length; j++) {
-                Cell cellValue = Game.originalLabyrinth[i][j];
+        for (int i = 0; i < Game.labyrinth.length; i++) {
+            for (int j = 0; j < Game.labyrinth[i].length; j++) {
+                Cell cellValue = Game.labyrinth[i][j];
                 drawCell(g2d, j, i, cellValue);
             }
         }
@@ -46,7 +48,7 @@ public class GUI extends JPanel implements GameObserver {
         int startAngle = 0;
         int extentAngle = 360;
 
-        switch (game.getPlayerDirection()) {
+        switch (game.pacman.getPlayerDirection()) {
             case 0: // Droite
                 startAngle = 45;
                 extentAngle = 270;
@@ -64,7 +66,7 @@ public class GUI extends JPanel implements GameObserver {
                 extentAngle = 270;
                 break;
         }
-        g2d.fillArc(game.getPlayerX() * CELL_SIZE, game.getPlayerY()* CELL_SIZE, CELL_SIZE, CELL_SIZE, startAngle, extentAngle);
+        g2d.fillArc(game.pacman.getPlayerX() * CELL_SIZE, game.pacman.getPlayerY()* CELL_SIZE, CELL_SIZE, CELL_SIZE, startAngle, extentAngle);
     }
 
     private void drawGhosts(Graphics2D g2d) {
