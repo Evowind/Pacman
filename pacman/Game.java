@@ -57,8 +57,7 @@ public class Game implements ActionListener, KeyListener {
     }
 
     private void initializeGame() {
-        originalLabyrinth = Labyrinth.getCopy();
-        pacdots = new boolean[originalLabyrinth.length][originalLabyrinth[0].length];
+        labyrinth = Labyrinth.getCopy();
         initializePacdots();
         ghosts = new ArrayList<>();
         initializeGhosts();
@@ -78,7 +77,7 @@ public class Game implements ActionListener, KeyListener {
 
     void initializeGhosts() {
         // Le cas d'un reset
-        if (ghosts.size() > 0) {
+        if (!ghosts.isEmpty()) {
             for (Ghost ghost : ghosts) {
                 ghost.setX(12);
                 ghost.setY(11);
@@ -124,8 +123,8 @@ public class Game implements ActionListener, KeyListener {
     }
 
     private void checkCollisions() {
-        int playerCellX = playerX;
-        int playerCellY = playerY;
+        int playerCellX = pacman.getPlayerX();
+        int playerCellY = pacman.getPlayerY();
 
         checkGhostCollisions(playerCellX, playerCellY);
         pacman.checkCellCollisions(playerCellX, playerCellY);
@@ -152,9 +151,7 @@ public class Game implements ActionListener, KeyListener {
             resetGame();
         } else {
             // Reset la position du joueur
-            playerX = 15;
-            playerY = 17;
-            playerDirection = 0;
+            pacman = new PacManObservable(15, 17, 0, this);
         }
     }
 
@@ -181,6 +178,34 @@ public class Game implements ActionListener, KeyListener {
         }
     }
 
+    public void applyGreenPacGumEffect() {
+        int[][] swaps = {
+                {1, 7, 9, 1}, {1, 8, 10, 1}, {1, 9, 11, 1},
+                {1, 10, 12, 1}, {1, 11, 13, 1}, {1, 16, 9, 26},
+                {1, 17, 10, 26}, {1, 18, 11, 26}, {1, 19, 12, 26},
+                {1, 20, 13, 26}, {5, 13, 1, 13}, {5, 14, 1, 14},
+                {6, 9, 6, 12}, {7, 9, 7, 12}, {9, 9, 9, 12},
+                {10, 9, 10, 12}, {6, 15, 6, 18}, {7, 15, 7, 18},
+                {9, 15, 9, 18}, {10, 15, 10, 18}, {20, 7, 23, 4},
+                {20, 8, 23, 5}, {20, 13, 23, 13}, {20, 14, 23, 14},
+                {20, 19, 23, 22}, {20, 20, 23, 23}, {26, 10, 26, 7},
+                {26, 11, 26, 8}, {29, 13, 26, 13}, {29, 14, 26, 14},
+                {26, 16, 26, 19}, {26, 17, 26, 20}, {23, 10, 24, 12},
+                {23, 11, 25, 12}, {23, 16, 24, 15}, {23, 17, 25, 15}
+        };
+
+        for (int[] swap : swaps) {
+            swapValues(swap[0], swap[1], swap[2], swap[3]);
+        }
+    }
+
+    private static void swapValues(int srcRow, int srcCol, int destRow, int destCol) {
+        Cell[][] labyrinth = Game.labyrinth;
+        // Utilisation de la décomposition de tuples pour échanger les valeurs
+        Cell temp = labyrinth[srcRow][srcCol];
+        labyrinth[srcRow][srcCol] = labyrinth[destRow][destCol];
+        labyrinth[destRow][destCol] = temp;
+    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -194,6 +219,14 @@ public class Game implements ActionListener, KeyListener {
         notifyObservers();
     }
 
+    public void decrPacDot() {
+        pacdotsRemaining--;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
     public int getScore() {
         return score;
     }
@@ -204,18 +237,6 @@ public class Game implements ActionListener, KeyListener {
 
     public int getPacdotsRemaining() {
         return pacdotsRemaining;
-    }
-
-    public int getPlayerX() {
-        return playerX;
-    }
-
-    public int getPlayerY() {
-        return playerY;
-    }
-
-    public int getPlayerDirection() {
-        return playerDirection;
     }
 
     public PacGum getPacGum() {
@@ -233,20 +254,20 @@ public class Game implements ActionListener, KeyListener {
         int key = e.getKeyCode();
 
         if (key == KeyEvent.VK_UP) {
-            if (playerY > 0 && originalLabyrinth[playerY - 1][playerX] != Cell.WALL) {
-                playerDirection = 2;
+            if (playerY > 0 && labyrinth[playerY - 1][playerX] != Cell.WALL) {
+                pacman.setPlayerDirection(2);
             }
         } else if (key == KeyEvent.VK_DOWN) {
-            if (playerY < originalLabyrinth.length - 1 && originalLabyrinth[playerY + 1][playerX] != Cell.WALL) {
-                playerDirection = 3;
+            if (playerY < labyrinth.length - 1 && labyrinth[playerY + 1][playerX] != Cell.WALL) {
+                pacman.setPlayerDirection(3);
             }
         } else if (key == KeyEvent.VK_LEFT) {
-            if (playerX > 0 && originalLabyrinth[playerY][playerX - 1] != Cell.WALL) {
-                playerDirection = 1;
+            if (playerX > 0 && labyrinth[playerY][playerX - 1] != Cell.WALL) {
+                pacman.setPlayerDirection(1);
             }
         } else if (key == KeyEvent.VK_RIGHT) {
-            if (playerX < originalLabyrinth[0].length - 1 && originalLabyrinth[playerY][playerX + 1] != Cell.WALL) {
-                playerDirection = 0;
+            if (playerX < labyrinth[0].length - 1 && labyrinth[playerY][playerX + 1] != Cell.WALL) {
+                pacman.setPlayerDirection(0);
             }
         } else if (key == KeyEvent.VK_R) {
             resetGame();
