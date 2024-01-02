@@ -11,6 +11,7 @@ public class GUI extends JPanel implements GameObserver {
 
     public GUI(Game game) {
         this.game = game;
+        addKeyListener(game);
         setFocusable(true);
         game.addObserver(this);
     }
