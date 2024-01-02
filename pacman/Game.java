@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Game extends JPanel implements ActionListener, KeyListener {
+    private List<GameObserver> observers = new ArrayList<>();
+
     public static final int CELL_SIZE = 30;
     private int playerX, playerY;
     static Cell[][] originalLabyrinth;
@@ -20,7 +22,8 @@ public class Game extends JPanel implements ActionListener, KeyListener {
     private PacGum pacGum;
     private int lives;
     private int playerDirection;
-    private Color collision;
+    private GUI gui;
+    private Color color;
 
     Game() {
         Timer timer = new Timer(100, this);
@@ -34,6 +37,19 @@ public class Game extends JPanel implements ActionListener, KeyListener {
         setFocusable(true);
         addKeyListener(this);
         initializeGame();
+
+        gui = new GUI(this);
+        addObserver(gui);
+    }
+
+
+    public void addObserver(GameObserver observer) {
+        observers.add(observer);
+    }
+    private void notifyObservers() {
+        for (GameObserver observer : observers) {
+            observer.update();
+        }
     }
 
     public void resetGame() {
@@ -230,135 +246,6 @@ public class Game extends JPanel implements ActionListener, KeyListener {
 
 
     @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        Graphics2D g2d = (Graphics2D) g;
-
-        // Dessiner le labyrinthe
-        for (int i = 0; i < originalLabyrinth.length; i++) {
-            for (int j = 0; j < originalLabyrinth[i].length; j++) {
-                Cell cellValue = originalLabyrinth[i][j];
-                drawCell(g2d, j, i, cellValue);
-            }
-        }
-
-        // Dessiner le joueur
-        if (pacGum.isSuperPacMan()) {
-            g2d.setColor(Color.RED);
-        } else {
-            g2d.setColor(pacGum.isPacManInvisible() ? Color.ORANGE : Color.YELLOW);
-        }
-        int startAngle;
-        int extentAngle;
-
-        switch (playerDirection) {
-            case 0: // Droite
-                startAngle = 45;
-                extentAngle = 270;
-                break;
-            case 1: // Gauche
-                startAngle = 225;
-                extentAngle = 270;
-                break;
-            case 2: // Haut
-                startAngle = 135;
-                extentAngle = 270;
-                break;
-            case 3: // Bas
-                startAngle = 315;
-                extentAngle = 270;
-                break;
-            default:
-                startAngle = 0;
-                extentAngle = 360;
-                break;
-        }
-        g2d.fillArc(playerX * CELL_SIZE, playerY * CELL_SIZE, CELL_SIZE, CELL_SIZE, startAngle, extentAngle);
-
-        // Dessiner les fantômes
-        for (Ghost ghost : ghosts) {
-            if (pacGum.isSuperPacMan()) {
-                g2d.setColor(Color.BLUE.darker());
-            } else {
-                g2d.setColor(ghost.isVulnerable() ? Color.BLUE.darker() : ghost.getColor());
-            }
-            g2d.fillRoundRect(ghost.getX() * CELL_SIZE, ghost.getY() * CELL_SIZE, CELL_SIZE, CELL_SIZE, 10, 10);
-        }
-
-        // Dessiner le score et le nombre de vies restantes
-        g2d.setColor(Color.WHITE);
-        g2d.setFont(new Font("Segoe UI", Font.BOLD, 18));
-
-        String scoreText = "Score: " + score;
-        String livesText = "Lives: " + lives;
-        String pacdotsRemainingText = "Pacdots restantes: " + pacdotsRemaining;
-
-        int lineHeight = 25;
-        int margin = 15;
-        int startY = 25;
-
-        g2d.drawString(scoreText, margin, startY);
-        g2d.drawString(livesText, margin + (5*lineHeight), startY );
-        g2d.drawString(pacdotsRemainingText, margin + (9 * lineHeight), startY );
-
-
-    }
-
-    private void drawCell(Graphics2D g2d, int x, int y, Cell cellValue) {
-        switch (cellValue) {
-            case WALL:
-                g2d.setColor(Color.BLUE);
-                g2d.fillRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
-                break;
-
-            case PACDOT:
-                g2d.setColor(Color.BLACK);
-                g2d.fillRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
-                drawPacdot(g2d, x, y, Color.WHITE);
-                break;
-
-            case PURPLE:
-                g2d.setColor(Color.BLACK);
-                g2d.fillRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
-                drawPacdot(g2d, x, y, Color.MAGENTA);
-                break;
-
-            case ORANGE:
-                g2d.setColor(Color.BLACK);
-                g2d.fillRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
-                drawPacdot(g2d, x, y, Color.ORANGE);
-                break;
-
-            case GREEN:
-                g2d.setColor(Color.BLACK);
-                g2d.fillRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
-                drawPacdot(g2d, x, y, Color.GREEN);
-                break;
-
-            case EMPTY:
-                g2d.setColor(Color.BLACK);
-                g2d.fillRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
-                break;
-
-            case TELEPORTER:
-                g2d.setColor(Color.RED);
-                g2d.fillRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
-                break;
-
-            default:
-                break;
-        }
-    }
-
-    private void drawPacdot(Graphics2D g2d, int x, int y, Color color) {
-        g2d.setColor(color);
-        int pacdotSize = CELL_SIZE / 3;
-        g2d.fillOval((x * CELL_SIZE) + (CELL_SIZE / 2) - pacdotSize / 2,
-                (y * CELL_SIZE) + (CELL_SIZE / 2) - pacdotSize / 2,
-                pacdotSize, pacdotSize);
-    }
-
-    @Override
     public void actionPerformed(ActionEvent e) {
         pacGum.updateInvisibility();
         pacGum.updateSuperPacMan();
@@ -366,7 +253,39 @@ public class Game extends JPanel implements ActionListener, KeyListener {
         checkCollisions();
         moveGhosts();
         checkCollisions();
-        repaint();
+        notifyObservers();
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public int getLives() {
+        return lives;
+    }
+
+    public int getPacdotsRemaining() {
+        return pacdotsRemaining;
+    }
+
+    public int getPlayerX() {
+        return playerX;
+    }
+
+    public int getPlayerY() {
+        return playerY;
+    }
+
+    public int getPlayerDirection() {
+        return playerDirection;
+    }
+
+    public PacGum getPacGum() {
+        return pacGum;
+    }
+
+    public List<Ghost> getGhosts() {
+        return ghosts;
     }
 
     @Override
