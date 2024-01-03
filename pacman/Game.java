@@ -39,7 +39,7 @@ public class Game implements ActionListener, KeyListener {
     public void addObserver(GameObserver observer) {
         observers.add(observer);
     }
-    private void notifyObservers() {
+    void notifyObservers() {
         for (GameObserver observer : observers) {
             observer.update();
         }
@@ -221,6 +221,8 @@ public class Game implements ActionListener, KeyListener {
 
     public void decrPacDot() {
         pacdotsRemaining--;
+        System.out.println("Remaining Pacdots: " + pacdotsRemaining);
+        notifyObservers();
     }
 
     public void setScore(int score) {

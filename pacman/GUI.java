@@ -106,27 +106,14 @@ public class GUI extends JPanel implements GameObserver {
                 break;
 
             case PACDOT:
-                g2d.setColor(Color.BLACK);
-                g2d.fillRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
-                drawPacdot(g2d, x, y, Color.WHITE);
-                break;
-
             case PURPLE:
-                g2d.setColor(Color.BLACK);
-                g2d.fillRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
-                drawPacdot(g2d, x, y, Color.MAGENTA);
-                break;
-
             case ORANGE:
-                g2d.setColor(Color.BLACK);
-                g2d.fillRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
-                drawPacdot(g2d, x, y, Color.ORANGE);
-                break;
-
             case GREEN:
-                g2d.setColor(Color.BLACK);
-                g2d.fillRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
-                drawPacdot(g2d, x, y, Color.GREEN);
+                if (Game.labyrinth[y][x] != Cell.EMPTY) {
+                    g2d.setColor(Color.BLACK);
+                    g2d.fillRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+                    drawPacdot(g2d, x, y, getColorForCell(cellValue));
+                }
                 break;
 
             case EMPTY:
@@ -150,5 +137,20 @@ public class GUI extends JPanel implements GameObserver {
         g2d.fillOval((x * CELL_SIZE) + (CELL_SIZE / 2) - pacdotSize / 2,
                 (y * CELL_SIZE) + (CELL_SIZE / 2) - pacdotSize / 2,
                 pacdotSize, pacdotSize);
+    }
+
+    private Color getColorForCell(Cell cellValue) {
+        switch (cellValue) {
+            case PACDOT:
+                return Color.WHITE;
+            case PURPLE:
+                return Color.MAGENTA;
+            case ORANGE:
+                return Color.ORANGE;
+            case GREEN:
+                return Color.GREEN;
+            default:
+                return Color.BLACK;
+        }
     }
 }

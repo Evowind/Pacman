@@ -3,7 +3,7 @@ package pacman;
 public class PacManObservable {
     private int playerX, playerY;
     private int playerDirection;
-    private Game game;
+    private final Game game;
     private PacState state;
 
     public PacManObservable(int playerX, int playerY, int playerDirection, Game game) {
@@ -36,42 +36,35 @@ public class PacManObservable {
             game.handleWin();
             game.resetGame();
         }
-        if (game.isValidMove(newX, newY)) {
+        if (Game.isValidMove(newX, newY)) {
             playerX = newX;
             playerY = newY;
-
-            int cellX = playerX;
-            int cellY = playerY;
-            if (game.labyrinth[cellY][cellX] == Cell.PACDOT) {
-                game.labyrinth[cellY][cellX] = Cell.EMPTY;
-            }
-
         }
     }
 
     public void checkCellCollisions(int playerCellX, int playerCellY) {
-        Cell cellValue = game.labyrinth[playerCellY][playerCellX];
+        Cell cellValue = Game.labyrinth[playerCellY][playerCellX];
         switch (cellValue) {
             case PACDOT:
                 game.setScore(game.getScore() + 100);
-                game.labyrinth[playerCellY][playerCellX] = Cell.EMPTY;
+                Game.labyrinth[playerCellY][playerCellX] = Cell.EMPTY;
                 game.decrPacDot();
                 break;
             case PURPLE:
                 game.setScore(game.getScore() + 300);
-                game.labyrinth[playerCellY][playerCellX] = Cell.EMPTY;
+                Game.labyrinth[playerCellY][playerCellX] = Cell.EMPTY;
                 game.decrPacDot();
                 game.pacGum.activateInvisibility();
                 break;
             case ORANGE:
                 game.setScore(game.getScore() + 500);
-                game.labyrinth[playerCellY][playerCellX] = Cell.EMPTY;
+                Game.labyrinth[playerCellY][playerCellX] = Cell.EMPTY;
                 game.decrPacDot();
                 game.pacGum.activateSuperPacMan();
                 break;
             case GREEN:
                 game.setScore(game.getScore() + 1000);
-                game.labyrinth[playerCellY][playerCellX] = Cell.EMPTY;
+                Game.labyrinth[playerCellY][playerCellX] = Cell.EMPTY;
                 game.decrPacDot();
                 game.applyGreenPacGumEffect();
                 game.initializePacdots();
