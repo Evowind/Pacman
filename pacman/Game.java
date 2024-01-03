@@ -214,11 +214,8 @@ public class Game implements ActionListener, KeyListener {
         notifyObservers();
     }
 
-    // TODO remove ?
     public void decrPacDot() {
         pacdotsRemaining--;
-        System.out.println("Remaining Pacdots: " + pacdotsRemaining);
-        notifyObservers();
     }
 
     public void setScore(int score) {
