@@ -66,6 +66,7 @@ public class Ghost {
                 wall = true;
             }
         }
+        if (state == PacState.State.SUPER) canMove = !canMove;
     }
 
     private boolean trySetDirection(int newDirection) {
