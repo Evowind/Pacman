@@ -32,38 +32,16 @@ public class Ghost {
     }
 
     public void moveRandomly(PacState.State state) {
-        if (state == PacState.State.SUPER) canMove = !canMove;
-        else canMove = true;
-        if(canMove) {
+        if (state != PacState.State.SUPER || canMove) {
             if (wall) {
                 Random random = new Random();
-                int newDirection = random.nextInt(4); // Choisir une nouvelle direction aléatoirement
+                int newDirection;
 
-                // Assurez que la nouvelle direction est valide
-                int newX = x;
-                int newY = y;
-                switch (newDirection) {
-                    case 0: // Droite
-                        newX++;
-                        break;
-                    case 1: // Gauche
-                        newX--;
-                        break;
-                    case 2: // Haut
-                        newY--;
-                        break;
-                    case 3: // Bas
-                        newY++;
-                        break;
-                }
-
-                if (Game.isValidMove(newX, newY)) {
-                    currentDirection = newDirection;
-                    wall = false; // Réinitialisez "wall" à false lorsqu'une nouvelle direction est choisie
-                }
+                do {
+                    newDirection = random.nextInt(4); // Choisir une nouvelle direction aléatoirement
+                } while (!trySetDirection(newDirection));
             }
 
-            //
             int newX = x;
             int newY = y;
             switch (currentDirection) {
@@ -81,17 +59,42 @@ public class Ghost {
                     break;
             }
 
-            // Vérifiez que la nouvelle position est valide avant de déplacer le fantôme
             if (Game.isValidMove(newX, newY)) {
                 x = newX;
                 y = newY;
-
             } else {
-                // Si la nouvelle position n'est pas valide, réinitialisez "wall" à true pour choisir une nouvelle direction
                 wall = true;
             }
         }
     }
+
+    private boolean trySetDirection(int newDirection) {
+        int newX = x;
+        int newY = y;
+
+        switch (newDirection) {
+            case 0: // Droite
+                newX++;
+                break;
+            case 1: // Gauche
+                newX--;
+                break;
+            case 2: // Haut
+                newY--;
+                break;
+            case 3: // Bas
+                newY++;
+                break;
+        }
+
+        if (Game.isValidMove(newX, newY)) {
+            currentDirection = newDirection;
+            wall = false;
+            return true;
+        }
+        return false;
+    }
+
 
     public void setX(int newX) {
         this.x = newX;
