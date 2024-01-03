@@ -1,21 +1,20 @@
 package pacman;
 
 public class InvisibleState extends PacState {
-    private static final int TIMEOUT = 10000;
-    private int timer;
+    private static final long TIMEOUT = 10000;
+    private long startTime;
 
-    protected InvisibleState(PacManObservable pacman) {
-        super(pacman);
-        timer = TIMEOUT;
+    public InvisibleState() {
+        startTime = System.currentTimeMillis();
     }
 
     @Override
     public void move() {
-        // TODO import pacman move method
+        // TODO: Implement move logic for invisible state
     }
 
     @Override
-    State getState() {
-        return State.INVISIBLE;
+    public State getState() {
+        return (System.currentTimeMillis() - startTime >= TIMEOUT) ? State.NORMAL : State.INVISIBLE;
     }
 }

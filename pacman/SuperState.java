@@ -1,21 +1,20 @@
 package pacman;
 
-public class SuperState extends PacState{
-    private static final int TIMEOUT = 10000;
-    private int timer;
+public class SuperState extends PacState {
+    private static final long TIMEOUT = 10000;
+    private long startTime;
 
-    protected SuperState(PacManObservable pacman) {
-        super(pacman);
-        timer = TIMEOUT;
+    public SuperState() {
+        startTime = System.currentTimeMillis();
     }
 
     @Override
     public void move() {
-        // TODO import pacman move method
+        // TODO: Implement move logic for super state
     }
 
     @Override
-    State getState() {
-        return State.SUPER;
+    public State getState() {
+        return (System.currentTimeMillis() - startTime >= TIMEOUT) ? State.NORMAL : State.SUPER;
     }
 }

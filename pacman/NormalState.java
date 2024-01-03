@@ -1,17 +1,13 @@
 package pacman;
 
 public class NormalState extends PacState {
-    protected NormalState(PacManObservable pacman) {
-        super(pacman);
-    }
-
     @Override
     public void move() {
-        // TODO import pacman move method
+        // TODO: Implement normal move logic
     }
 
     @Override
-    State getState() {
+    public State getState() {
         return State.NORMAL;
     }
 }

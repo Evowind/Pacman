@@ -1,6 +1,6 @@
 
 package pacman;
-
+/*
 public class PacGum {
     private static final long INVISIBLE_DURATION = 10000;
     private static final long SUPER_PACMAN_DURATION = 10000;
@@ -63,4 +63,44 @@ public class PacGum {
         }
     }
 
+}*/
+public class PacGum {
+    private PacState currentState;
+
+    PacGum() {
+        currentState = new NormalState();
+    }
+
+    boolean isPacManInvisible() {
+        return currentState.getState() == PacState.State.INVISIBLE;
+    }
+
+    void activateInvisibility() {
+        currentState = new InvisibleState();
+    }
+
+    void resetInvisibility() {
+        currentState = new NormalState();
+    }
+
+    void updateInvisibility() {
+        currentState.update();
+    }
+
+    boolean isSuperPacMan() {
+        return currentState.getState() == PacState.State.SUPER;
+    }
+
+    void resetSuperPacMan() {
+        currentState = new NormalState();
+    }
+
+    void activateSuperPacMan() {
+        currentState = new SuperState();
+    }
+
+    void updateSuperPacMan() {
+        currentState.update();
+    }
 }
+

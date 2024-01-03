@@ -11,7 +11,7 @@ public class PacManObservable {
         this.playerY = playerY;
         this.playerDirection = playerDirection;
         this.game = game;
-        state = new NormalState(this);
+        state = new NormalState();
     }
 
     public void movePlayer() {
