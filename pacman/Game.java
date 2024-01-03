@@ -19,7 +19,7 @@ public class Game implements ActionListener, KeyListener {
     private int pacdotsRemaining;
     private int score;
     private int lives;
-    private GUI gui;
+    private final GUI gui;
 
     Game() {
         Timer timer = new Timer(100, this);
@@ -60,10 +60,10 @@ public class Game implements ActionListener, KeyListener {
 
     void initializePacdots() {
         pacdotsRemaining = 0;
-        for (int i = 0; i < labyrinth.length; i++) {
-            for (int j = 0; j < labyrinth[i].length; j++) {
-                if (labyrinth[i][j] == Cell.PACDOT || labyrinth[i][j] == Cell.PURPLE ||
-                        labyrinth[i][j] == Cell.GREEN || labyrinth[i][j] == Cell.ORANGE) {
+        for (Cell[] cells : labyrinth) {
+            for (Cell cell : cells) {
+                if (cell == Cell.PACDOT || cell == Cell.PURPLE ||
+                        cell == Cell.GREEN || cell == Cell.ORANGE) {
                     pacdotsRemaining++;
                 }
             }

@@ -2,7 +2,7 @@ package pacman;
 
 public class InvisibleState extends PacState {
     private static final long TIMEOUT = 10000;
-    private long startTime;
+    private final long startTime;
 
     public InvisibleState() {
         startTime = System.currentTimeMillis();

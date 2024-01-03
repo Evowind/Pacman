@@ -45,27 +45,30 @@ public class GUI extends JPanel implements GameObserver {
             g2d.setColor(game.pacman.state.getState() == PacState.State.INVISIBLE ? Color.ORANGE : Color.YELLOW);
         }
 
-        int startAngle = 0;
-        int extentAngle = 360;
+        int startAngle = switch (game.pacman.getPlayerDirection()) {
+            case 0 -> // Droite
+                    45;
+            case 1 -> // Gauche
+                    225;
+            case 2 -> // Haut
+                    135;
+            case 3 -> // Bas
+                    315;
+            default -> 0;
+        };
 
-        switch (game.pacman.getPlayerDirection()) {
-            case 0: // Droite
-                startAngle = 45;
-                extentAngle = 270;
-                break;
-            case 1: // Gauche
-                startAngle = 225;
-                extentAngle = 270;
-                break;
-            case 2: // Haut
-                startAngle = 135;
-                extentAngle = 270;
-                break;
-            case 3: // Bas
-                startAngle = 315;
-                extentAngle = 270;
-                break;
-        }
+        int extentAngle = switch (game.pacman.getPlayerDirection()) {
+            case 0 -> // Droite
+                    270;
+            case 1 -> // Gauche
+                    270;
+            case 2 -> // Haut
+                    270;
+            case 3 -> // Bas
+                    270;
+            default -> 360;
+        };
+
         g2d.fillArc(game.pacman.getPlayerX() * CELL_SIZE, game.pacman.getPlayerY()* CELL_SIZE, CELL_SIZE, CELL_SIZE, startAngle, extentAngle);
     }
 
@@ -136,17 +139,12 @@ public class GUI extends JPanel implements GameObserver {
     }
 
     private Color getColorForCell(Cell cellValue) {
-        switch (cellValue) {
-            case PACDOT:
-                return Color.WHITE;
-            case PURPLE:
-                return Color.MAGENTA;
-            case ORANGE:
-                return Color.ORANGE;
-            case GREEN:
-                return Color.GREEN;
-            default:
-                return Color.BLACK;
-        }
+        return switch (cellValue) {
+            case PACDOT -> Color.WHITE;
+            case PURPLE -> Color.MAGENTA;
+            case ORANGE -> Color.ORANGE;
+            case GREEN -> Color.GREEN;
+            default -> Color.BLACK;
+        };
     }
 }

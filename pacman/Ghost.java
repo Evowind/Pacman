@@ -5,7 +5,7 @@ import java.util.Random;
 
 public class Ghost {
     private int x, y;
-    private Color color;
+    private final Color color;
     private int currentDirection;
     private boolean wall;
 
@@ -63,6 +63,7 @@ public class Ghost {
                 }
             }
 
+            //
             int newX = x;
             int newY = y;
             switch (currentDirection) {
@@ -84,11 +85,6 @@ public class Ghost {
             if (Game.isValidMove(newX, newY)) {
                 x = newX;
                 y = newY;
-                if(newX == 27 && newY == 14) {
-                    newX = 0;
-                } else if (newX == 0 && newY == 14) {
-                    newX = 27;
-                }
 
             } else {
                 // Si la nouvelle position n'est pas valide, réinitialisez "wall" à true pour choisir une nouvelle direction

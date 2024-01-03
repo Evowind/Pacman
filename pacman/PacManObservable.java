@@ -90,16 +90,8 @@ public class PacManObservable {
         return playerX;
     }
 
-    public void setPlayerX(int playerX) {
-        this.playerX = playerX;
-    }
-
     public  int getPlayerY() {
         return playerY;
-    }
-
-    public void setPlayerY(int playerY) {
-        this.playerY = playerY;
     }
 
     public int getPlayerDirection() {
