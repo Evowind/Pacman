@@ -64,6 +64,8 @@ public class PacGum {
     }
 
 }*/
+
+/*
 public class PacGum {
     private PacState currentState;
 
@@ -103,4 +105,4 @@ public class PacGum {
         currentState.update();
     }
 }
-
+*/

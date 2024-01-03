@@ -9,8 +9,11 @@ public class InvisibleState extends PacState {
     }
 
     @Override
-    public void move() {
-        // TODO: Implement move logic for invisible state
+    public void update(PacManObservable pacman) {
+        long currentTime = System.currentTimeMillis();
+        if (currentTime - startTime >= TIMEOUT) {
+            pacman.state = new NormalState();
+        }
     }
 
     @Override

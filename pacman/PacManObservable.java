@@ -4,7 +4,7 @@ public class PacManObservable {
     private int playerX, playerY;
     private int playerDirection;
     private final Game game;
-    private PacState state;
+    public PacState state;
 
     public PacManObservable(int playerX, int playerY, int playerDirection, Game game) {
         this.playerX = playerX;
@@ -54,21 +54,21 @@ public class PacManObservable {
                 game.setScore(game.getScore() + 300);
                 Game.labyrinth[playerCellY][playerCellX] = Cell.EMPTY;
                 game.decrPacDot();
-                game.pacGum.activateInvisibility();
+                //game.pacGum.activateInvisibility();
+                state = new InvisibleState();
                 break;
             case ORANGE:
                 game.setScore(game.getScore() + 500);
                 Game.labyrinth[playerCellY][playerCellX] = Cell.EMPTY;
                 game.decrPacDot();
-                game.pacGum.activateSuperPacMan();
+                //game.pacGum.activateSuperPacMan();
+                state = new SuperState();
                 break;
             case GREEN:
                 game.setScore(game.getScore() + 1000);
                 Game.labyrinth[playerCellY][playerCellX] = Cell.EMPTY;
                 game.decrPacDot();
                 game.applyGreenPacGumEffect();
-                game.initializePacdots();
-                game.resetAllGhostsToCenter();
                 break;
             case TELEPORTER:
                 teleport(playerCellX);

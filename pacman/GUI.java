@@ -39,10 +39,10 @@ public class GUI extends JPanel implements GameObserver {
     }
 
     private void drawPlayer(Graphics2D g2d) {
-        if (game.getPacGum().isSuperPacMan()) {
+        if (game.pacman.state.getState() == PacState.State.SUPER) {
             g2d.setColor(Color.RED);
         } else {
-            g2d.setColor(game.getPacGum().isPacManInvisible() ? Color.ORANGE : Color.YELLOW);
+            g2d.setColor(game.pacman.state.getState() == PacState.State.INVISIBLE ? Color.ORANGE : Color.YELLOW);
         }
 
         int startAngle = 0;
@@ -71,7 +71,7 @@ public class GUI extends JPanel implements GameObserver {
 
     private void drawGhosts(Graphics2D g2d) {
         for (Ghost ghost : game.getGhosts()) {
-            if (game.getPacGum().isSuperPacMan()) {
+            if (game.pacman.state.getState() == PacState.State.SUPER) {
                 g2d.setColor(Color.BLUE.darker());
             } else {
                 g2d.setColor(ghost.isVulnerable() ? Color.BLUE.darker() : ghost.getColor());

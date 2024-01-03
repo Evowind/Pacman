@@ -9,8 +9,11 @@ public class SuperState extends PacState {
     }
 
     @Override
-    public void move() {
-        // TODO: Implement move logic for super state
+    public void update(PacManObservable pacman) {
+        long currentTime = System.currentTimeMillis();
+        if (currentTime - startTime >= TIMEOUT) {
+            pacman.state = new NormalState();
+        }
     }
 
     @Override

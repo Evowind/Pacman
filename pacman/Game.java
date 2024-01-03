@@ -18,7 +18,6 @@ public class Game implements ActionListener, KeyListener {
     List<Ghost> ghosts;
     private int pacdotsRemaining;
     private int score;
-    public final PacGum pacGum;
     private int lives;
     private GUI gui;
 
@@ -28,7 +27,6 @@ public class Game implements ActionListener, KeyListener {
         pacman = new PacManObservable(15, 17, 0, this);
         lives = 3;
         score = 0;
-        pacGum = new PacGum();
         initializeGame();
 
         gui = new GUI(this);
@@ -46,9 +44,6 @@ public class Game implements ActionListener, KeyListener {
     }
 
     public void resetGame() {
-        // put in state
-        pacGum.resetSuperPacMan();
-        pacGum.resetInvisibility();
         pacman = new PacManObservable(15, 17, 0, this);
         initializeGame();
         score = 0;
@@ -161,11 +156,11 @@ public class Game implements ActionListener, KeyListener {
 
     private void handleGhostCollision(Ghost ghost) {
         // state
-        if (pacGum.isSuperPacMan()) {
+        if (pacman.state.getState() == PacState.State.SUPER) {
             // Le fantome est mangé par le Super PacMan
             score += 400;
             resetGhostToCenter(ghost.getColor());
-        } else if (!pacGum.isPacManInvisible()) {
+        } else if (pacman.state.getState() != PacState.State.INVISIBLE) {
             // PacMan est mangé
             handlePlayerCaught();
         }
@@ -197,6 +192,9 @@ public class Game implements ActionListener, KeyListener {
         for (int[] swap : swaps) {
             swapValues(swap[0], swap[1], swap[2], swap[3]);
         }
+
+        initializePacdots();
+        resetAllGhostsToCenter();
     }
 
     private static void swapValues(int srcRow, int srcCol, int destRow, int destCol) {
@@ -209,16 +207,17 @@ public class Game implements ActionListener, KeyListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        // state
-        pacGum.updateInvisibility();
-        pacGum.updateSuperPacMan();
+        // TODO state
+        pacman.state.update(pacman);
         pacman.movePlayer();
+        //
         checkCollisions();
         moveGhosts();
         checkCollisions();
         notifyObservers();
     }
 
+    // TODO remove ?
     public void decrPacDot() {
         pacdotsRemaining--;
         System.out.println("Remaining Pacdots: " + pacdotsRemaining);
@@ -241,9 +240,6 @@ public class Game implements ActionListener, KeyListener {
         return pacdotsRemaining;
     }
 
-    public PacGum getPacGum() {
-        return pacGum;
-    }
 
     public List<Ghost> getGhosts() {
         return ghosts;

@@ -8,6 +8,8 @@ public class Ghost {
     private Color color;
     private int currentDirection;
     private boolean wall;
+
+    // TODO remove and replace with pacman getstate() == PacState.State.SUPER
     private boolean isVulnerable = false;
     private boolean canMove = true;
 
