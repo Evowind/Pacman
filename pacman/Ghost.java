@@ -42,22 +42,10 @@ public class Ghost {
                 } while (!trySetDirection(newDirection));
             }
 
-            int newX = x;
-            int newY = y;
-            switch (currentDirection) {
-                case 0: // Droite
-                    newX++;
-                    break;
-                case 1: // Gauche
-                    newX--;
-                    break;
-                case 2: // Haut
-                    newY--;
-                    break;
-                case 3: // Bas
-                    newY++;
-                    break;
-            }
+            int[] array = changeCoordinates(x, y, currentDirection);
+
+            int newX = array[0];
+            int newY = array[1];
 
             if (Game.isValidMove(newX, newY)) {
                 x = newX;
@@ -70,23 +58,10 @@ public class Ghost {
     }
 
     private boolean trySetDirection(int newDirection) {
-        int newX = x;
-        int newY = y;
+        int[] array = changeCoordinates(x, y, newDirection);
 
-        switch (newDirection) {
-            case 0: // Droite
-                newX++;
-                break;
-            case 1: // Gauche
-                newX--;
-                break;
-            case 2: // Haut
-                newY--;
-                break;
-            case 3: // Bas
-                newY++;
-                break;
-        }
+        int newX = array[0];
+        int newY = array[1];
 
         if (Game.isValidMove(newX, newY)) {
             currentDirection = newDirection;
@@ -96,6 +71,25 @@ public class Ghost {
         return false;
     }
 
+    private int[] changeCoordinates(int x, int y, int newDirection) {
+        int[] array = new int[]{x,y};
+        switch (newDirection) {
+            case 0: // Droite
+                array[0]++;
+                break;
+            case 1: // Gauche
+                array[0]--;
+                break;
+            case 2: // Haut
+                array[1]--;
+                break;
+            case 3: // Bas
+                array[1]++;
+                break;
+        }
+
+        return array;
+    }
 
     public void setX(int newX) {
         this.x = newX;
