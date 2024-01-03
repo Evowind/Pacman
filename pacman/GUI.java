@@ -71,11 +71,7 @@ public class GUI extends JPanel implements GameObserver {
 
     private void drawGhosts(Graphics2D g2d) {
         for (Ghost ghost : game.getGhosts()) {
-            if (game.pacman.state.getState() == PacState.State.SUPER) {
-                g2d.setColor(Color.BLUE.darker());
-            } else {
-                g2d.setColor(ghost.isVulnerable() ? Color.BLUE.darker() : ghost.getColor());
-            }
+            g2d.setColor(game.pacman.state.getState() == PacState.State.SUPER ? Color.BLUE.darker() : ghost.getColor());
             g2d.fillRoundRect(ghost.getX() * CELL_SIZE, ghost.getY() * CELL_SIZE, CELL_SIZE, CELL_SIZE, 10, 10);
         }
     }

@@ -94,8 +94,7 @@ public class Game implements ActionListener, KeyListener {
 
     private void moveGhosts() {
         for (Ghost ghost : ghosts) {
-            if(ghost.isCanMove()) ghost.moveRandomly();
-            else ghost.setCanMove(true);
+            ghost.moveRandomly(pacman.state.getState());
         }
     }
 
@@ -103,7 +102,6 @@ public class Game implements ActionListener, KeyListener {
         for (Ghost ghost : ghosts) {
             ghost.setX(12);
             ghost.setY(11);
-            ghost.setVulnerable(false);
         }
     }
 
@@ -112,7 +110,6 @@ public class Game implements ActionListener, KeyListener {
             if (ghost.getColor() == color) {
                 ghost.setX(12);
                 ghost.setY(11);
-                ghost.setVulnerable(false);
             }
         }
     }
