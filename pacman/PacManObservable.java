@@ -67,6 +67,7 @@ public class PacManObservable {
                 game.labyrinth.setCell(Cell.EMPTY, playerCellY, playerCellX);
                 game.decrPacDot();
                 game.labyrinth.applyGreenPacGumEffect();
+                game.ghosts.resetAllGhostsToCenter();
                 break;
             case TELEPORTER:
                 teleport(playerCellX);

@@ -95,9 +95,6 @@ public class Labyrinth {
         for (int[] swap : swaps) {
             swapValues(swap[0], swap[1], swap[2], swap[3]);
         }
-
-        // resetAllGhostsToCenter();
-        // maybe need to access GhostList
     }
 
     private static void swapValues(int srcRow, int srcCol, int destRow, int destCol) {
