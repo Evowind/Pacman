@@ -22,7 +22,7 @@ N'hésitez pas à me faire savoir si vous avez besoin de plus d'informations ou 
 - Quand Pacman est un superpacman, les fantômes deviennent vulnérables, se déplaçant plus lentement et retournant au centre du labyrinthe s'ils sont touchés.
 - Le jeu se termine soit lorsque toutes les pacgommes sont mangées (victoire), soit lorsque Pacman perd toutes ses vies (défaite).
 
-### Point Clé
+## Point Clé
 - Utilisation du patron de conception State pour la gestion des états des personnages.
 - Hiérarchisation et factorisation des éléments de la grille de jeu.
 - Indépendance des aspects logiques du jeu de leur affichage, utilisant éventuellement une architecture Observateur/Observé.
