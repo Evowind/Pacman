@@ -3,7 +3,7 @@
 ## Description du Projet
 Le projet consiste en la réalisation d’un jeu inspiré du célèbre jeu Pacman. La partie se déroule sur une grille 2D représentant un labyrinthe vu de dessus. L'objectif du jeu est de déplacer Pacman à travers le labyrinthe pour manger toutes les pacgommes présentes. Cependant, quatre fantômes se déplacent aléatoirement dans le labyrinthe, et si l'un d'eux touche Pacman, celui-ci perd une vie. Le jeu comprend également des pacgommes bonus aux effets variés.
 
-## récapitulatif des effets des pacgommes selon leur couleur
+## Récapitulatif des effets des pacgommes selon leur couleur
 
 | Couleur | Points | Effet                                      |
 | ------- | ------ | ------------------------------------------ |
