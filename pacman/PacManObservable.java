@@ -36,39 +36,37 @@ public class PacManObservable {
             game.handleWin();
             game.resetGame();
         }
-        if (Game.isValidMove(newX, newY)) {
+        if (Labyrinth.isValidMove(newX, newY)) {
             playerX = newX;
             playerY = newY;
         }
     }
 
     public void checkCellCollisions(int playerCellX, int playerCellY) {
-        Cell cellValue = Game.labyrinth[playerCellY][playerCellX];
-        switch (cellValue) {
+        switch (game.labyrinth.getCell(playerCellY, playerCellX)) {
             case PACDOT:
                 game.setScore(game.getScore() + 100);
-                Game.labyrinth[playerCellY][playerCellX] = Cell.EMPTY;
+                game.labyrinth.setCell(Cell.EMPTY, playerCellY, playerCellX);
                 game.decrPacDot();
                 break;
             case PURPLE:
                 game.setScore(game.getScore() + 300);
-                Game.labyrinth[playerCellY][playerCellX] = Cell.EMPTY;
+                game.labyrinth.setCell(Cell.EMPTY, playerCellY, playerCellX);
                 game.decrPacDot();
-                //game.pacGum.activateInvisibility();
                 state = new InvisibleState();
                 break;
             case ORANGE:
                 game.setScore(game.getScore() + 500);
-                Game.labyrinth[playerCellY][playerCellX] = Cell.EMPTY;
+                game.labyrinth.setCell(Cell.EMPTY, playerCellY, playerCellX);
                 game.decrPacDot();
                 //game.pacGum.activateSuperPacMan();
                 state = new SuperState();
                 break;
             case GREEN:
                 game.setScore(game.getScore() + 1000);
-                Game.labyrinth[playerCellY][playerCellX] = Cell.EMPTY;
+                game.labyrinth.setCell(Cell.EMPTY, playerCellY, playerCellX);
                 game.decrPacDot();
-                game.applyGreenPacGumEffect();
+                game.labyrinth.applyGreenPacGumEffect();
                 break;
             case TELEPORTER:
                 teleport(playerCellX);

@@ -47,7 +47,7 @@ public class Ghost {
             int newX = array[0];
             int newY = array[1];
 
-            if (Game.isValidMove(newX, newY)) {
+            if (Labyrinth.isValidMove(newX, newY)) {
                 x = newX;
                 y = newY;
             } else {
@@ -63,7 +63,7 @@ public class Ghost {
         int newX = array[0];
         int newY = array[1];
 
-        if (Game.isValidMove(newX, newY)) {
+        if (Labyrinth.isValidMove(newX, newY)) {
             currentDirection = newDirection;
             wall = false;
             return true;

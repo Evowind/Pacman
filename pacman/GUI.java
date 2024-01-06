@@ -30,9 +30,9 @@ public class GUI extends JPanel implements GameObserver {
     }
 
     private void drawLabyrinth(Graphics2D g2d) {
-        for (int i = 0; i < Game.labyrinth.length; i++) {
-            for (int j = 0; j < Game.labyrinth[i].length; j++) {
-                Cell cellValue = Game.labyrinth[i][j];
+        for (int i = 0; i < game.labyrinth.getHeight(); i++) {
+            for (int j = 0; j < game.labyrinth.getWidth(); j++) {
+                Cell cellValue = game.labyrinth.getCell(i,j);
                 drawCell(g2d, j, i, cellValue);
             }
         }
@@ -73,7 +73,7 @@ public class GUI extends JPanel implements GameObserver {
     }
 
     private void drawGhosts(Graphics2D g2d) {
-        for (Ghost ghost : game.getGhosts()) {
+        for (Ghost ghost : game.ghosts.getGhosts()) {
             g2d.setColor(game.pacman.state.getState() == PacState.State.SUPER ? Color.BLUE.darker() : ghost.getColor());
             g2d.fillRoundRect(ghost.getX() * CELL_SIZE, ghost.getY() * CELL_SIZE, CELL_SIZE, CELL_SIZE, 10, 10);
         }
@@ -108,7 +108,7 @@ public class GUI extends JPanel implements GameObserver {
             case PURPLE:
             case ORANGE:
             case GREEN:
-                if (Game.labyrinth[y][x] != Cell.EMPTY) {
+                if (game.labyrinth.getCell(y,x) != Cell.EMPTY) {
                     g2d.setColor(Color.BLACK);
                     g2d.fillRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
                     drawPacdot(g2d, x, y, getColorForCell(cellValue));
