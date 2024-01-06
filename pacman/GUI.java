@@ -42,7 +42,7 @@ public class GUI extends JPanel implements GameObserver {
         if (game.pacman.state.getState() == PacState.State.SUPER) {
             g2d.setColor(Color.RED);
         } else {
-            g2d.setColor(game.pacman.state.getState() == PacState.State.INVISIBLE ? Color.ORANGE : Color.YELLOW);
+            g2d.setColor(game.pacman.state.getState() == PacState.State.INVISIBLE ? new Color(203, 110, 32) : Color.YELLOW);
         }
 
         int startAngle = switch (game.pacman.getPlayerDirection()) {
@@ -100,7 +100,7 @@ public class GUI extends JPanel implements GameObserver {
     private void drawCell(Graphics2D g2d, int x, int y, Cell cellValue) {
         switch (cellValue) {
             case WALL:
-                g2d.setColor(Color.BLUE);
+                g2d.setColor(new Color(0, 0, 107));
                 g2d.fillRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
                 break;
 
@@ -140,7 +140,7 @@ public class GUI extends JPanel implements GameObserver {
 
     private Color getColorForCell(Cell cellValue) {
         return switch (cellValue) {
-            case PACDOT -> Color.WHITE;
+            case PACDOT -> new Color(51,153,255);
             case PURPLE -> Color.MAGENTA;
             case ORANGE -> Color.ORANGE;
             case GREEN -> Color.GREEN;

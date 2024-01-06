@@ -28,7 +28,7 @@ public class GhostList {
         } else {
             ghosts.add(new Ghost(12, 11, Color.CYAN));
             ghosts.add(new Ghost(13, 11, Color.WHITE));
-            ghosts.add(new Ghost(14, 11, Color.GRAY));
+            ghosts.add(new Ghost(14, 11, Color.ORANGE));
             ghosts.add(new Ghost(15, 11, Color.PINK));
         }
     }
