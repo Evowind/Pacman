@@ -12,8 +12,6 @@ Le projet consiste en la réalisation d’un jeu inspiré du célèbre jeu Pacma
 | Orange  | 500    | Pacman devient un superpacman. Sa couleur devient orange et les fantômes deviennent bleus. |
 | Vert    | 1000   | Modifie la structure du labyrinthe.         |
 
-N'hésitez pas à me faire savoir si vous avez besoin de plus d'informations ou de modifications.
-
 ## Règles du Jeu
 - Initialement, le joueur dispose de trois vies.
 - Le joueur obtient une vie supplémentaire en dépassant les 5000 points.
