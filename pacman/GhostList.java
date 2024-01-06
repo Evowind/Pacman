@@ -7,11 +7,11 @@ import java.util.List;
 public class GhostList {
     private List<Ghost> ghosts;
 
-    private PacManObservable pacman;
+    private PacMan pacman;
 
     private Game game;
 
-    public GhostList(PacManObservable pacman, Game game){
+    public GhostList(PacMan pacman, Game game){
         ghosts = new ArrayList<>();
         this.pacman = pacman;
         this.game = game;

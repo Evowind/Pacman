@@ -9,7 +9,7 @@ public class InvisibleState extends PacState {
     }
 
     @Override
-    public void update(PacManObservable pacman) {
+    public void update(PacMan pacman) {
         long currentTime = System.currentTimeMillis();
         if (currentTime - startTime >= TIMEOUT) {
             pacman.state = new NormalState();

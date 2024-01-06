@@ -1,7 +1,6 @@
 package pacman;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -12,7 +11,7 @@ import java.util.List;
 public class Game implements ActionListener, KeyListener {
     private final List<GameObserver> observers = new ArrayList<>();
 
-    public PacManObservable pacman;
+    public PacMan pacman;
     public static final int CELL_SIZE = 30;
     // TODO maybe import those to GUI and make them private here?
     Labyrinth labyrinth;
@@ -48,7 +47,7 @@ public class Game implements ActionListener, KeyListener {
     }
 
     private void initializeGame() {
-        pacman = new PacManObservable(15, 17, 0, this);
+        pacman = new PacMan(15, 17, 0, this);
         labyrinth = new Labyrinth(pacman);
         lives = 3;
         score = 0;
@@ -74,7 +73,7 @@ public class Game implements ActionListener, KeyListener {
             resetGame();
         } else {
             // Reset la position du joueur
-            pacman = new PacManObservable(15, 17, 0, this);
+            pacman = new PacMan(15, 17, 0, this);
         }
     }
 

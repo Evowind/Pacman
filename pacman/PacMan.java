@@ -1,12 +1,12 @@
 package pacman;
 
-public class PacManObservable {
+public class PacMan {
     private int playerX, playerY;
     private int playerDirection;
     private final Game game;
     public PacState state;
 
-    public PacManObservable(int playerX, int playerY, int playerDirection, Game game) {
+    public PacMan(int playerX, int playerY, int playerDirection, Game game) {
         this.playerX = playerX;
         this.playerY = playerY;
         this.playerDirection = playerDirection;
