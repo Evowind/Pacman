@@ -1,4 +1,6 @@
-package pacman;
+package pacman.state;
+
+import pacman.entities.PacMan;
 
 public abstract class PacState {
     public enum State { NORMAL, INVISIBLE, SUPER }

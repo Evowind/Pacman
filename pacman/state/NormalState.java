@@ -1,4 +1,4 @@
-package pacman;
+package pacman.state;
 
 public class NormalState extends PacState {
 

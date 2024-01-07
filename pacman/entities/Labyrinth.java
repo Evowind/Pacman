@@ -1,4 +1,7 @@
-package pacman;
+package pacman.entities;
+
+import pacman.entities.Cell;
+import pacman.entities.PacMan;
 
 import java.awt.event.KeyEvent;
 
@@ -44,7 +47,7 @@ public class Labyrinth {
         this.pacman = pacman;
     }
 
-    int countPacdots() {
+    public int countPacdots() {
         int pacdots = 0;
         for (Cell[] cells : LABYRINTH_DATA) {
             for (Cell cell : cells) {

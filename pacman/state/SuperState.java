@@ -1,10 +1,12 @@
-package pacman;
+package pacman.state;
 
-public class InvisibleState extends PacState {
+import pacman.entities.PacMan;
+
+public class SuperState extends PacState {
     private static final long TIMEOUT = 10000;
     private final long startTime;
 
-    public InvisibleState() {
+    public SuperState() {
         startTime = System.currentTimeMillis();
     }
 
@@ -18,6 +20,6 @@ public class InvisibleState extends PacState {
 
     @Override
     public State getState() {
-        return (System.currentTimeMillis() - startTime >= TIMEOUT) ? State.NORMAL : State.INVISIBLE;
+        return (System.currentTimeMillis() - startTime >= TIMEOUT) ? State.NORMAL : State.SUPER;
     }
 }
