@@ -1,4 +1,7 @@
-package pacman;
+package pacman.app;
+
+import pacman.entities.Labyrinth;
+import pacman.entities.PacMan;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -12,10 +15,9 @@ public class Game implements ActionListener, KeyListener {
     private final List<GameObserver> observers = new ArrayList<>();
 
     public PacMan pacman;
-    public static final int CELL_SIZE = 30;
     // TODO maybe import those to GUI and make them private here?
-    Labyrinth labyrinth;
-    GhostList ghosts;
+    public Labyrinth labyrinth;
+    public GhostList ghosts;
     //
     private int pacdotsRemaining;
     public int score;

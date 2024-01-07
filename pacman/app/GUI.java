@@ -1,11 +1,15 @@
-package pacman;
+package pacman.app;
+import pacman.entities.Cell;
+import pacman.entities.Ghost;
+import pacman.state.PacState;
+
 import javax.swing.*;
 import java.awt.*;
 
-import static pacman.Game.CELL_SIZE;
-
 public class GUI extends JPanel implements GameObserver {
     private final Game game;
+
+    static final int CELL_SIZE = 30;
 
     public GUI(Game game) {
         this.game = game;
