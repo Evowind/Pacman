@@ -5,11 +5,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GhostList {
-    private List<Ghost> ghosts;
+    private final List<Ghost> ghosts;
 
-    private PacMan pacman;
+    private final PacMan pacman;
 
-    private Game game;
+    private final Game game;
 
     public GhostList(PacMan pacman, Game game){
         ghosts = new ArrayList<>();
@@ -70,7 +70,7 @@ public class GhostList {
         // state
         if (pacman.state.getState() == PacState.State.SUPER) {
             // Le fantome est mangé par le Super PacMan
-            game.score += 400;
+            game.setScore(game.getScore() + 400);
             resetGhostToCenter(ghost.getColor());
         } else if (pacman.state.getState() != PacState.State.INVISIBLE) {
             // PacMan est mangé

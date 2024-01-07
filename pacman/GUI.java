@@ -39,42 +39,35 @@ public class GUI extends JPanel implements GameObserver {
     }
 
     private void drawPlayer(Graphics2D g2d) {
-        if (game.pacman.state.getState() == PacState.State.SUPER) {
+        if (game.getPacman().state.getState() == PacState.State.SUPER) {
             g2d.setColor(Color.RED);
         } else {
-            g2d.setColor(game.pacman.state.getState() == PacState.State.INVISIBLE ? new Color(203, 110, 32) : Color.YELLOW);
+            g2d.setColor(game.getPacman().state.getState() == PacState.State.INVISIBLE ? new Color(255, 255, 153) : Color.YELLOW);
         }
 
-        int startAngle = switch (game.pacman.getPlayerDirection()) {
-            case 0 -> // Droite
-                    45;
-            case 1 -> // Gauche
-                    225;
-            case 2 -> // Haut
-                    135;
-            case 3 -> // Bas
-                    315;
+        drawPacmanMouth(g2d, game.getPacman().getPlayerX(), game.getPacman().getPlayerY(), game.getPacman().getPlayerDirection());
+    }
+
+    private void drawPacmanMouth(Graphics2D g2d, int x, int y, int direction) {
+        int startAngle = switch (direction) {
+            case 0 -> 45;    // Droite
+            case 1 -> 225;   // Gauche
+            case 2 -> 135;   // Haut
+            case 3 -> 315;   // Bas
             default -> 0;
         };
-
-        int extentAngle = switch (game.pacman.getPlayerDirection()) {
-            case 0 -> // Droite
-                    270;
-            case 1 -> // Gauche
-                    270;
-            case 2 -> // Haut
-                    270;
-            case 3 -> // Bas
-                    270;
+        int extentAngle = switch (direction) {
+            case 0, 1, 2, 3 -> 270;
             default -> 360;
         };
 
-        g2d.fillArc(game.pacman.getPlayerX() * CELL_SIZE, game.pacman.getPlayerY()* CELL_SIZE, CELL_SIZE, CELL_SIZE, startAngle, extentAngle);
+        g2d.fillArc(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE, startAngle, extentAngle);
     }
+
 
     private void drawGhosts(Graphics2D g2d) {
         for (Ghost ghost : game.ghosts.getGhosts()) {
-            g2d.setColor(game.pacman.state.getState() == PacState.State.SUPER ? Color.BLUE.darker() : ghost.getColor());
+            g2d.setColor(game.getPacman().state.getState() == PacState.State.SUPER ? Color.BLUE.darker() : ghost.getColor());
             g2d.fillRoundRect(ghost.getX() * CELL_SIZE, ghost.getY() * CELL_SIZE, CELL_SIZE, CELL_SIZE, 10, 10);
         }
     }
@@ -99,34 +92,27 @@ public class GUI extends JPanel implements GameObserver {
 
     private void drawCell(Graphics2D g2d, int x, int y, Cell cellValue) {
         switch (cellValue) {
-            case WALL:
+            case WALL -> {
                 g2d.setColor(new Color(0, 0, 107));
                 g2d.fillRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
-                break;
-
-            case PACDOT:
-            case PURPLE:
-            case ORANGE:
-            case GREEN:
-                if (game.labyrinth.getCell(y,x) != Cell.EMPTY) {
+            }
+            case PACDOT, PURPLE, ORANGE, GREEN -> {
+                if (game.labyrinth.getCell(y, x) != Cell.EMPTY) {
                     g2d.setColor(Color.BLACK);
                     g2d.fillRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
                     drawPacdot(g2d, x, y, getColorForCell(cellValue));
                 }
-                break;
-
-            case EMPTY:
+            }
+            case EMPTY -> {
                 g2d.setColor(Color.BLACK);
                 g2d.fillRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
-                break;
-
-            case TELEPORTER:
+            }
+            case TELEPORTER -> {
                 g2d.setColor(Color.RED);
                 g2d.fillRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
-                break;
-
-            default:
-                break;
+            }
+            default -> {
+            }
         }
     }
 
