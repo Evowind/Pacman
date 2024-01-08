@@ -4,9 +4,18 @@ import java.awt.event.KeyEvent;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Représente le labyrinthe du jeu Pac-Man.
+ */
 public class Labyrinth {
+    /**
+     * Données du labyrinthe représentées sous forme de tableau de cellules.
+     */
     private static Cell[][] LABYRINTH_DATA;
 
+    /**
+     * Initialise un nouveau labyrinthe avec des données prédéfinies.
+     */
     public Labyrinth() {
         LABYRINTH_DATA = new Cell[][]{
                 {Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL},
@@ -43,6 +52,11 @@ public class Labyrinth {
         };
     }
 
+    /**
+     * Compte le nombre de pac-gommes présentes dans le labyrinthe.
+     *
+     * @return Nombre de pac-gommes.
+     */
     public int countPacdots() {
         int pacdots = 0;
         for (Cell[] cells : LABYRINTH_DATA) {
@@ -55,11 +69,19 @@ public class Labyrinth {
         return pacdots;
     }
 
+    /**
+     * Vérifie si une cellule est de type pac-gomme.
+     *
+     * @param cell Cellule à vérifier.
+     * @return True si la cellule est de type pac-gomme, sinon False.
+     */
     private boolean isPacdotType(Cell cell) {
         return cell == Cell.PACDOT || cell == Cell.PURPLE || cell == Cell.GREEN || cell == Cell.ORANGE;
     }
 
-
+    /**
+     * Applique l'effet de la pac-gomme verte sur le labyrinthe.
+     */
     public void applyGreenPacGumEffect() {
         int[][] swaps = {
                 {1, 7, 9, 1}, {1, 8, 10, 1}, {1, 9, 11, 1},
@@ -81,18 +103,41 @@ public class Labyrinth {
         }
     }
 
+    /**
+     * Échange les valeurs de deux cellules dans le labyrinthe.
+     *
+     * @param srcRow  Ligne source.
+     * @param srcCol  Colonne source.
+     * @param destRow Ligne de destination.
+     * @param destCol Colonne de destination.
+     */
     private static void swapValues(int srcRow, int srcCol, int destRow, int destCol) {
         Cell temp = LABYRINTH_DATA[srcRow][srcCol];
         LABYRINTH_DATA[srcRow][srcCol] = LABYRINTH_DATA[destRow][destCol];
         LABYRINTH_DATA[destRow][destCol] = temp;
     }
 
+    /**
+     * Vérifie si un déplacement vers une position spécifiée est valide.
+     *
+     * @param x Position en colonne.
+     * @param y Position en ligne.
+     * @return True si le déplacement est valide, sinon False.
+     */
     public static boolean isValidMove(int x, int y) {
         return x >= 0 && x < LABYRINTH_DATA[0].length &&
                 y >= 0 && y < LABYRINTH_DATA.length &&
                 LABYRINTH_DATA[y][x] != Cell.WALL;
     }
 
+    /**
+     * Traite un événement de touche pour le déplacement du joueur Pac-Man.
+     *
+     * @param key     Code de la touche.
+     * @param playerX Position en colonne du joueur Pac-Man.
+     * @param playerY Position en ligne du joueur Pac-Man.
+     * @return Code de direction (0 à 3) ou codes spéciaux (-1, -2).
+     */
     public int processEvent(int key, int playerX, int playerY) {
         Map<Integer, int[]> directions = new HashMap<>();
         directions.put(KeyEvent.VK_UP, new int[]{-1, 0});
@@ -113,22 +158,43 @@ public class Labyrinth {
         }
     }
 
-
-    public int getHeight(){
+    /**
+     * Renvoie la hauteur du labyrinthe.
+     *
+     * @return Hauteur du labyrinthe.
+     */
+    public int getHeight() {
         return LABYRINTH_DATA.length;
     }
 
-    public int getWidth(){
+    /**
+     * Renvoie la largeur du labyrinthe.
+     *
+     * @return Largeur du labyrinthe.
+     */
+    public int getWidth() {
         return LABYRINTH_DATA[0].length;
     }
 
-    public Cell getCell(int y, int x){
+    /**
+     * Renvoie la cellule à une position spécifiée dans le labyrinthe.
+     *
+     * @param y Position en ligne.
+     * @param x Position en colonne.
+     * @return Cellule à la position spécifiée.
+     */
+    public Cell getCell(int y, int x) {
         return LABYRINTH_DATA[y][x];
     }
 
-    public void setCell(Cell type, int y, int x){
+    /**
+     * Modifie le type de cellule à une position spécifiée dans le labyrinthe.
+     *
+     * @param type Nouveau type de cellule.
+     * @param y    Position en ligne.
+     * @param x    Position en colonne.
+     */
+    public void setCell(Cell type, int y, int x) {
         LABYRINTH_DATA[y][x] = type;
     }
-
-
 }

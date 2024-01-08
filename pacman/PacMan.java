@@ -1,11 +1,42 @@
 package pacman;
 
+/**
+ * Représente le personnage Pac-Man dans le jeu.
+ */
 public class PacMan {
-    private int playerX, playerY;
+    /**
+     * Position en X du joueur Pac-Man.
+     */
+    private int playerX;
+
+    /**
+     * Position en Y du joueur Pac-Man.
+     */
+    private int playerY;
+
+    /**
+     * Direction du joueur Pac-Man (0: Droite, 1: Gauche, 2: Haut, 3: Bas).
+     */
     private int playerDirection;
+
+    /**
+     * Instance du jeu associée à Pac-Man.
+     */
     private final Game game;
+
+    /**
+     * État actuel du joueur Pac-Man.
+     */
     public PacState state;
 
+    /**
+     * Initialise un nouveau joueur Pac-Man avec des paramètres donnés.
+     *
+     * @param playerX          Position en X initiale du joueur Pac-Man.
+     * @param playerY          Position en Y initiale du joueur Pac-Man.
+     * @param playerDirection  Direction initiale du joueur Pac-Man.
+     * @param game             Instance du jeu associée à Pac-Man.
+     */
     public PacMan(int playerX, int playerY, int playerDirection, Game game) {
         this.playerX = playerX;
         this.playerY = playerY;
@@ -14,6 +45,9 @@ public class PacMan {
         state = new NormalState();
     }
 
+    /**
+     * Déplace le joueur Pac-Man en fonction de sa direction.
+     */
     public void movePlayer() {
         int newX = playerX;
         int newY = playerY;
@@ -34,6 +68,12 @@ public class PacMan {
         }
     }
 
+    /**
+     * Vérifie les collisions du joueur Pac-Man avec les cellules du labyrinthe.
+     *
+     * @param playerCellX Position de la cellule en X du joueur Pac-Man.
+     * @param playerCellY Position de la cellule en Y du joueur Pac-Man.
+     */
     public void checkCellCollisions(int playerCellX, int playerCellY) {
         Cell cell = game.labyrinth.getCell(playerCellY, playerCellX);
 
@@ -47,23 +87,27 @@ public class PacMan {
         }
     }
 
+    // TODO JavaDocs
     private void handlePacDotCollision() {
         game.setScore(game.getScore() + 100);
         handleCommonCollisionActions();
     }
 
+    // TODO JavaDocs
     private void handlePurpleCollision() {
         game.setScore(game.getScore() + 300);
         state = new InvisibleState();
         handleCommonCollisionActions();
     }
 
+    // TODO JavaDocs
     private void handleOrangeCollision() {
         game.setScore(game.getScore() + 500);
         state = new SuperState();
         handleCommonCollisionActions();
     }
 
+    // TODO JavaDocs
     private void handleGreenCollision() {
         game.setScore(game.getScore() + 1000);
         game.labyrinth.applyGreenPacGumEffect();
@@ -71,12 +115,13 @@ public class PacMan {
         handleCommonCollisionActions();
     }
 
+    // TODO JavaDocs
     private void handleCommonCollisionActions() {
         game.labyrinth.setCell(Cell.EMPTY, getPlayerY(), getPlayerX());
         game.decrPacDot();
     }
 
-
+    // TODO JavaDocs
     private void handleTeleportCollision(int playerCellX){
         if (playerCellX == 27) {
             playerX = 1;
@@ -85,18 +130,38 @@ public class PacMan {
         }
     }
 
+    /**
+     * Renvoie la position en X du joueur Pac-Man.
+     *
+     * @return Position en X du joueur Pac-Man.
+     */
     public int getPlayerX() {
         return playerX;
     }
 
-    public  int getPlayerY() {
+    /**
+     * Renvoie la position en Y du joueur Pac-Man.
+     *
+     * @return Position en Y du joueur Pac-Man.
+     */
+    public int getPlayerY() {
         return playerY;
     }
 
+    /**
+     * Renvoie la direction du joueur Pac-Man.
+     *
+     * @return Direction du joueur Pac-Man.
+     */
     public int getPlayerDirection() {
         return playerDirection;
     }
 
+    /**
+     * Définit la direction du joueur Pac-Man.
+     *
+     * @param playerDirection Nouvelle direction du joueur Pac-Man.
+     */
     public void setPlayerDirection(int playerDirection) {
         this.playerDirection = playerDirection;
     }

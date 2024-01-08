@@ -1,6 +1,41 @@
 package pacman;
 
+/**
+ * Représente les types de cellules dans le jeu Pac-Man.
+ */
 public enum Cell {
-    //Cell.ordinal() to get number 0 to 7 if needed
-    WALL, EMPTY, PACDOT, PURPLE, ORANGE, GREEN, TELEPORTER
+    /**
+     * Mur bloquant le déplacement.
+     */
+    WALL,
+
+    /**
+     * Cellule vide permettant le déplacement.
+     */
+    EMPTY,
+
+    /**
+     * Point Pac-Dot collectible par Pac-Man.
+     */
+    PACDOT,
+
+    /**
+     * Cellule Pac-Dot spéciale de couleur violette.
+     */
+    PURPLE,
+
+    /**
+     * Cellule Pac-Dot spéciale de couleur orange.
+     */
+    ORANGE,
+
+    /**
+     * Cellule Pac-Dotspéciale de couleur verte.
+     */
+    GREEN,
+
+    /**
+     * Téléporteur permettant un déplacement instantané vers une autre position.
+     */
+    TELEPORTER
 }
