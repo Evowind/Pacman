@@ -8,11 +8,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Class contenant le labyrinthe et toutes ses méthodes.
+ * Classe contenant le labyrinthe et toutes ses méthodes.
  */
 public class Labyrinth {
     /**
-     * Données du labyrinthe représentées sous forme de tableau de cellules.
+     * Données du labyrinthe représentées sous forme de tableau à de dimensions de cellules.
      */
     private static Cell[][] LABYRINTH_DATA;
 
@@ -75,8 +75,8 @@ public class Labyrinth {
     /**
      * Méthode qui vérifie si une cellule est de type pac-gomme.
      *
-     * @param cell Cellule à vérifier.
-     * @return True si la cellule est de type pac-gomme, sinon False.
+     * @param cellule à vérifier.
+     * @return true si la cellule est de type pac-gomme, sinon False.
      */
     private boolean isPacdotType(Cell cell) {
         return cell == Cell.PACDOT || cell == Cell.PURPLE || cell == Cell.GREEN || cell == Cell.ORANGE;
@@ -112,10 +112,10 @@ public class Labyrinth {
     /**
      * Méthode qui échange les valeurs de deux cellules dans le labyrinthe.
      *
-     * @param srcRow  Ligne source.
-     * @param srcCol  Colonne source.
-     * @param destRow Ligne de destination.
-     * @param destCol Colonne de destination.
+     * @param srcRow  ligne source.
+     * @param srcCol  colonne source.
+     * @param destRow ligne de destination.
+     * @param destCol colonne de destination.
      */
     private static void swapValues(int srcRow, int srcCol, int destRow, int destCol) {
         Cell temp = LABYRINTH_DATA[srcRow][srcCol];
@@ -126,9 +126,9 @@ public class Labyrinth {
     /**
      * Méthode qui vérifie si un déplacement vers une position spécifiée est valide.
      *
-     * @param y rangée de la cellule.
+     * @param y ligne de la cellule.
      * @param x colonne de la cellule.
-     * @return True si le déplacement est valide, sinon False.
+     * @return  true si le déplacement est valide, sinon False.
      */
     public static boolean isValidMove(int x, int y) {
         return x >= 0 && x < LABYRINTH_DATA[0].length &&
@@ -139,32 +139,25 @@ public class Labyrinth {
     /**
      * Méthode qui traite un événement de touche pour le déplacement du joueur Pac-Man.
      *
-     * @param key     Code de la touche.
-     * @param playerX Position en colonne du joueur Pac-Man.
-     * @param playerY Position en ligne du joueur Pac-Man.
-     * @return Code de direction (0 à 3) ou codes spéciaux (-1, -2).
+     * @param key     code de la saisie de l'utilisateur.
+     * @param playerX position en colonne du joueur Pac-Man.
+     * @param playerY position en ligne du joueur Pac-Man.
+     * @return        code de direction (0 à 3) ou codes spéciaux (-1, -2).
      */
     public int processEvent(int key, int playerX, int playerY) {
-        Map<Integer, int[]> directions = new HashMap<>();
-        directions.put(KeyEvent.VK_UP, new int[]{-1, 0});
-        directions.put(KeyEvent.VK_DOWN, new int[]{1, 0});
-        directions.put(KeyEvent.VK_LEFT, new int[]{0, -1});
-        directions.put(KeyEvent.VK_RIGHT, new int[]{0, 1});
-
-        int[] direction = directions.getOrDefault(key, new int[]{0, 0});
-
-        if (key == KeyEvent.VK_R) {
-            // Touche R pour reset
-            return -1;
-        }
-
-        int newX = playerX + direction[1];
-        int newY = playerY + direction[0];
-
-        if (isValidMove(newX, newY)) {
-            return direction[0] == -1 ? 2 : (direction[0] == 1 ? 3 : (direction[1] == -1 ? 1 : 0));
-        } else {
-            return -2;
+        switch (key) {
+            case KeyEvent.VK_UP:
+                if (isValidMove(playerX, playerY - 1)) return 2;
+            case KeyEvent.VK_DOWN:
+                if (isValidMove(playerX, playerY + 1)) return 3;
+            case KeyEvent.VK_LEFT:
+                if (isValidMove(playerX - 1, playerY)) return 1;
+            case KeyEvent.VK_RIGHT:
+                if (isValidMove(playerX + 1, playerY)) return 0;
+            case KeyEvent.VK_R:
+                return -1;
+            default:
+                return -2;
         }
     }
 
@@ -189,9 +182,9 @@ public class Labyrinth {
     /**
      * Setter qui renvoie la cellule à une position spécifiée dans le labyrinthe.
      *
-     * @param y Position en ligne.
-     * @param x Position en colonne.
-     * @return Cellule à la position spécifiée.
+     * @param y position en ligne.
+     * @param x position en colonne.
+     * @return  cellule à la position spécifiée.
      */
     public Cell getCell(int y, int x) {
         return LABYRINTH_DATA[y][x];
@@ -200,9 +193,9 @@ public class Labyrinth {
     /**
      * Setter qui modifie le type de cellule à une position spécifiée dans le labyrinthe.
      *
-     * @param type Nouveau type de cellule.
-     * @param y    Position en ligne.
-     * @param x    Position en colonne.
+     * @param type nouveau type de cellule.
+     * @param y    position en ligne.
+     * @param x    position en colonne.
      */
     public void setCell(Cell type, int y, int x) {
         LABYRINTH_DATA[y][x] = type;
