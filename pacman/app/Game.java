@@ -11,8 +11,6 @@ import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.List;
 
-// TODO maybe separating app/entities is not a good idea because it forces the use of public access modifiers as default(package) is not an option anymore
-
 /**
  * Classe qui contient toutes les méthodes et informations nécéssaires pour une partie de PacMan.
  * Celle-ci est observable par les classes qui implémentent l'interface GameObserver ainsi que les interfaces ActionListener et KeyListener pour gérer les actions du jeu.
@@ -34,22 +32,19 @@ public class Game implements ActionListener, KeyListener {
      * Objet contenant les méthodes et informations reliées au labyrinthe.
      */
     public Labyrinth labyrinth;
-
     /**
      * Objet contenant les méthodes et informations reliées aux fantomes.
      */
     public GhostList ghosts;
-
     /**
      * Variable contenant le score du joueur.
      */
     private int score;
-
     /**
      * Variable contenant le nombre de vies du joueur.
      */
     private int lives;
-
+    
     /**
      * Constructeur de base de la classe Game.
      */
@@ -113,7 +108,7 @@ public class Game implements ActionListener, KeyListener {
     }
 
     /**
-     * Méthode qui gérer la collision entre PacMan et un fantome.
+     * Méthode qui gère la collision entre PacMan et un fantome.
      * Appelée seulement si l'état de pacman est State.NORMAL.
      */
     public void handlePlayerCaught() {
@@ -129,7 +124,7 @@ public class Game implements ActionListener, KeyListener {
     }
 
     /**
-     * Méthode qui vérifier si le joueur a gagné.
+     * Méthode qui vérifie si le joueur a gagné.
      */
     private void checkWin() {
         if (labyrinth.countPacdots() == 0) {
@@ -149,17 +144,17 @@ public class Game implements ActionListener, KeyListener {
     }
 
     /**
-     * Méthode appelée à chaque "tick" du timer, gérant les mouvements des éléments du jeu.
+     * Méthode de ActionListener appelée à chaque "tick" du timer, gérant les mouvements des éléments du jeu.
      *
-     * @param e L'événement d'action.
+     * @param e l'événement d'action.
      */
     @Override
     public void actionPerformed(ActionEvent e) {
         pacman.state.update(pacman);
         pacman.movePlayer();
+        checkCollisions();
         checkWin();
 
-        checkCollisions();
         ghosts.moveGhosts();
         checkCollisions();
         notifyObservers();
