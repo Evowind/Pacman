@@ -10,7 +10,7 @@ import java.util.Random;
  */
 public class Ghost {
     /**
-     * Variables contenant la rangée du fantome.
+     * Variables contenant la ligne du fantome.
      */
     private int x;
     /**
@@ -21,14 +21,12 @@ public class Ghost {
      * Variables contenant la couleur du fantome.
      */
     private final Color color;
-
     /**
-     * Direction actuelle du fantôme (0: Droite, 1: Gauche, 2: Haut, 3: Bas).
+     * Variable contenant la direction actuelle du fantôme (0: Droite, 1: Gauche, 2: Haut, 3: Bas).
      */
     private int currentDirection;
-
     /**
-     * Indique si le fantôme à rencontrer un mur lors du mouvement.
+     * Variable indiquant si le fantôme a rencontrer un mur lors du mouvement.
      */
     private boolean wall;
     /**
@@ -40,8 +38,8 @@ public class Ghost {
     /**
      * Constructeur de base de la classe Ghost.
      *
-     * @param x rangée de départ du fantome.
-     * @param y colonne de départ du fantome.
+     * @param x     ligne de départ du fantome.
+     * @param y     colonne de départ du fantome.
      * @param color couleur du fantome.
      */
     public Ghost(int x, int y, Color color) {
@@ -55,7 +53,7 @@ public class Ghost {
     /**
      * Méthode qui déplace le fantôme de manière aléatoire.
      *
-     * @param state État actuel du Pac-Man.
+     * @param state état actuel du Pac-Man.
      */
     public void moveRandomly(PacState.State state) {
         if (state != PacState.State.SUPER || canMove) {
@@ -74,7 +72,7 @@ public class Ghost {
 
     /**
      * Gère le mouvement du fantôme lorsqu'il rencontre un mur.
-     * Si le fantôme est bloqué par un mur, il choisit une nouvelle direction aléatoire
+     * Si le fantôme est bloqué par un mur, il choisit une nouvelle direction aléatoire 
      * jusqu'à ce qu'une direction valide soit trouvée.
      */
     private void handleWallMovement() {
@@ -108,10 +106,10 @@ public class Ghost {
     /**
      * Méthode qui calcule les nouvelles coordonnées en fonction de la direction spécifiée.
      *
-     * @param x            Coordonnée x actuelle.
-     * @param y            Coordonnée y actuelle.
-     * @param newDirection Direction pour laquelle calculer les nouvelles coordonnées.
-     * @return Tableau d'entiers représentant les nouvelles coordonnées [nouvelle_x, nouvelle_y].
+     * @param x            coordonnée x actuelle.
+     * @param y            coordonnée y actuelle.
+     * @param newDirection direction pour laquelle calculer les nouvelles coordonnées.
+     * @return tableau d'entiers représentant les nouvelles coordonnées [nouvelle_x, nouvelle_y].
      */
     private int[] calculateNewCoordinates(int x, int y, int newDirection) {
         int[] newCoordinates = {x, y};
@@ -131,47 +129,47 @@ public class Ghost {
     }
 
     /**
-     * Renvoie la position en X du fantôme.
+     * Setter pour la variable x.
      *
-     * @return Position en X du fantôme.
-     */
-    public int getX() {
-        return x;
-    }
-
-    /**
-     * Renvoie la position en Y du fantôme.
-     *
-     * @return Position en Y du fantôme.
-     */
-    public int getY() {
-        return y;
-    }
-
-    /**
-     * Renvoie la couleur du fantôme.
-     *
-     * @return Couleur du fantôme.
-     */
-    public Color getColor() {
-        return color;
-    }
-
-    /**
-     * Définit la nouvelle position en X du fantôme.
-     *
-     * @param newX Nouvelle position en X.
+     * @param newX nouvelle rangée du fantome.
      */
     public void setX(int newX) {
         this.x = newX;
     }
 
     /**
-     * Définit la nouvelle position en Y du fantôme.
+     * Getter pour la variable x.
      *
-     * @param newY Nouvelle position en Y.
+     * @return rangée du fantome.
+     */
+    public int getX() {
+        return x;
+    }
+
+    /**
+     * Setter pour la variable y.
+     *
+     * @param newY nouvelle colonne du fantome.
      */
     public void setY(int newY) {
         this.y = newY;
+    }
+
+    /**
+     * Getter pour la variable y.
+     *
+     * @return colonne du fantome.
+     */
+    public int getY() {
+        return y;
+    }
+
+    /**
+     * Getter pour la variable color.
+     *
+     * @return couleur du fantome.
+     */
+    public Color getColor() {
+        return color;
     }
 }
