@@ -1,12 +1,11 @@
 package pacman.app;
 
 /**
- * Interface utilisée pour observer les changements dans le jeu Pac-Man.
+ * Interface observeur pour l'implémentation du patron de conception Observeur/Observable.
  */
 public interface GameObserver {
-
     /**
-     * Méthode appelée pour notifier les observateurs des mises à jour dans le jeu.
+     * Méthode a appeler quand l'observeur est notifié.
      */
     void update();
 }

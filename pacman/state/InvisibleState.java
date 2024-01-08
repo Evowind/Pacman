@@ -3,7 +3,7 @@ package pacman.state;
 import pacman.entities.PacMan;
 
 /**
- * Représente l'état invisible du joueur Pac-Man.
+ * Classe représentent l'état invisible du joueur Pac-Man.
  */
 public class InvisibleState extends PacState {
     /**
@@ -12,34 +12,37 @@ public class InvisibleState extends PacState {
     private static final long TIMEOUT = 10000;
 
     /**
-     * Temps de début de l'état invisible.
+     * Variable contenant le temps de début de l'état invisible.
      */
     private final long startTime;
 
     /**
-     * Initialise l'état invisible avec le temps de début.
+     * Constructeur de l'état invisible avec le temps de début.
      */
     public InvisibleState() {
         startTime = System.currentTimeMillis();
     }
 
     /**
-     * Met à jour l'état du Pac-Man invisible.
+     * Méthode utilisée pour modifier mettre a jour les données de l'état de l'entité PacMan.
      *
-     * @param pacman Instance du Pac-Man à mettre à jour.
+     * @param pacman objet PacMan que l'on veut mettre à jour.
      */
     @Override
     public void update(PacMan pacman) {
-        // Implémentation de la mise à jour de l'état invisible du Pac-Man
+        long currentTime = System.currentTimeMillis();
+        if (currentTime - startTime >= TIMEOUT) {
+            pacman.state = new NormalState();
+        }
     }
 
     /**
-     * Renvoie l'état actuel.
+     * Méthode utilisée pour retourner l'état de l'entité PacMan.
      *
-     * @return L'état actuel (NORMAL si le temps écoulé dépasse TIMEOUT, sinon INVISIBLE).
+     * @return la constante State.INVISIBLE.
      */
     @Override
     public State getState() {
-        return (System.currentTimeMillis() - startTime >= TIMEOUT) ? State.NORMAL : State.INVISIBLE;
+        return State.INVISIBLE;
     }
 }

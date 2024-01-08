@@ -1,11 +1,14 @@
 package pacman.entities;
 
+import pacman.entities.Cell;
+import pacman.entities.PacMan;
+
 import java.awt.event.KeyEvent;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Représente le labyrinthe du jeu Pac-Man.
+ * Class contenant le labyrinthe et toutes ses méthodes.
  */
 public class Labyrinth {
     /**
@@ -53,9 +56,9 @@ public class Labyrinth {
     }
 
     /**
-     * Compte le nombre de pac-gommes présentes dans le labyrinthe.
+     * Méthode utilisée pour accéder au nombre de pacdots restants dans la labyrinthe.
      *
-     * @return Nombre de pac-gommes.
+     * @return nombre de pacdots restants dans le labyrinthe.
      */
     public int countPacdots() {
         int pacdots = 0;
@@ -70,7 +73,7 @@ public class Labyrinth {
     }
 
     /**
-     * Vérifie si une cellule est de type pac-gomme.
+     * Méthode qui vérifie si une cellule est de type pac-gomme.
      *
      * @param cell Cellule à vérifier.
      * @return True si la cellule est de type pac-gomme, sinon False.
@@ -80,7 +83,8 @@ public class Labyrinth {
     }
 
     /**
-     * Applique l'effet de la pac-gomme verte sur le labyrinthe.
+     * Méthode qui applique l'effet du pacgum vert.
+     * Échange la place de quelques cellules du labyrinthe pour créer une disposition différente.
      */
     public void applyGreenPacGumEffect() {
         // Store the swaps we plan on doing inside an array
@@ -106,7 +110,7 @@ public class Labyrinth {
     }
 
     /**
-     * Échange les valeurs de deux cellules dans le labyrinthe.
+     * Méthode qui échange les valeurs de deux cellules dans le labyrinthe.
      *
      * @param srcRow  Ligne source.
      * @param srcCol  Colonne source.
@@ -120,10 +124,10 @@ public class Labyrinth {
     }
 
     /**
-     * Vérifie si un déplacement vers une position spécifiée est valide.
+     * Méthode qui vérifie si un déplacement vers une position spécifiée est valide.
      *
-     * @param x Position en colonne.
-     * @param y Position en ligne.
+     * @param y rangée de la cellule.
+     * @param x colonne de la cellule.
      * @return True si le déplacement est valide, sinon False.
      */
     public static boolean isValidMove(int x, int y) {
@@ -133,7 +137,7 @@ public class Labyrinth {
     }
 
     /**
-     * Traite un événement de touche pour le déplacement du joueur Pac-Man.
+     * Méthode qui traite un événement de touche pour le déplacement du joueur Pac-Man.
      *
      * @param key     Code de la touche.
      * @param playerX Position en colonne du joueur Pac-Man.
@@ -165,25 +169,25 @@ public class Labyrinth {
     }
 
     /**
-     * Renvoie la hauteur du labyrinthe.
+     * Getter pour le nombre de rangées du labyrinthe
      *
-     * @return Hauteur du labyrinthe.
+     * @return nombre de rangées du labyrinthe.
      */
     public int getHeight() {
         return LABYRINTH_DATA.length;
     }
 
     /**
-     * Renvoie la largeur du labyrinthe.
+     * Getter pour le nombre de colonnes du labyrinthe
      *
-     * @return Largeur du labyrinthe.
+     * @return nombre de colonnes du labyrinthe.
      */
     public int getWidth() {
         return LABYRINTH_DATA[0].length;
     }
 
     /**
-     * Renvoie la cellule à une position spécifiée dans le labyrinthe.
+     * Setter qui renvoie la cellule à une position spécifiée dans le labyrinthe.
      *
      * @param y Position en ligne.
      * @param x Position en colonne.
@@ -194,7 +198,7 @@ public class Labyrinth {
     }
 
     /**
-     * Modifie le type de cellule à une position spécifiée dans le labyrinthe.
+     * Setter qui modifie le type de cellule à une position spécifiée dans le labyrinthe.
      *
      * @param type Nouveau type de cellule.
      * @param y    Position en ligne.

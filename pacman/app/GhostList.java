@@ -9,58 +9,48 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Représente une liste de fantômes dans le jeu Pac-Man.
+ * Classe utilisée pour représenter et gérer une liste de fantômes.
  */
 public class GhostList {
     /**
-     * Liste des fantômes.
+     * Liste d'objets Ghost.
      */
     private final List<Ghost> ghosts;
-
     /**
-     * Instance du joueur Pac-Man.
+     * L'objet PacMan associé à la liste de fantomes.
      */
     private final PacMan pacman;
-
     /**
-     * Instance du jeu associée à la liste de fantômes.
+     * L'objet Game associé à la liste de fantomes.
      */
     private final Game game;
 
     /**
-     * Initialise une nouvelle liste de fantômes avec le joueur Pac-Man et le jeu associés.
+     * Constructeur de base de la classe GhostList.
      *
-     * @param pacman Instance du joueur Pac-Man.
-     * @param game   Instance du jeu Pac-Man.
+     * @param pacman objet PacMan associé a la liste de fantomes.
+     * @param game objet Game associé a la liste de fantomes.
      */
-    public GhostList(PacMan pacman, Game game) {
+    public GhostList(PacMan pacman, Game game){
         ghosts = new ArrayList<>();
         this.pacman = pacman;
         this.game = game;
     }
 
     /**
-     * Initialise les fantômes pour une nouvelle partie ou les replace au centre lors d'un reset.
+     * Méthode qui créer les fantomes dans la liste.
      */
     public void initializeGhosts() {
-        // Le cas d'un reset
-        if (!ghosts.isEmpty()) {
-            for (Ghost ghost : ghosts) {
-                ghost.setX(12);
-                ghost.setY(11);
-            }
-            // Le cas d'une nouvelle partie
-        } else {
+        ghosts.clear();
             Color[] ghostColors = {Color.CYAN, Color.WHITE, Color.ORANGE, Color.PINK};
 
             for (int i = 0; i < ghostColors.length; i++) {
                 ghosts.add(new Ghost(12 + i, 11, ghostColors[i]));
             }
         }
-    }
 
     /**
-     * Déplace tous les fantômes de la liste de manière aléatoire.
+     * Méthode qui déplace tous les fantômes de la liste de manière aléatoire.
      */
     public void moveGhosts() {
         for (Ghost ghost : ghosts) {
@@ -69,9 +59,10 @@ public class GhostList {
     }
 
     /**
-     * Replace un fantôme spécifique de couleur donnée au centre du labyrinthe.
+     * Méthode qui renvoie un fantome au point de départ.
+     * Utilisé si un fantome se fait manger par Super PacMan.
      *
-     * @param color Couleur du fantôme à replacer.
+     * @param color couleur du fantomes que l'on veut déplacer.
      */
     private void resetGhostToCenter(Color color) {
         for (Ghost ghost : ghosts) {
@@ -83,10 +74,10 @@ public class GhostList {
     }
 
     /**
-     * Vérifie les collisions entre le joueur Pac-Man et les fantômes.
+     * Méthode qui vérifie les collisions entre le joueur Pac-Man et les fantômes.
      *
-     * @param playerCellX Position de la cellule en X du joueur Pac-Man.
-     * @param playerCellY Position de la cellule en Y du joueur Pac-Man.
+     * @param playerCellX Position de la cellule en X(rangée) du joueur Pac-Man.
+     * @param playerCellY Position de la cellule en Y(colonne) du joueur Pac-Man.
      */
     public void checkGhostCollisions(int playerCellX, int playerCellY) {
         for (Ghost ghost : ghosts) {
@@ -100,9 +91,9 @@ public class GhostList {
     }
 
     /**
-     * Gère la collision avec un fantôme spécifique.
+     * Méthode qui gère la collision avec un fantôme spécifique.
      *
-     * @param ghost Fantôme avec lequel le joueur Pac-Man a collisionné.
+     * @param ghost Fantôme avec lequel le joueur Pac-Man a rencontré.
      */
     private void handleGhostCollision(Ghost ghost) {
         // state
@@ -117,7 +108,7 @@ public class GhostList {
     }
 
     /**
-     * Renvoie la liste des fantômes.
+     * Getter qui renvoie la liste des fantômes.
      *
      * @return Liste des fantômes.
      */

@@ -7,41 +7,37 @@ import pacman.state.PacState;
 import pacman.state.SuperState;
 
 /**
- * Représente le personnage Pac-Man dans le jeu.
+ * Classe contenant toutes les méthodes et informations sur l'entité PacMan.
  */
 public class PacMan {
     /**
-     * Position en X du joueur Pac-Man.
+     * Variables contenant la rangée de PacMan.
      */
     private int playerX;
-
     /**
-     * Position en Y du joueur Pac-Man.
+     * Variables contenant la colonne de PacMan.
      */
     private int playerY;
-
     /**
-     * Direction du joueur Pac-Man (0: Droite, 1: Gauche, 2: Haut, 3: Bas).
+     * Variables contenant la direction de PacMan.
      */
     private int playerDirection;
-
     /**
-     * Instance du jeu associée à Pac-Man.
+     * L'objet Game associé a l'entité PacMan.
      */
     private final Game game;
-
     /**
-     * État actuel du joueur Pac-Man.
+     * L'état de l'entité PacMan.
      */
     public PacState state;
 
     /**
-     * Initialise un nouveau joueur Pac-Man avec des paramètres donnés.
+     * Constructeur de base pour la classe PacMan.
      *
-     * @param playerX         Position en X initiale du joueur Pac-Man.
-     * @param playerY         Position en Y initiale du joueur Pac-Man.
-     * @param playerDirection Direction initiale du joueur Pac-Man.
-     * @param game            Instance du jeu associée à Pac-Man.
+     * @param playerX rangée de départ de PacMan.
+     * @param playerY colonne de départ de PacMan.
+     * @param playerDirection direction de départ de PacMan.
+     * @param game objet Game associé au a l'entité PacMan.
      */
     public PacMan(int playerX, int playerY, int playerDirection, Game game) {
         this.playerX = playerX;
@@ -52,7 +48,7 @@ public class PacMan {
     }
 
     /**
-     * Déplace le joueur Pac-Man en fonction de sa direction.
+     * Méthode qui déplace le joueur Pac-Man en fonction de sa direction.
      */
     public void movePlayer() {
         int newX = playerX;
@@ -71,10 +67,10 @@ public class PacMan {
     }
 
     /**
-     * Vérifie les collisions du joueur Pac-Man avec les cellules du labyrinthe.
+     * Méthode qui vérifie les collisions du joueur Pac-Man avec les cellules du labyrinthe.
      *
-     * @param playerCellX Position de la cellule en X du joueur Pac-Man.
-     * @param playerCellY Position de la cellule en Y du joueur Pac-Man.
+     * @param playerCellX rangée de PacMan.
+     * @param playerCellY colonne de PacMan.
      */
     public void checkCellCollisions(int playerCellX, int playerCellY) {
 
@@ -147,29 +143,26 @@ public class PacMan {
         }
     }
 
-
-    // TODO isnt this swapped ? X is column and Y is row ?
-
     /**
-     * Renvoie la position en X du joueur Pac-Man.
+     * Getter pour la rangée de l'entité PacMan.
      *
-     * @return Position en X du joueur Pac-Man.
+     * @return rangée de PacMan.
      */
     public int getPlayerX() {
         return playerX;
     }
 
     /**
-     * Renvoie la position en Y du joueur Pac-Man.
+     * Getter pour la colonne de l'entité PacMan.
      *
-     * @return Position en Y du joueur Pac-Man.
+     * @return colonne de PacMan.
      */
     public int getPlayerY() {
         return playerY;
     }
 
     /**
-     * Renvoie la direction du joueur Pac-Man.
+     * Getter de la direction du joueur Pac-Man.
      *
      * @return Direction du joueur Pac-Man.
      */
@@ -178,7 +171,7 @@ public class PacMan {
     }
 
     /**
-     * Définit la direction du joueur Pac-Man.
+     * Setter de la direction de l'entité Pac-Man.
      *
      * @param playerDirection Nouvelle direction du joueur Pac-Man.
      */

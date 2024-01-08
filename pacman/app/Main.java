@@ -3,7 +3,7 @@ package pacman.app;
 import javax.swing.*;
 
 /**
- * Classe principale du jeu Pac-Man.
+ * Classe principale qui lance le jeu et une fenêtre dans laquelle ce dernier est affiché.
  */
 public class Main {
     /**

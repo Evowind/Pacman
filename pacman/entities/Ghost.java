@@ -6,21 +6,19 @@ import java.awt.*;
 import java.util.Random;
 
 /**
- * Représente un fantôme dans le jeu Pac-Man.
+ * Classe qui contient toutes les méthodes et informations a propos des entitées fantomes.
  */
 public class Ghost {
     /**
-     * Position en X du fantôme.
+     * Variables contenant la rangée du fantome.
      */
     private int x;
-
     /**
-     * Position en Y du fantôme.
+     * Variables contenant la colonne du fantome.
      */
     private int y;
-
     /**
-     * Couleur du fantôme.
+     * Variables contenant la couleur du fantome.
      */
     private final Color color;
 
@@ -33,18 +31,18 @@ public class Ghost {
      * Indique si le fantôme à rencontrer un mur lors du mouvement.
      */
     private boolean wall;
-
     /**
-     * Indique si le fantôme peut se déplacer (utilisé pour l'état SUPER du Pac-Man).
+     * Variables qui indique si le fantome peut se déplacer.
+     * Utilisé pour ralentir les fantomes quand l'état de PacMan est State.SUPER.
      */
     private boolean canMove = true;
 
     /**
-     * Initialise un nouveau fantôme avec des paramètres donnés.
+     * Constructeur de base de la classe Ghost.
      *
-     * @param x     Position en X initiale du fantôme.
-     * @param y     Position en Y initiale du fantôme.
-     * @param color Couleur du fantôme.
+     * @param x rangée de départ du fantome.
+     * @param y colonne de départ du fantome.
+     * @param color couleur du fantome.
      */
     public Ghost(int x, int y, Color color) {
         this.x = x;
@@ -55,7 +53,7 @@ public class Ghost {
     }
 
     /**
-     * Déplace le fantôme de manière aléatoire.
+     * Méthode qui déplace le fantôme de manière aléatoire.
      *
      * @param state État actuel du Pac-Man.
      */
@@ -91,7 +89,7 @@ public class Ghost {
     }
 
     /**
-     * Tente de définir une nouvelle direction pour le déplacement.
+     * Méthode qui tente de définir une nouvelle direction pour le déplacement.
      *
      * @param newDirection Nouvelle direction à essayer.
      * @return true si la nouvelle direction est valide et a été définie, false sinon.
@@ -108,7 +106,7 @@ public class Ghost {
     }
 
     /**
-     * Calcule les nouvelles coordonnées en fonction de la direction spécifiée.
+     * Méthode qui calcule les nouvelles coordonnées en fonction de la direction spécifiée.
      *
      * @param x            Coordonnée x actuelle.
      * @param y            Coordonnée y actuelle.

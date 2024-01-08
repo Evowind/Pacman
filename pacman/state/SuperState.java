@@ -3,43 +3,45 @@ package pacman.state;
 import pacman.entities.PacMan;
 
 /**
- * Représente l'état super d'un Pac-Man.
+ * Classe représentent l'état Super d'un Pac-Man.
  */
 public class SuperState extends PacState {
     /**
-     * Durée maximale de l'état super en millisecondes.
+     * Variable contenant la durée maximale de l'état SUPER en millisecondes.
      */
     private static final long TIMEOUT = 10000;
-
     /**
-     * Temps de début de l'état super.
+     * Variable contenant le début de l'état super.
      */
     private final long startTime;
 
     /**
-     * Initialise l'état super avec le temps de début.
+     * Constructeur de l'état Super qui initialise le temps de départ.
      */
     public SuperState() {
         startTime = System.currentTimeMillis();
     }
 
     /**
-     * Met à jour l'état du Pac-Man super.
+     * Méthode utilisée pour modifier mettre a jour les données de l'état de l'entité PacMan.
      *
-     * @param pacman Instance du Pac-Man à mettre à jour.
+     * @param pacman objet PacMan que l'on veut mettre à jour.
      */
     @Override
     public void update(PacMan pacman) {
-        // Implémentation de la mise à jour de l'état super du Pac-Man
+        long currentTime = System.currentTimeMillis();
+        if (currentTime - startTime >= TIMEOUT) {
+            pacman.state = new NormalState();
+        }
     }
 
     /**
-     * Renvoie l'état actuel.
+     * Méthode utilisée pour retourner l'état de l'entité PacMan.
      *
-     * @return L'état actuel (NORMAL si le temps écoulé dépasse TIMEOUT, sinon SUPER).
+     * @return la constante State.SUPER.
      */
     @Override
     public State getState() {
-        return (System.currentTimeMillis() - startTime >= TIMEOUT) ? State.NORMAL : State.SUPER;
+        return State.SUPER;
     }
 }

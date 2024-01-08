@@ -11,49 +11,48 @@ import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.List;
 
+// TODO maybe separating app/entities is not a good idea because it forces the use of public access modifiers as default(package) is not an option anymore
 
 /**
- * La classe Game représente le jeu Pac-Man avec ses éléments principaux tels que le Pac-Man, le labyrinthe,
- * les fantômes, le score, les vies et l'interface graphique.
- * <p>
- * Cette classe implémente les interfaces ActionListener et KeyListener pour gérer les actions du jeu.
+ * Classe qui contient toutes les méthodes et informations nécéssaires pour une partie de PacMan.
+ * Celle-ci est observable par les classes qui implémentent l'interface GameObserver ainsi que les interfaces ActionListener et KeyListener pour gérer les actions du jeu.
  */
-//TODO maybe separating app/entities is not a good idea because it forces the use of public access modifiers as default(package) is not an option anymore
-
 public class Game implements ActionListener, KeyListener {
     /**
-     * Liste des observateurs.
+     * Liste de tout les observeurs.
      */
     private final List<GameObserver> observers = new ArrayList<>();
     /**
-     * Interface graphique du jeu.
+     * Objet JPanel utilisé pour dessiner l'interface graphique.
      */
     private final GUI gui;
     /**
-     * Instance du PacManObservable représentant le Pac-Man.
+     * Objet contenant les méthodes et informations reliées a l'entité PacMan.
      */
     private PacMan pacman;
-
     /**
-     * Instance du labyrinthe.
+     * Objet contenant les méthodes et informations reliées au labyrinthe.
      */
     public Labyrinth labyrinth;
 
     /**
-     * Liste des fantômes.
+     * Objet contenant les méthodes et informations reliées aux fantomes.
      */
     public GhostList ghosts;
 
     /**
-     * Score du joueur.
+     * Variable contenant le score du joueur.
      */
     private int score;
 
     /**
-     * Nombre de vies restantes.
+     * Variable contenant le nombre de vies du joueur.
      */
     private int lives;
 
+    /**
+     * Constructeur de base de la classe Game.
+     */
     public Game() {
         Timer timer = new Timer(100, this);
         timer.start();
@@ -64,9 +63,9 @@ public class Game implements ActionListener, KeyListener {
     }
 
     /**
-     * Ajoute un observateur au jeu.
+     * Méthode qui ajoute un observeur a la liste d'observeurs.
      *
-     * @param observer L'observateur à ajouter.
+     * @param observer observeur que l'on souhaite ajouter.
      */
     public void addObserver(GameObserver observer) {
         observers.add(observer);
@@ -114,9 +113,9 @@ public class Game implements ActionListener, KeyListener {
     }
 
     /**
-     * Gère le cas où le joueur est capturé par un fantôme.
+     * Méthode qui gérer la collision entre PacMan et un fantome.
+     * Appelée seulement si l'état de pacman est State.NORMAL.
      */
-    // TODO Currently accessible by package, is it possible to make it private ? dont think so
     public void handlePlayerCaught() {
         lives--;
         if (lives <= 0) {
@@ -130,7 +129,7 @@ public class Game implements ActionListener, KeyListener {
     }
 
     /**
-     * Gère le cas où le joueur gagne la partie.
+     * Méthode qui vérifier si le joueur a gagné.
      */
     private void checkWin() {
         if (labyrinth.countPacdots() == 0) {
@@ -140,7 +139,7 @@ public class Game implements ActionListener, KeyListener {
     }
 
     /**
-     * Gère le score nécessaire pour obtenir une vie supplémentaire.
+     * Méthode qui gère le score nécessaire pour obtenir une vie supplémentaire.
      */
     private void handleScoreForExtraLife() {
         if (score >= 5000) {
@@ -165,47 +164,10 @@ public class Game implements ActionListener, KeyListener {
         checkCollisions();
         notifyObservers();
     }
-
     /**
-     * Définit le score du joueur.
+     * Méthode KeyListener pour gérer l'entrée de l'utilisateur.
      *
-     * @param score Le nouveau score du joueur.
-     */
-    public void setScore(int score) {
-        this.score = score;
-    }
-
-    /**
-     * Obtient le score du joueur.
-     *
-     * @return Le score du joueur.
-     */
-    public int getScore() {
-        return score;
-    }
-
-    /**
-     * Obtient le nombre de vies restantes du joueur.
-     *
-     * @return Le nombre de vies restantes.
-     */
-    public int getLives() {
-        return lives;
-    }
-
-    /**
-     * Obtient la classe PacMan.
-     *
-     * @return la classe pacman
-     */
-    public PacMan getPacman() {
-        return pacman;
-    }
-
-    /**
-     * Gère les événements liés aux touches du clavier.
-     *
-     * @param e L'événement de touche.
+     * @param e l'événement qui est a traiter.
      */
     @Override
     public void keyPressed(KeyEvent e) {
@@ -220,7 +182,7 @@ public class Game implements ActionListener, KeyListener {
     }
 
     /**
-     * Méthode non utilisée.
+     * Méthode non-utilisée mais nécéssaire pour l'implementation de KeyListener.
      *
      * @param e L'événement de touche tapée.
      */
@@ -230,12 +192,39 @@ public class Game implements ActionListener, KeyListener {
     }
 
     /**
-     * Méthode non utilisée.
+     * Méthode non-utilisée mais nécéssaire pour l'implementation de KeyListener.
      *
      * @param e L'événement de libération de touche.
      */
     @Override
     public void keyReleased(KeyEvent e) {
         // Not needed
+    }
+
+    /**
+     * Setter pour la variable score.
+     *
+     * @param score nouveau score.
+     */
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    /**
+     * Getter pour la variable score.
+     *
+     * @return score actuel.
+     */
+    public int getScore() {
+        return score;
+    }
+
+    /**
+     * Getter pour la variable lives.
+     *
+     * @return nombre de vies actuel.
+     */
+    int getLives() {
+        return lives;
     }
 }

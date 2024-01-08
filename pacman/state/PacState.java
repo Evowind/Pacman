@@ -13,18 +13,18 @@ public abstract class PacState {
     public enum State { NORMAL, INVISIBLE, SUPER }
 
     /**
-     * Renvoie l'état actuel.
+     * Méthode utilisée pour retourner l'état de l'entité PacMan.
      *
-     * @return L'état actuel.
+     * @return l'état actuel de PacMan
      */
     public abstract State getState();
 
     /**
-     * Met à jour l'état du Pac-Man.
+     * Méthode utilisée pour modifier mettre a jour les données de l'état de l'entité PacMan.
      *
-     * @param pacman Instance du Pac-Man à mettre à jour.
+     * @param pacman objet PacMan que l'on veut mettre à jour.
      */
     public void update(PacMan pacman) {
-        // Implémentation de la mise à jour de l'état du Pac-Man
+        // Default behavior for states without time constraints
     }
 }
