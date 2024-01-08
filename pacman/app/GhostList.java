@@ -29,7 +29,7 @@ public class GhostList {
      * Constructeur de base de la classe GhostList.
      *
      * @param pacman objet PacMan associé a la liste de fantomes.
-     * @param game objet Game associé a la liste de fantomes.
+     * @param game   objet Game associé a la liste de fantomes.
      */
     public GhostList(PacMan pacman, Game game){
         ghosts = new ArrayList<>();
@@ -42,12 +42,12 @@ public class GhostList {
      */
     public void initializeGhosts() {
         ghosts.clear();
-            Color[] ghostColors = {Color.CYAN, Color.WHITE, Color.ORANGE, Color.PINK};
+        Color[] ghostColors = {Color.CYAN, Color.WHITE, Color.ORANGE, Color.PINK};
 
-            for (int i = 0; i < ghostColors.length; i++) {
-                ghosts.add(new Ghost(12 + i, 11, ghostColors[i]));
-            }
+        for (int i = 0; i < ghostColors.length; i++) {
+            ghosts.add(new Ghost(12 + i, 11, ghostColors[i]));
         }
+    }
 
     /**
      * Méthode qui déplace tous les fantômes de la liste de manière aléatoire.
@@ -76,8 +76,8 @@ public class GhostList {
     /**
      * Méthode qui vérifie les collisions entre le joueur Pac-Man et les fantômes.
      *
-     * @param playerCellX Position de la cellule en X(rangée) du joueur Pac-Man.
-     * @param playerCellY Position de la cellule en Y(colonne) du joueur Pac-Man.
+     * @param playerCellX position de la cellule en X(rangée) du joueur Pac-Man.
+     * @param playerCellY position de la cellule en Y(colonne) du joueur Pac-Man.
      */
     public void checkGhostCollisions(int playerCellX, int playerCellY) {
         for (Ghost ghost : ghosts) {
@@ -93,10 +93,9 @@ public class GhostList {
     /**
      * Méthode qui gère la collision avec un fantôme spécifique.
      *
-     * @param ghost Fantôme avec lequel le joueur Pac-Man a rencontré.
+     * @param ghost fantôme avec lequel le joueur Pac-Man a rencontré.
      */
     private void handleGhostCollision(Ghost ghost) {
-        // state
         if (pacman.state.getState() == PacState.State.SUPER) {
             // Le fantome est mangé par le Super PacMan
             game.setScore(game.getScore() + 400);
@@ -110,7 +109,7 @@ public class GhostList {
     /**
      * Getter qui renvoie la liste des fantômes.
      *
-     * @return Liste des fantômes.
+     * @return liste des fantômes.
      */
     public List<Ghost> getGhosts() {
         return ghosts;
