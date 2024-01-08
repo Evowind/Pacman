@@ -24,16 +24,14 @@ public class InvisibleState extends PacState {
     }
 
     /**
-     * Méthode utilisée pour modifier mettre a jour les données de l'état de l'entité PacMan.
+     * Méthode utilisée pour mettre à jour les données de l'état de l'entité PacMan.
      *
      * @param pacman objet PacMan que l'on veut mettre à jour.
      */
     @Override
     public void update(PacMan pacman) {
         long currentTime = System.currentTimeMillis();
-        if (currentTime - startTime >= TIMEOUT) {
-            pacman.state = new NormalState();
-        }
+        if (currentTime - startTime >= TIMEOUT) pacman.state = new NormalState();
     }
 
     /**
