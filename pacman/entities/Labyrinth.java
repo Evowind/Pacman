@@ -1,21 +1,18 @@
 package pacman.entities;
 
-import pacman.entities.Cell;
-import pacman.entities.PacMan;
-
 import java.awt.event.KeyEvent;
 
 /**
- * Class containing the maze and all methods related to it.
+ * Class contenant le labyrinthe et toutes ses méthodes.
  */
 public class Labyrinth {
     /**
-     * Array used as maze.
+     * Tableau de cellules qui forment le labyrinthe.
      */
     private static Cell[][] LABYRINTH_DATA;
 
     /**
-     * Constructor containing the default maze pattern.
+     * Constructor de base de la classe Labyrinth contenant l'organisation par défaut du labyrinthe.
      */
     public Labyrinth() {
         LABYRINTH_DATA = new Cell[][]{
@@ -54,9 +51,9 @@ public class Labyrinth {
     }
 
     /**
-     * Method used for accessing the number of pacdots still present inside the maze.
+     * Méthode utilisée pour accéder au nombre de pacdots restants dans la labyrinthe.
      *
-     * @return Number of pacdots remaining in the maze.
+     * @return nombre de pacdots restants dans le labyrinthe.
      */
      public int countPacdots() {
         int pacdots = 0;
@@ -72,31 +69,30 @@ public class Labyrinth {
     }
 
     /**
-     * Setter for maze cells.
+     * Setter pour les cellules du labyrinthe.
      *
-     * @param type Type of the cell.
-     * @param y Cell row.
-     * @param x Cell column.
+     * @param type type de la cellule.
+     * @param y rangée de la cellule.
+     * @param x colonne de la cellule.
      */
-    // TODO probably shouldn't be public ?
     public void setCell(Cell type, int y, int x){
         LABYRINTH_DATA[y][x] = type;
     }
 
     /**
-     * Getter used for reading Cell type.
+     * Getter pour le type d'une cellule.
      *
-     * @param y Cell row.
-     * @param x Cell column.
-     * @return Returns the type of the selected cell.
+     * @param y rangée de la cellule.
+     * @param x colonne de la cellule.
+     * @return retourne le type de la cellule.
      */
     public Cell getCell(int y, int x){
         return LABYRINTH_DATA[y][x];
     }
 
     /**
-     * Method that applies the effect the Green PacGum.
-     * Swaps some Cells of the maze to create a different layout.
+     * Méthode qui applique l'effet du pacgum vert.
+     * Échange la place de quelques cellules du labyrinthe pour créer une disposition différente.
      */
     void applyGreenPacGumEffect() {
         // Store the swaps we plan on doing inside an array
@@ -122,12 +118,12 @@ public class Labyrinth {
     }
 
     /**
-     * Method that swaps the content of two Cells.
+     * Méthode qui échange deux cellules.
      *
-     * @param srcRow First Cell row.
-     * @param srcCol First Cell column.
-     * @param destRow Second Cell row.
-     * @param destCol Second Cell column.
+     * @param srcRow rangée de la première cellule.
+     * @param srcCol colomne de la première cellule.
+     * @param destRow rangée de la deuxième cellule.
+     * @param destCol colomne de la deuxième cellule.
      */
     private static void swapValues(int srcRow, int srcCol, int destRow, int destCol) {
         Cell temp = LABYRINTH_DATA[srcRow][srcCol];
@@ -136,11 +132,11 @@ public class Labyrinth {
     }
 
     /**
-     * Method that returns if a Cell is a valid move.
+     * Method qui retourne si une case est valide pour un déplacement.
      *
-     * @param y Cell row.
-     * @param x Cell column.
-     * @return Returns true if the chosen Cell is not a wall, otherwise return false.
+     * @param y rangée de la cellule.
+     * @param x colonne de la cellule.
+     * @return true si la cellule n'est pas un mur, sinon false.
      */
     static boolean isValidMove(int x, int y) {
         return x >= 0 && x < LABYRINTH_DATA[0].length &&
@@ -149,12 +145,12 @@ public class Labyrinth {
     }
 
     /**
-     * Method to the process the user's KeyListener input.
+     * Method qui gère la saisie KeyListener de l'utilisateur.
      *
-     * @param key Key pressed by the user.
-     * @param playerX Current PacMan Row.
-     * @param playerY Current PacMan Column.
-     * @return Returns the new direction of PacMan.
+     * @param key saisie de l'utilisateur.
+     * @param playerX rangée de PacMan.
+     * @param playerY colonne de PacMan.
+     * @return nouvelle direction de pacman si key est une des flèches, -1 qui indique reset de la partie si key est R.
      */
     public int processEvent(int key, int playerX, int playerY) {
         if (key == KeyEvent.VK_UP) {
@@ -180,18 +176,18 @@ public class Labyrinth {
     }
 
     /**
-     * Method to access the vertical size of the maze.
+     * Getter pour le nombre de rangées du labyrinthe
      *
-     * @return Returns the number of rows in the maze.
+     * @return nombre de rangées du labyrinthe.
      */
     public int getHeight(){
         return LABYRINTH_DATA.length;
     }
 
     /**
-     * Method to access the horizontal size of the maze.
+     * Getter pour le nombre de colonnes du labyrinthe
      *
-     * @return Returns the number of columns in the maze.
+     * @return nombre de colonnes du labyrinthe.
      */
     public int getWidth(){
         return LABYRINTH_DATA[0].length;

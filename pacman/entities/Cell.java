@@ -1,7 +1,7 @@
 package pacman.entities;
 
 /**
- * Enumeration containing all the possible Cell types.
+ * Énumération contenant tout les types de cellules possibles dans une partie de PacMan.
  */
 public enum Cell {
     WALL, EMPTY, PACDOT, PURPLE, ORANGE, GREEN, TELEPORTER

@@ -163,33 +163,6 @@ public class Game implements ActionListener, KeyListener {
     }
 
     /**
-     * Setter pour la variable score.
-     *
-     * @param score nouveau score.
-     */
-    public void setScore(int score) {
-        this.score = score;
-    }
-
-    /**
-     * Getter pour la variable score.
-     *
-     * @return score actuel.
-     */
-    public int getScore() {
-        return score;
-    }
-
-    /**
-     * Getter pour la variable lives.
-     *
-     * @return nombre de vies actuel.
-     */
-    int getLives() {
-        return lives;
-    }
-
-    /**
      * Méthode KeyListener pour gérer l'entrée de l'utilisateur.
      *
      * @param e l'événement qui est a traiter.
@@ -224,5 +197,32 @@ public class Game implements ActionListener, KeyListener {
     @Override
     public void keyReleased(KeyEvent e) {
         // Not needed
+    }
+
+    /**
+     * Setter pour la variable score.
+     *
+     * @param score nouveau score.
+     */
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    /**
+     * Getter pour la variable score.
+     *
+     * @return score actuel.
+     */
+    public int getScore() {
+        return score;
+    }
+
+    /**
+     * Getter pour la variable lives.
+     *
+     * @return nombre de vies actuel.
+     */
+    int getLives() {
+        return lives;
     }
 }

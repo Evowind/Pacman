@@ -7,21 +7,37 @@ import pacman.state.PacState;
 import pacman.state.SuperState;
 
 /**
- * Class containing all the methods and information about the PacMan entity.
+ * Classe contenant toutes les méthodes et informations sur l'entité PacMan.
  */
 public class PacMan {
-    private int playerX, playerY;
+    /**
+     * Variables contenant la rangée de PacMan.
+     */
+    private int playerX;
+    /**
+     * Variables contenant la colonne de PacMan.
+     */
+    private int playerY;
+    /**
+     * Variables contenant la direction de PacMan.
+     */
     private int playerDirection;
+    /**
+     * L'objet Game associé a l'entité PacMan.
+     */
     private final Game game;
+    /**
+     * L'état de l'entité PacMan.
+     */
     public PacState state;
 
     /**
-     * Constructor for PacMan class.
+     * Constructeur de base pour la classe PacMan.
      *
-     * @param playerX Default PacMan row.
-     * @param playerY Default PacMan column.
-     * @param playerDirection Default PacMan direction.
-     * @param game Game object to access its value and methods.
+     * @param playerX rangée de départ de PacMan.
+     * @param playerY colonne de départ de PacMan.
+     * @param playerDirection direction de départ de PacMan.
+     * @param game objet Game associé au a l'entité PacMan.
      */
     public PacMan(int playerX, int playerY, int playerDirection, Game game) {
         this.playerX = playerX;
@@ -32,7 +48,7 @@ public class PacMan {
     }
 
     /**
-     * Method used to move PacMan in the direction it is facing.
+     * Methode qui déplace l'entité PacMan dans sa direction actuelle.
      */
     public void movePlayer() {
         int newX = playerX;
@@ -59,10 +75,10 @@ public class PacMan {
     }
 
     /**
-     * Method used to process if PacMan collided with any entity that isn't a ghost.
+     * Methode qui gère la collision entre PacMan et toute autre entitée qui n'est pas un fantome.
      *
-     * @param playerCellX Current PacMan row
-     * @param playerCellY Current PacMan column
+     * @param playerCellX rangée de PacMan.
+     * @param playerCellY colonne de PacMan.
      */
     public void checkCellCollisions(int playerCellX, int playerCellY) {
         switch (game.labyrinth.getCell(playerCellY, playerCellX)) {
@@ -88,56 +104,50 @@ public class PacMan {
                 game.ghosts.resetAllGhostsToCenter();
                 break;
             case TELEPORTER:
-                teleport(playerCellX);
+                if (playerCellX == 27) {
+                    playerX = 1;
+                } else {
+                    playerX = 26;
+                }
                 break;
             default:
                 break;
         }
     }
 
-    // TODO is this really needed ? only 1 usage could just put this in checkCellCollisions() just above
-    public void teleport(int playerCellX){
-        if (playerCellX == 27) {
-            playerX = 1;
-        } else {
-            playerX = 26;
-        }
-    }
-
-    // TODO isnt this swapped ? X is column and Y is row ?
     /**
-     * Getter for player row position in the maze.
+     * Getter pour la rangée de l'entité PacMan.
      *
-     * @return PacMan row.
+     * @return rangée de PacMan.
      */
     public int getPlayerX() {
         return playerX;
     }
 
     /**
-     * Getter for player column position in the maze.
+     * Getter pour la colonne de l'entité PacMan.
      *
-     * @return PacMan column.
+     * @return colonne de PacMan.
      */
     public  int getPlayerY() {
         return playerY;
     }
 
     /**
-     * Getter for player direction.
+     * Setter la direction de l'entité PacMan.
      *
-     * @return PacMan direction.
-     */
-    public int getPlayerDirection() {
-        return playerDirection;
-    }
-
-    /**
-     * Setter for player direction.
-     *
-     * @param playerDirection new PacMan direction.
+     * @param playerDirection nouvelle direction de PacMan.
      */
     public void setPlayerDirection(int playerDirection) {
         this.playerDirection = playerDirection;
+    }
+
+    /**
+     * Getter pour la direction de l'entité PacMan.
+     *
+     * @return direction de PacMan.
+     */
+    public int getPlayerDirection() {
+        return playerDirection;
     }
 }
