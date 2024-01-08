@@ -17,8 +17,8 @@ import java.util.List;
  * <p>
  * Cette classe implémente les interfaces ActionListener et KeyListener pour gérer les actions du jeu.
  */
-// TODO maybe separating app/entities is not a good idea because it forces the use of public access modifiers as default(package) is not an option anymore
-    
+//TODO maybe separating app/entities is not a good idea because it forces the use of public access modifiers as default(package) is not an option anymore
+
 public class Game implements ActionListener, KeyListener {
     /**
      * Liste des observateurs.
@@ -30,7 +30,7 @@ public class Game implements ActionListener, KeyListener {
     private final GUI gui;
     /**
      * Instance du PacManObservable représentant le Pac-Man.
-     */  
+     */
     private PacMan pacman;
 
     /**
@@ -44,11 +44,6 @@ public class Game implements ActionListener, KeyListener {
     public GhostList ghosts;
 
     /**
-     * Nombre de pacdots restants dans le labyrinthe.
-     */
-    private int pacdotsRemaining;
-
-    /**
      * Score du joueur.
      */
     private int score;
@@ -57,12 +52,7 @@ public class Game implements ActionListener, KeyListener {
      * Nombre de vies restantes.
      */
     private int lives;
-    
-    
-    Game() {
-    /**
-     * Constructeur de la classe Game. Initialise le timer du jeu, les éléments du jeu et l'interface graphique.
-     */
+
     public Game() {
         Timer timer = new Timer(100, this);
         timer.start();
@@ -125,8 +115,8 @@ public class Game implements ActionListener, KeyListener {
     /**
      * Gère le cas où le joueur est capturé par un fantôme.
      */
-        // TODO Currently accessible by package, is it possible to make it private ? dont think so
-        public void handlePlayerCaught() {
+    // TODO Currently accessible by package, is it possible to make it private ? dont think so
+    public void handlePlayerCaught() {
         lives--;
         if (lives <= 0) {
             // Game over
@@ -138,14 +128,15 @@ public class Game implements ActionListener, KeyListener {
         }
     }
 
-        /**
-         * Gère le cas où le joueur gagne la partie.
-         */
-    private void checkWin(){
+    /**
+     * Gère le cas où le joueur gagne la partie.
+     */
+    private void checkWin() {
         if (labyrinth.countPacdots() == 0) {
             JOptionPane.showMessageDialog(gui, "Vous avez gagné !", "Partie terminée", JOptionPane.INFORMATION_MESSAGE);
             resetGame();
         }
+    }
 
     /**
      * Gère le score nécessaire pour obtenir une vie supplémentaire.
@@ -200,6 +191,7 @@ public class Game implements ActionListener, KeyListener {
     public int getLives() {
         return lives;
     }
+
     /**
      * Obtient la classe PacMan.
      *
@@ -208,6 +200,7 @@ public class Game implements ActionListener, KeyListener {
     public PacMan getPacman() {
         return pacman;
     }
+
     /**
      * Gère les événements liés aux touches du clavier.
      *

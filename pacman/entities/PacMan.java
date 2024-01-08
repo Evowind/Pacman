@@ -92,21 +92,21 @@ public class PacMan {
     // TODO JavaDocs
     private void handlePacDotCollision() {
         game.setScore(game.getScore() + 100);
-        handleCommonCollisionActions();
+        game.labyrinth.setCell(Cell.EMPTY, getPlayerY(), getPlayerX());
     }
 
     // TODO JavaDocs
     private void handlePurpleCollision() {
         game.setScore(game.getScore() + 300);
         state = new InvisibleState();
-        handleCommonCollisionActions();
+        game.labyrinth.setCell(Cell.EMPTY, getPlayerY(), getPlayerX());
     }
 
     // TODO JavaDocs
     private void handleOrangeCollision() {
         game.setScore(game.getScore() + 500);
         state = new SuperState();
-        handleCommonCollisionActions();
+        game.labyrinth.setCell(Cell.EMPTY, getPlayerY(), getPlayerX());
     }
 
     // TODO JavaDocs
@@ -114,13 +114,7 @@ public class PacMan {
         game.setScore(game.getScore() + 1000);
         game.labyrinth.applyGreenPacGumEffect();
         game.ghosts.resetAllGhostsToCenter();
-        handleCommonCollisionActions();
-    }
-
-    // TODO JavaDocs
-    private void handleCommonCollisionActions() {
         game.labyrinth.setCell(Cell.EMPTY, getPlayerY(), getPlayerX());
-        game.decrPacDot();
     }
 
     // TODO JavaDocs
