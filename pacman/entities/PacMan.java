@@ -11,7 +11,7 @@ import pacman.state.SuperState;
  */
 public class PacMan {
     /**
-     * Variables contenant la rangée de PacMan.
+     * Variables contenant la ligne de PacMan.
      */
     private int playerX;
     /**
@@ -34,7 +34,7 @@ public class PacMan {
     /**
      * Constructeur de base pour la classe PacMan.
      *
-     * @param playerX rangée de départ de PacMan.
+     * @param playerX ligne de départ de PacMan.
      * @param playerY colonne de départ de PacMan.
      * @param playerDirection direction de départ de PacMan.
      * @param game objet Game associé au a l'entité PacMan.
