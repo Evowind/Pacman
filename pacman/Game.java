@@ -15,26 +15,24 @@ import java.util.List;
  * Cette classe implémente les interfaces ActionListener et KeyListener pour gérer les actions du jeu.
  */
 public class Game implements ActionListener, KeyListener {
+    /**
+     * Liste des observateurs.
+     */
     private final List<GameObserver> observers = new ArrayList<>();
     /**
      * Instance du PacManObservable représentant le Pac-Man.
      */
-    public PacMan pacman;
-    /**
-     * Taille d'une cellule dans le labyrinthe.
-     */
-    public static final int CELL_SIZE = 30;
+    private PacMan pacman;
 
-    // TODO maybe import those to GUI and make them private here?
     /**
      * Instance du labyrinthe.
      */
-    Labyrinth labyrinth;
+    public Labyrinth labyrinth;
 
     /**
      * Liste des fantômes.
      */
-    GhostList ghosts;
+    public GhostList ghosts;
     //
 
     /**
@@ -60,7 +58,7 @@ public class Game implements ActionListener, KeyListener {
     /**
      * Constructeur de la classe Game. Initialise le timer du jeu, les éléments du jeu et l'interface graphique.
      */
-    Game() {
+    public Game() {
         Timer timer = new Timer(100, this);
         timer.start();
         initializeGame();
@@ -100,7 +98,7 @@ public class Game implements ActionListener, KeyListener {
      */
     private void initializeGame() {
         pacman = new PacMan(15, 17, 0, this);
-        labyrinth = new Labyrinth(pacman);
+        labyrinth = new Labyrinth();
         lives = 3;
         score = 0;
         pacdotsRemaining = labyrinth.countPacdots();
@@ -212,6 +210,11 @@ public class Game implements ActionListener, KeyListener {
         return pacdotsRemaining;
     }
 
+    /**
+     * Obtient la classe PacMan.
+     *
+     * @return la classe pacman
+     */
     public PacMan getPacman() {
         return pacman;
     }

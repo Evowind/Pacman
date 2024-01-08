@@ -19,18 +19,10 @@ public class PacMan {
         int newY = playerY;
         int playerSpeed = 1;
         switch (playerDirection) {
-            case 0:
-                newX += playerSpeed;
-                break;
-            case 1:
-                newX -= playerSpeed;
-                break;
-            case 2:
-                newY -= playerSpeed;
-                break;
-            case 3:
-                newY += playerSpeed;
-                break;
+            case 0 -> newX += playerSpeed;
+            case 1 -> newX -= playerSpeed;
+            case 2 -> newY -= playerSpeed;
+            case 3 -> newY += playerSpeed;
         }
         if (game.getPacdotsRemaining() == 0) {
             game.handleWin();
@@ -43,41 +35,49 @@ public class PacMan {
     }
 
     public void checkCellCollisions(int playerCellX, int playerCellY) {
-        switch (game.labyrinth.getCell(playerCellY, playerCellX)) {
-            case PACDOT:
-                game.setScore(game.getScore() + 100);
-                game.labyrinth.setCell(Cell.EMPTY, playerCellY, playerCellX);
-                game.decrPacDot();
-                break;
-            case PURPLE:
-                game.setScore(game.getScore() + 300);
-                game.labyrinth.setCell(Cell.EMPTY, playerCellY, playerCellX);
-                game.decrPacDot();
-                state = new InvisibleState();
-                break;
-            case ORANGE:
-                game.setScore(game.getScore() + 500);
-                game.labyrinth.setCell(Cell.EMPTY, playerCellY, playerCellX);
-                game.decrPacDot();
-                //game.pacGum.activateSuperPacMan();
-                state = new SuperState();
-                break;
-            case GREEN:
-                game.setScore(game.getScore() + 1000);
-                game.labyrinth.setCell(Cell.EMPTY, playerCellY, playerCellX);
-                game.decrPacDot();
-                game.labyrinth.applyGreenPacGumEffect();
-                game.ghosts.resetAllGhostsToCenter();
-                break;
-            case TELEPORTER:
-                teleport(playerCellX);
-                break;
-            default:
-                break;
+        Cell cell = game.labyrinth.getCell(playerCellY, playerCellX);
+
+        switch (cell) {
+            case PACDOT -> handlePacDotCollision();
+            case PURPLE -> handlePurpleCollision();
+            case ORANGE -> handleOrangeCollision();
+            case GREEN -> handleGreenCollision();
+            case TELEPORTER -> handleTeleportCollision(playerCellX);
+            default -> {}
         }
     }
 
-    public void teleport(int playerCellX){
+    private void handlePacDotCollision() {
+        game.setScore(game.getScore() + 100);
+        handleCommonCollisionActions();
+    }
+
+    private void handlePurpleCollision() {
+        game.setScore(game.getScore() + 300);
+        state = new InvisibleState();
+        handleCommonCollisionActions();
+    }
+
+    private void handleOrangeCollision() {
+        game.setScore(game.getScore() + 500);
+        state = new SuperState();
+        handleCommonCollisionActions();
+    }
+
+    private void handleGreenCollision() {
+        game.setScore(game.getScore() + 1000);
+        game.labyrinth.applyGreenPacGumEffect();
+        game.ghosts.resetAllGhostsToCenter();
+        handleCommonCollisionActions();
+    }
+
+    private void handleCommonCollisionActions() {
+        game.labyrinth.setCell(Cell.EMPTY, getPlayerY(), getPlayerX());
+        game.decrPacDot();
+    }
+
+
+    private void handleTeleportCollision(int playerCellX){
         if (playerCellX == 27) {
             playerX = 1;
         } else {

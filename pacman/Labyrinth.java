@@ -1,13 +1,13 @@
 package pacman;
 
 import java.awt.event.KeyEvent;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Labyrinth {
     private static Cell[][] LABYRINTH_DATA;
 
-    private PacMan pacman;
-
-    public Labyrinth(PacMan pacman) {
+    public Labyrinth() {
         LABYRINTH_DATA = new Cell[][]{
                 {Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL},
                 {Cell.WALL, Cell.GREEN, Cell.PACDOT, Cell.PACDOT, Cell.PACDOT, Cell.PACDOT, Cell.PACDOT, Cell.PACDOT, Cell.PACDOT, Cell.PACDOT, Cell.PACDOT, Cell.PACDOT, Cell.PACDOT, Cell.WALL, Cell.WALL, Cell.PACDOT, Cell.PACDOT, Cell.PACDOT, Cell.PACDOT, Cell.PACDOT, Cell.PACDOT, Cell.PACDOT, Cell.PACDOT, Cell.PACDOT, Cell.PACDOT, Cell.PACDOT, Cell.PACDOT, Cell.WALL},
@@ -41,15 +41,13 @@ public class Labyrinth {
                 {Cell.WALL, Cell.PURPLE, Cell.PACDOT, Cell.PACDOT, Cell.PACDOT, Cell.PACDOT, Cell.PACDOT, Cell.PACDOT, Cell.PACDOT, Cell.PACDOT, Cell.PACDOT, Cell.PACDOT, Cell.PACDOT, Cell.PACDOT, Cell.PACDOT, Cell.PACDOT, Cell.PACDOT, Cell.PACDOT, Cell.PACDOT, Cell.PACDOT, Cell.PACDOT, Cell.PACDOT, Cell.PACDOT, Cell.PACDOT, Cell.PACDOT, Cell.PACDOT, Cell.ORANGE, Cell.WALL},
                 {Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL},
         };
-        this.pacman = pacman;
     }
 
-    int countPacdots() {
+    public int countPacdots() {
         int pacdots = 0;
         for (Cell[] cells : LABYRINTH_DATA) {
             for (Cell cell : cells) {
-                if (cell == Cell.PACDOT || cell == Cell.PURPLE ||
-                        cell == Cell.GREEN || cell == Cell.ORANGE) {
+                if (isPacdotType(cell)) {
                     pacdots++;
                 }
             }
@@ -57,21 +55,10 @@ public class Labyrinth {
         return pacdots;
     }
 
-    public void setCell(Cell type, int y, int x){
-        LABYRINTH_DATA[y][x] = type;
+    private boolean isPacdotType(Cell cell) {
+        return cell == Cell.PACDOT || cell == Cell.PURPLE || cell == Cell.GREEN || cell == Cell.ORANGE;
     }
 
-    public Cell getCell(int y, int x){
-        return LABYRINTH_DATA[y][x];
-    }
-
-    static Cell[][] getCopy() {
-        Cell[][] copy = new Cell[LABYRINTH_DATA.length][LABYRINTH_DATA[0].length];
-        for (int i = 0; i < LABYRINTH_DATA.length; i++) {
-            System.arraycopy(LABYRINTH_DATA[i], 0, copy[i], 0, LABYRINTH_DATA[i].length);
-        }
-        return copy;
-    }
 
     public void applyGreenPacGumEffect() {
         int[][] swaps = {
@@ -100,34 +87,32 @@ public class Labyrinth {
         LABYRINTH_DATA[destRow][destCol] = temp;
     }
 
-    static boolean isValidMove(int x, int y) {
+    public static boolean isValidMove(int x, int y) {
         return x >= 0 && x < LABYRINTH_DATA[0].length &&
                 y >= 0 && y < LABYRINTH_DATA.length &&
                 LABYRINTH_DATA[y][x] != Cell.WALL;
     }
 
     public int processEvent(int key, int playerX, int playerY) {
-        if (key == KeyEvent.VK_UP) {
-            if (playerY > 0 && LABYRINTH_DATA[playerY - 1][playerX] != Cell.WALL) {
-                return 2;
-            }
-        } else if (key == KeyEvent.VK_DOWN) {
-            if (playerY < getHeight() - 1 && LABYRINTH_DATA[playerY + 1][playerX] != Cell.WALL) {
-                return 3;
-            }
-        } else if (key == KeyEvent.VK_LEFT) {
-            if (playerX > 0 && LABYRINTH_DATA[playerY][playerX - 1] != Cell.WALL) {
-                return 1;
-            }
-        } else if (key == KeyEvent.VK_RIGHT) {
-            if (playerX < getWidth() - 1 && LABYRINTH_DATA[playerY][playerX + 1] != Cell.WALL) {
-                return 0;
-            }
+        Map<Integer, int[]> directions = new HashMap<>();
+        directions.put(KeyEvent.VK_UP, new int[]{-1, 0});
+        directions.put(KeyEvent.VK_DOWN, new int[]{1, 0});
+        directions.put(KeyEvent.VK_LEFT, new int[]{0, -1});
+        directions.put(KeyEvent.VK_RIGHT, new int[]{0, 1});
+
+        int[] direction = directions.getOrDefault(key, new int[]{0, 0});
+        int newX = playerX + direction[1];
+        int newY = playerY + direction[0];
+
+        if (isValidMove(newX, newY)) {
+            return direction[0] == -1 ? 2 : (direction[0] == 1 ? 3 : (direction[1] == -1 ? 1 : 0));
         } else if (key == KeyEvent.VK_R) {
             return -1;
+        } else {
+            return -2;
         }
-        return -2;
     }
+
 
     public int getHeight(){
         return LABYRINTH_DATA.length;
@@ -136,4 +121,14 @@ public class Labyrinth {
     public int getWidth(){
         return LABYRINTH_DATA[0].length;
     }
+
+    public Cell getCell(int y, int x){
+        return LABYRINTH_DATA[y][x];
+    }
+
+    public void setCell(Cell type, int y, int x){
+        LABYRINTH_DATA[y][x] = type;
+    }
+
+
 }

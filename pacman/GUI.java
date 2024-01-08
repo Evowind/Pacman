@@ -2,9 +2,12 @@ package pacman;
 import javax.swing.*;
 import java.awt.*;
 
-import static pacman.Game.CELL_SIZE;
-
 public class GUI extends JPanel implements GameObserver {
+
+    /**
+     * Taille d'une cellule dans le labyrinthe.
+     */
+    private static final int CELL_SIZE = 30;
     private final Game game;
 
     public GUI(Game game) {
@@ -100,7 +103,12 @@ public class GUI extends JPanel implements GameObserver {
                 if (game.labyrinth.getCell(y, x) != Cell.EMPTY) {
                     g2d.setColor(Color.BLACK);
                     g2d.fillRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
-                    drawPacdot(g2d, x, y, getColorForCell(cellValue));
+
+                    // Change la taille de la pacdots en fonction du type
+                    int pacdotSize = (cellValue == Cell.ORANGE || cellValue == Cell.PURPLE || cellValue == Cell.GREEN) ?
+                            CELL_SIZE / 2 : CELL_SIZE / 3;
+
+                    drawPacdot(g2d, x, y, getColorForCell(cellValue), pacdotSize);
                 }
             }
             case EMPTY -> {
@@ -116,9 +124,8 @@ public class GUI extends JPanel implements GameObserver {
         }
     }
 
-    private void drawPacdot(Graphics2D g2d, int x, int y, Color color) {
+    private void drawPacdot(Graphics2D g2d, int x, int y, Color color, int pacdotSize) {
         g2d.setColor(color);
-        int pacdotSize = CELL_SIZE / 3;
         g2d.fillOval((x * CELL_SIZE) + (CELL_SIZE / 2) - pacdotSize / 2,
                 (y * CELL_SIZE) + (CELL_SIZE / 2) - pacdotSize / 2,
                 pacdotSize, pacdotSize);
@@ -132,5 +139,9 @@ public class GUI extends JPanel implements GameObserver {
             case GREEN -> Color.GREEN;
             default -> Color.BLACK;
         };
+    }
+
+    public static int getCellSize() {
+        return CELL_SIZE;
     }
 }

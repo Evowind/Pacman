@@ -11,13 +11,13 @@ public class GhostList {
 
     private final Game game;
 
-    public GhostList(PacMan pacman, Game game){
+    public GhostList(PacMan pacman, Game game) {
         ghosts = new ArrayList<>();
         this.pacman = pacman;
         this.game = game;
     }
 
-    void initializeGhosts() {
+    public void initializeGhosts() {
         // Le cas d'un reset
         if (!ghosts.isEmpty()) {
             for (Ghost ghost : ghosts) {
@@ -26,10 +26,11 @@ public class GhostList {
             }
             // Le cas d'une nouvelle partie
         } else {
-            ghosts.add(new Ghost(12, 11, Color.CYAN));
-            ghosts.add(new Ghost(13, 11, Color.WHITE));
-            ghosts.add(new Ghost(14, 11, Color.ORANGE));
-            ghosts.add(new Ghost(15, 11, Color.PINK));
+            Color[] ghostColors = {Color.CYAN, Color.WHITE, Color.ORANGE, Color.PINK};
+
+            for (int i = 0; i < ghostColors.length; i++) {
+                ghosts.add(new Ghost(12 + i, 11, ghostColors[i]));
+            }
         }
     }
 
