@@ -8,34 +8,28 @@ public enum Cell {
      * Mur bloquant le déplacement.
      */
     WALL,
-
     /**
-     * Cellule vide permettant le déplacement.
+     * Cellule vide.
      */
     EMPTY,
-
     /**
      * Point Pac-Dot collectible par Pac-Man.
      */
     PACDOT,
-
     /**
      * Cellule Pac-Dot spéciale de couleur violette.
      */
     PURPLE,
-
     /**
      * Cellule Pac-Dot spéciale de couleur orange.
      */
     ORANGE,
-
     /**
      * Cellule Pac-Dot spéciale de couleur verte.
      */
     GREEN,
-
     /**
-     * Téléporteur permettant un déplacement instantané vers une autre position.
+     * Téléporteur permettant un déplacement instantané vers un autre téléporteur.
      */
     TELEPORTER
 }
