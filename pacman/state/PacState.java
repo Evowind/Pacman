@@ -6,7 +6,6 @@ import pacman.entities.PacMan;
  * Classe abstraite représentant l'état d'un Pac-Man.
  */
 public abstract class PacState {
-
     /**
      * Enumération des états possibles d'un Pac-State.
      */
@@ -20,7 +19,7 @@ public abstract class PacState {
     public abstract State getState();
 
     /**
-     * Méthode utilisée pour modifier mettre a jour les données de l'état de l'entité PacMan.
+     * Méthode utilisée pour mettre à jour les données de l'état de l'entité PacMan.
      *
      * @param pacman objet PacMan que l'on veut mettre à jour.
      */
