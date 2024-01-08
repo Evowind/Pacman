@@ -1,4 +1,5 @@
 package pacman.app;
+
 import pacman.entities.Cell;
 import pacman.entities.Ghost;
 import pacman.state.PacState;
@@ -57,17 +58,25 @@ public class GUI extends JPanel implements GameObserver {
         drawScoreAndInfo(g2d);
     }
 
-    //TODO : JavaDoc
+    /**
+     * Dessine le labyrinthe.
+     *
+     * @param g2d Objet Graphics2D utilisé pour dessiner.
+     */
     private void drawLabyrinth(Graphics2D g2d) {
         for (int i = 0; i < game.labyrinth.getHeight(); i++) {
             for (int j = 0; j < game.labyrinth.getWidth(); j++) {
-                Cell cellValue = game.labyrinth.getCell(i,j);
+                Cell cellValue = game.labyrinth.getCell(i, j);
                 drawCell(g2d, j, i, cellValue);
             }
         }
     }
 
-    //TODO : JavaDoc
+    /**
+     * Dessine le joueur Pac-Man.
+     *
+     * @param g2d Objet Graphics2D utilisé pour dessiner.
+     */
     private void drawPlayer(Graphics2D g2d) {
         if (game.getPacman().state.getState() == PacState.State.SUPER) {
             g2d.setColor(Color.RED);
@@ -78,7 +87,14 @@ public class GUI extends JPanel implements GameObserver {
         drawPacmanMouth(g2d, game.getPacman().getPlayerX(), game.getPacman().getPlayerY(), game.getPacman().getPlayerDirection());
     }
 
-    //TODO : JavaDocs
+    /**
+     * Dessine la bouche de Pac-Man en fonction de l'orientation.
+     *
+     * @param g2d        Objet Graphics2D utilisé pour dessiner.
+     * @param x          Coordonnée x du joueur Pac-Man.
+     * @param y          Coordonnée y du joueur Pac-Man.
+     * @param direction  Direction du joueur Pac-Man.
+     */
     private void drawPacmanMouth(Graphics2D g2d, int x, int y, int direction) {
         int startAngle = switch (direction) {
             case 0 -> 45;    // Droite
@@ -95,7 +111,11 @@ public class GUI extends JPanel implements GameObserver {
         g2d.fillArc(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE, startAngle, extentAngle);
     }
 
-    //TODO : JavaDoc
+    /**
+     * Dessine les fantômes.
+     *
+     * @param g2d Objet Graphics2D utilisé pour dessiner.
+     */
     private void drawGhosts(Graphics2D g2d) {
         for (Ghost ghost : game.ghosts.getGhosts()) {
             g2d.setColor(game.getPacman().state.getState() == PacState.State.SUPER ? Color.BLUE.darker() : ghost.getColor());
@@ -125,7 +145,14 @@ public class GUI extends JPanel implements GameObserver {
         g2d.drawString(pacdotsRemainingText, margin + (9 * lineHeight), startY);
     }
 
-    //TODO : JavaDoc
+    /**
+     * Dessine une cellule du labyrinthe.
+     *
+     * @param g2d       Objet Graphics2D utilisé pour dessiner.
+     * @param x         Coordonnée x de la cellule.
+     * @param y         Coordonnée y de la cellule.
+     * @param cellValue Valeur de la cellule.
+     */
     private void drawCell(Graphics2D g2d, int x, int y, Cell cellValue) {
         switch (cellValue) {
             case WALL -> {
@@ -157,7 +184,15 @@ public class GUI extends JPanel implements GameObserver {
         }
     }
 
-    //TODO : JavaDoc
+    /**
+     * Dessine une pacdot.
+     *
+     * @param g2d        Objet Graphics2D utilisé pour dessiner.
+     * @param x          Coordonnée x de la pacdot.
+     * @param y          Coordonnée y de la pacdot.
+     * @param color      Couleur de la pacdot.
+     * @param pacdotSize Taille de la pacdot.
+     */
     private void drawPacdot(Graphics2D g2d, int x, int y, Color color, int pacdotSize) {
         g2d.setColor(color);
         g2d.fillOval((x * CELL_SIZE) + (CELL_SIZE / 2) - pacdotSize / 2,
@@ -165,10 +200,15 @@ public class GUI extends JPanel implements GameObserver {
                 pacdotSize, pacdotSize);
     }
 
-    //TODO : JavaDoc
+    /**
+     * Renvoie la couleur associée à une valeur de cellule.
+     *
+     * @param cellValue Valeur de la cellule.
+     * @return Couleur associée à la cellule.
+     */
     private Color getColorForCell(Cell cellValue) {
         return switch (cellValue) {
-            case PACDOT -> new Color(51,153,255);
+            case PACDOT -> new Color(51, 153, 255);
             case PURPLE -> Color.MAGENTA;
             case ORANGE -> Color.ORANGE;
             case GREEN -> Color.GREEN;

@@ -11,6 +11,7 @@ import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
  * La classe Game représente le jeu Pac-Man avec ses éléments principaux tels que le Pac-Man, le labyrinthe,
  * les fantômes, le score, les vies et l'interface graphique.
