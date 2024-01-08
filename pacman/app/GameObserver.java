@@ -5,7 +5,7 @@ package pacman.app;
  */
 public interface GameObserver {
     /**
-     * Méthode a appeler quand l'observeur est notifié.
+     * Méthode à appeler quand l'observeur notifié.
      */
     void update();
 }
