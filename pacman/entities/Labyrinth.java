@@ -1,8 +1,5 @@
 package pacman.entities;
 
-import pacman.entities.Cell;
-import pacman.entities.PacMan;
-
 import java.awt.event.KeyEvent;
 import java.util.HashMap;
 import java.util.Map;
@@ -75,7 +72,7 @@ public class Labyrinth {
     /**
      * Méthode qui vérifie si une cellule est de type pac-gomme.
      *
-     * @param cellule à vérifier.
+     * @param cell cellule à vérifier.
      * @return true si la cellule est de type pac-gomme, sinon False.
      */
     private boolean isPacdotType(Cell cell) {
@@ -145,19 +142,24 @@ public class Labyrinth {
      * @return        code de direction (0 à 3) ou codes spéciaux (-1, -2).
      */
     public int processEvent(int key, int playerX, int playerY) {
-        switch (key) {
-            case KeyEvent.VK_UP:
-                if (isValidMove(playerX, playerY - 1)) return 2;
-            case KeyEvent.VK_DOWN:
-                if (isValidMove(playerX, playerY + 1)) return 3;
-            case KeyEvent.VK_LEFT:
-                if (isValidMove(playerX - 1, playerY)) return 1;
-            case KeyEvent.VK_RIGHT:
-                if (isValidMove(playerX + 1, playerY)) return 0;
-            case KeyEvent.VK_R:
-                return -1;
-            default:
-                return -2;
+        Map<Integer, int[]> directions = new HashMap<>();
+        directions.put(KeyEvent.VK_UP, new int[]{-1, 0});
+        directions.put(KeyEvent.VK_DOWN, new int[]{1, 0});
+        directions.put(KeyEvent.VK_LEFT, new int[]{0, -1});
+        directions.put(KeyEvent.VK_RIGHT, new int[]{0, 1});
+
+        int[] direction = directions.getOrDefault(key, new int[]{0, 0});
+
+        // Touche R pour reset
+        if (key == KeyEvent.VK_R) return -1;
+
+        int newX = playerX + direction[1];
+        int newY = playerY + direction[0];
+
+        if (isValidMove(newX, newY)) {
+            return direction[0] == -1 ? 2 : (direction[0] == 1 ? 3 : (direction[1] == -1 ? 1 : 0));
+        } else {
+            return -2;
         }
     }
 

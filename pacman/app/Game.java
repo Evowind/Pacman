@@ -223,6 +223,11 @@ public class Game implements ActionListener, KeyListener {
         return lives;
     }
 
+    /**
+     * Getter pour l'entité PacMan.
+     *
+     * @return l'objet PacMan.
+     */
     public PacMan getPacman() {
         return pacman;
     }
