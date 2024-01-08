@@ -72,7 +72,11 @@ public class Ghost {
         if (state == PacState.State.SUPER) canMove = !canMove;
     }
 
-    //TODO : JavaDoc
+    /**
+     * Gère le mouvement du fantôme lorsqu'il rencontre un mur.
+     * Si le fantôme est bloqué par un mur, il choisit une nouvelle direction aléatoire
+     * jusqu'à ce qu'une direction valide soit trouvée.
+     */
     private void handleWallMovement() {
         if (wall) {
             Random random = new Random();
