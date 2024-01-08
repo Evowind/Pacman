@@ -17,14 +17,20 @@ import java.util.List;
  * <p>
  * Cette classe implémente les interfaces ActionListener et KeyListener pour gérer les actions du jeu.
  */
+// TODO maybe separating app/entities is not a good idea because it forces the use of public access modifiers as default(package) is not an option anymore
+    
 public class Game implements ActionListener, KeyListener {
     /**
      * Liste des observateurs.
      */
     private final List<GameObserver> observers = new ArrayList<>();
     /**
-     * Instance du PacManObservable représentant le Pac-Man.
+     * Interface graphique du jeu.
      */
+    private final GUI gui;
+    /**
+     * Instance du PacManObservable représentant le Pac-Man.
+     */  
     private PacMan pacman;
 
     /**
@@ -36,7 +42,6 @@ public class Game implements ActionListener, KeyListener {
      * Liste des fantômes.
      */
     public GhostList ghosts;
-    //
 
     /**
      * Nombre de pacdots restants dans le labyrinthe.
@@ -52,12 +57,9 @@ public class Game implements ActionListener, KeyListener {
      * Nombre de vies restantes.
      */
     private int lives;
-
-    /**
-     * Interface graphique du jeu.
-     */
-    private final GUI gui;
-
+    
+    
+    Game() {
     /**
      * Constructeur de la classe Game. Initialise le timer du jeu, les éléments du jeu et l'interface graphique.
      */
@@ -91,7 +93,7 @@ public class Game implements ActionListener, KeyListener {
     /**
      * Réinitialise le jeu à ses paramètres initiaux.
      */
-    public void resetGame() {
+    private void resetGame() {
         initializeGame();
         notifyObservers();
     }
@@ -104,7 +106,6 @@ public class Game implements ActionListener, KeyListener {
         labyrinth = new Labyrinth();
         lives = 3;
         score = 0;
-        pacdotsRemaining = labyrinth.countPacdots();
         ghosts = new GhostList(pacman, this);
         ghosts.initializeGhosts();
     }
@@ -124,7 +125,8 @@ public class Game implements ActionListener, KeyListener {
     /**
      * Gère le cas où le joueur est capturé par un fantôme.
      */
-    public void handlePlayerCaught() {
+        // TODO Currently accessible by package, is it possible to make it private ? dont think so
+        public void handlePlayerCaught() {
         lives--;
         if (lives <= 0) {
             // Game over
@@ -136,12 +138,14 @@ public class Game implements ActionListener, KeyListener {
         }
     }
 
-    /**
-     * Gère le cas où le joueur gagne la partie.
-     */
-    public void handleWin(){
-        JOptionPane.showMessageDialog(gui, "Vous avez gagné !", "Partie terminée", JOptionPane.INFORMATION_MESSAGE);
-    }
+        /**
+         * Gère le cas où le joueur gagne la partie.
+         */
+    private void checkWin(){
+        if (labyrinth.countPacdots() == 0) {
+            JOptionPane.showMessageDialog(gui, "Vous avez gagné !", "Partie terminée", JOptionPane.INFORMATION_MESSAGE);
+            resetGame();
+        }
 
     /**
      * Gère le score nécessaire pour obtenir une vie supplémentaire.
@@ -160,21 +164,14 @@ public class Game implements ActionListener, KeyListener {
      */
     @Override
     public void actionPerformed(ActionEvent e) {
-        //
         pacman.state.update(pacman);
         pacman.movePlayer();
-        //
+        checkWin();
+
         checkCollisions();
         ghosts.moveGhosts();
         checkCollisions();
         notifyObservers();
-    }
-
-    /**
-     * Décrémente le nombre de pacdots restants.
-     */
-    public void decrPacDot() {
-        pacdotsRemaining--;
     }
 
     /**
@@ -203,16 +200,6 @@ public class Game implements ActionListener, KeyListener {
     public int getLives() {
         return lives;
     }
-
-    /**
-     * Obtient le nombre de pacdots restants dans le labyrinthe.
-     *
-     * @return Le nombre de pacdots restants.
-     */
-    public int getPacdotsRemaining() {
-        return pacdotsRemaining;
-    }
-
     /**
      * Obtient la classe PacMan.
      *

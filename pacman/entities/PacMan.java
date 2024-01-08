@@ -64,10 +64,6 @@ public class PacMan {
             case 2 -> newY -= playerSpeed;
             case 3 -> newY += playerSpeed;
         }
-        if (game.getPacdotsRemaining() == 0) {
-            game.handleWin();
-            game.resetGame();
-        }
         if (Labyrinth.isValidMove(newX, newY)) {
             playerX = newX;
             playerY = newY;
@@ -136,6 +132,7 @@ public class PacMan {
         }
     }
 
+    // TODO isnt this swapped ? X is column and Y is row ?
     /**
      * Renvoie la position en X du joueur Pac-Man.
      *

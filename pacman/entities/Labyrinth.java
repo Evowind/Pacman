@@ -86,6 +86,7 @@ public class Labyrinth {
      * Applique l'effet de la pac-gomme verte sur le labyrinthe.
      */
     public void applyGreenPacGumEffect() {
+        // Store the swaps we plan on doing inside an array
         int[][] swaps = {
                 {1, 7, 9, 1}, {1, 8, 10, 1}, {1, 9, 11, 1},
                 {1, 10, 12, 1}, {1, 11, 13, 1}, {1, 16, 9, 26},
@@ -101,6 +102,7 @@ public class Labyrinth {
                 {23, 11, 25, 12}, {23, 16, 24, 15}, {23, 17, 25, 15}
         };
 
+        // Go through that array and apply each of the swaps
         for (int[] swap : swaps) {
             swapValues(swap[0], swap[1], swap[2], swap[3]);
         }
