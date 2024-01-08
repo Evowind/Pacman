@@ -14,41 +14,41 @@ import java.util.List;
 // TODO maybe separating app/entities is not a good idea because it forces the use of public access modifiers as default(package) is not an option anymore
 
 /**
- * Class containing all the methods and information necessary for a game of PacMan.
+ * Classe qui contient toutes les méthodes et informations nécéssaires pour une partie de PacMan.
+ * Celle-ci est observable par les classes qui implémentent l'interface GameObserver.
  */
 public class Game implements ActionListener, KeyListener {
     /**
-     * List of all observers.
+     * Liste de tout les observeurs.
      */
     private final List<GameObserver> observers = new ArrayList<>();
     /**
-     * Object used to display the game.
+     * Objet JPanel utilisé pour dessiner l'interface graphique.
      */
     private final GUI gui;
-    // TODO maybe import pacman, labyrinth, ghosts to GUI and make them private here?
     /**
-     * Object containing methods and information related to the PacMan entity.
+     * Objet contenant les méthodes et informations reliées a l'entité PacMan.
      */
     public PacMan pacman;
     /**
-     * Object containing methods and information related to the maze.
+     * Objet contenant les méthodes et informations reliées au labyrinthe.
      */
     public Labyrinth labyrinth;
     /**
-     * Object containing methods and information about the game's ghosts.
+     * Objet contenant les méthodes et informations reliées aux fantomes.
      */
     public GhostList ghosts;
     /**
-     * Current score.
+     * Variable contenant le score du joueur.
      */
     private int score;
     /**
-     * Current number of lives.
+     * Variable contenant le nombre de vies du joueur.
      */
     private int lives;
 
     /**
-     * Class constructor.
+     * Constructeur de base de la classe Game.
      */
     Game() {
         Timer timer = new Timer(100, this);
@@ -60,16 +60,16 @@ public class Game implements ActionListener, KeyListener {
     }
 
     /**
-     * Method used to add an observer to the observer list
+     * Méthode qui ajoute un observeur a la liste d'observeurs.
      *
-     * @param observer Observer that we want to add.
+     * @param observer observeur que l'on souhaite ajouter.
      */
     public void addObserver(GameObserver observer) {
         observers.add(observer);
     }
 
     /**
-     * Method used to notify all observers.
+     * Méthode qui notifier tout les observeurs.
      */
     private void notifyObservers() {
         for (GameObserver observer : observers) {
@@ -78,15 +78,7 @@ public class Game implements ActionListener, KeyListener {
     }
 
     /**
-     * Method used to reset the game.
-     */
-    private void resetGame() {
-        initializeGame();
-        notifyObservers();
-    }
-
-    /**
-     * Method used to start a new game.
+     * Méthode qui créer une partie.
      */
     private void initializeGame() {
         pacman = new PacMan(15, 17, 0, this);
@@ -98,7 +90,15 @@ public class Game implements ActionListener, KeyListener {
     }
 
     /**
-     * Method used to check collision between PacMan and other entities.
+     * Méthode qui réinitialiser la partie.
+     */
+    private void resetGame() {
+        initializeGame();
+        notifyObservers();
+    }
+
+    /**
+     * Méthode qui vérifier les collision de l'entité PacMan.
      */
     private void checkCollisions() {
         int playerCellX = pacman.getPlayerX();
@@ -110,9 +110,9 @@ public class Game implements ActionListener, KeyListener {
     }
 
     /**
-     * Method used to handle PacMan-Ghost collision.
+     * Méthode qui gérer la collision entre PacMan et un fantome.
+     * Appelée seulement si l'état de pacman est State.NORMAL.
      */
-    // TODO Currently accessible by package, is it possible to make it private ? dont think so
     void handlePlayerCaught() {
         lives--;
         if (lives <= 0) {
@@ -126,7 +126,7 @@ public class Game implements ActionListener, KeyListener {
     }
 
     /**
-     * Method used to check for player victory.
+     * Méthode qui vérifier si le joueur a gagné.
      */
     private void checkWin(){
         if (labyrinth.countPacdots() == 0) {
@@ -136,7 +136,7 @@ public class Game implements ActionListener, KeyListener {
     }
 
     /**
-     * Method used to add lives when score is above a certain threshold.
+     * Méthode qui ajoute une vie si le score est au dessus d'un certain seuil.
      */
     private void handleScoreForExtraLife() {
         if (score >= 5000) {
@@ -146,9 +146,9 @@ public class Game implements ActionListener, KeyListener {
     }
 
     /**
-     * ActionListener method used to update the game.
+     * Méthode de ActionListener qui met a jour la partie.
      *
-     * @param e the event to be processed
+     * @param e l'événement qui est a traiter.
      */
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -163,36 +163,36 @@ public class Game implements ActionListener, KeyListener {
     }
 
     /**
-     * Setter for score variable.
+     * Setter pour la variable score.
      *
-     * @param score New score.
+     * @param score nouveau score.
      */
     public void setScore(int score) {
         this.score = score;
     }
 
     /**
-     * Getter for score variable.
+     * Getter pour la variable score.
      *
-     * @return Current score.
+     * @return score actuel.
      */
     public int getScore() {
         return score;
     }
 
     /**
-     * Getter for lives variable.
+     * Getter pour la variable lives.
      *
-     * @return Current number of lives.
+     * @return nombre de vies actuel.
      */
     int getLives() {
         return lives;
     }
 
     /**
-     * KeyListener method to handle user input.
+     * Méthode KeyListener pour gérer l'entrée de l'utilisateur.
      *
-     * @param e the event to be processed
+     * @param e l'événement qui est a traiter.
      */
     @Override
     public void keyPressed(KeyEvent e) {
@@ -207,9 +207,9 @@ public class Game implements ActionListener, KeyListener {
     }
 
     /**
-     * Unused method required when implementing KeyListener.
+     * Méthode non-utilisée mais nécéssaire pour l'implementation de KeyListener.
      *
-     * @param e the event to be processed
+     * @param e l'événement qui est a traiter.
      */
     @Override
     public void keyTyped(KeyEvent e) {
@@ -217,9 +217,9 @@ public class Game implements ActionListener, KeyListener {
     }
 
     /**
-     * Unused method required when implementing KeyListener.
+     * Méthode non-utilisée mais nécéssaire pour l'implementation de KeyListener.
      *
-     * @param e the event to be processed
+     * @param e l'événement qui est a traiter.
      */
     @Override
     public void keyReleased(KeyEvent e) {

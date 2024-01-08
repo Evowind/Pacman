@@ -3,7 +3,7 @@ package pacman.app;
 import javax.swing.*;
 
 /**
- * Class that creates a new window and starts the game.
+ * Classe principale qui lance le jeu et une fenêtre dans laquelle ce dernier est affiché.
  */
 public class Main {
     public static void main(String[] args) {

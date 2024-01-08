@@ -6,11 +6,25 @@ import pacman.state.PacState;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Classe utilisée pour gérer l'interface graphique utilisant JPanel.
+ * Celle-ci est un observeur de la classe Game.
+ */
 public class GUI extends JPanel implements GameObserver {
+    /**
+     * Variable contenant la partie a afficher.
+     */
     private final Game game;
-
+    /**
+     * Variable contenant la taille d'une case du labyrinthe.
+     */
     static final int CELL_SIZE = 30;
 
+    /**
+     * Constructeur de base de la classe GUI.
+     *
+     * @param game la partie que l'on souhaite afficher.
+     */
     public GUI(Game game) {
         this.game = game;
         addKeyListener(game);
@@ -19,9 +33,19 @@ public class GUI extends JPanel implements GameObserver {
         setFocusTraversalKeysEnabled(false);
         requestFocus();
     }
+
+    /**
+     * Méthode a appeler quand l'observable envoie une notification.
+     */
     public void update() {
         repaint();
     }
+
+    /**
+     * Méthode qui dessine la partie en appelant les sous-méthodes.
+     *
+     * @param g the <code>Graphics</code> object to protect
+     */
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -33,6 +57,11 @@ public class GUI extends JPanel implements GameObserver {
         drawScoreAndInfo(g2d);
     }
 
+    /**
+     * Méthode qui dessine la labyrinthe en appelant la sous méthode drawCell().
+     *
+     * @param g2d objet utilisé pour l'interprétation de formes en 2D.
+     */
     private void drawLabyrinth(Graphics2D g2d) {
         for (int i = 0; i < game.labyrinth.getHeight(); i++) {
             for (int j = 0; j < game.labyrinth.getWidth(); j++) {
@@ -42,6 +71,11 @@ public class GUI extends JPanel implements GameObserver {
         }
     }
 
+    /**
+     * Méthode qui dessine l'entité PacMan.
+     *
+     * @param g2d objet utilisé pour l'interprétation de formes en 2D.
+     */
     private void drawPlayer(Graphics2D g2d) {
         if (game.pacman.state.getState() == PacState.State.SUPER) {
             g2d.setColor(Color.RED);
@@ -76,6 +110,11 @@ public class GUI extends JPanel implements GameObserver {
         g2d.fillArc(game.pacman.getPlayerX() * CELL_SIZE, game.pacman.getPlayerY()* CELL_SIZE, CELL_SIZE, CELL_SIZE, startAngle, extentAngle);
     }
 
+    /**
+     * Méthode qui dessine les entités fantomes.
+     *
+     * @param g2d objet utilisé pour l'interprétation de formes en 2D.
+     */
     private void drawGhosts(Graphics2D g2d) {
         for (Ghost ghost : game.ghosts.getGhosts()) {
             g2d.setColor(game.pacman.state.getState() == PacState.State.SUPER ? Color.BLUE.darker() : ghost.getColor());
@@ -83,6 +122,11 @@ public class GUI extends JPanel implements GameObserver {
         }
     }
 
+    /**
+     * Méthode qui dessine le score, le nombre de vies et le nombre de pacdots restants.
+     *
+     * @param g2d objet utilisé pour l'interprétation de formes en 2D.
+     */
     private void drawScoreAndInfo(Graphics2D g2d) {
         g2d.setColor(Color.WHITE);
         g2d.setFont(new Font("Segoe UI", Font.BOLD, 18));
@@ -100,7 +144,11 @@ public class GUI extends JPanel implements GameObserver {
         g2d.drawString(pacdotsRemainingText, margin + (9 * lineHeight), startY);
     }
 
-
+    /**
+     * Méthode qui dessine une cellule.
+     *
+     * @param g2d objet utilisé pour l'interprétation de formes en 2D.
+     */
     private void drawCell(Graphics2D g2d, int x, int y, Cell cellValue) {
         switch (cellValue) {
             case WALL:
@@ -134,6 +182,11 @@ public class GUI extends JPanel implements GameObserver {
         }
     }
 
+    /**
+     * Méthode qui dessine un pacdot.
+     *
+     * @param g2d objet utilisé pour l'interprétation de formes en 2D.
+     */
     private void drawPacdot(Graphics2D g2d, int x, int y, Color color) {
         g2d.setColor(color);
         int pacdotSize = CELL_SIZE / 3;
@@ -142,6 +195,11 @@ public class GUI extends JPanel implements GameObserver {
                 pacdotSize, pacdotSize);
     }
 
+    /**
+     * Méthode renvoie la couleur du pacdot.
+     *
+     * @param cellValue case pour laquelle on veut obtenir la couleur de son pacdot.
+     */
     private Color getColorForCell(Cell cellValue) {
         return switch (cellValue) {
             case PACDOT -> new Color(51,153,255);
