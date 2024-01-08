@@ -6,9 +6,9 @@ import pacman.entities.PacMan;
  * Représente l'état super d'un Pac-Man.
  */
 public class SuperState extends PacState {
-    // TODO JavaDocs
+    //TODO JavaDocs
     private static final long TIMEOUT = 10000;
-    // TODO JavaDocs
+    //TODO JavaDocs
     private final long startTime;
 
     /**

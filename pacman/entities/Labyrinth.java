@@ -1,8 +1,5 @@
 package pacman.entities;
 
-import pacman.entities.Cell;
-import pacman.entities.PacMan;
-
 import java.awt.event.KeyEvent;
 import java.util.HashMap;
 import java.util.Map;
@@ -151,13 +148,17 @@ public class Labyrinth {
         directions.put(KeyEvent.VK_RIGHT, new int[]{0, 1});
 
         int[] direction = directions.getOrDefault(key, new int[]{0, 0});
+
+        if (key == KeyEvent.VK_R) {
+            // Touche R pour reset
+            return -1;
+        }
+
         int newX = playerX + direction[1];
         int newY = playerY + direction[0];
 
         if (isValidMove(newX, newY)) {
             return direction[0] == -1 ? 2 : (direction[0] == 1 ? 3 : (direction[1] == -1 ? 1 : 0));
-        } else if (key == KeyEvent.VK_R) {
-            return -1;
         } else {
             return -2;
         }

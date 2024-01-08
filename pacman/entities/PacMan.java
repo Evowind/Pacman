@@ -113,7 +113,7 @@ public class PacMan {
     private void handleGreenCollision() {
         game.setScore(game.getScore() + 1000);
         game.labyrinth.applyGreenPacGumEffect();
-        game.ghosts.resetAllGhostsToCenter();
+        game.ghosts.initializeGhosts();
         game.labyrinth.setCell(Cell.EMPTY, getPlayerY(), getPlayerX());
     }
 

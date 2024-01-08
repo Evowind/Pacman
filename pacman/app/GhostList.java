@@ -1,6 +1,5 @@
 package pacman.app;
 
-import pacman.app.Game;
 import pacman.entities.Ghost;
 import pacman.entities.PacMan;
 import pacman.state.PacState;
@@ -66,16 +65,6 @@ public class GhostList {
     public void moveGhosts() {
         for (Ghost ghost : ghosts) {
             ghost.moveRandomly(pacman.state.getState());
-        }
-    }
-
-    /**
-     * Replace tous les fantômes au centre du labyrinthe.
-     */
-    public void resetAllGhostsToCenter() {
-        for (Ghost ghost : ghosts) {
-            ghost.setX(12);
-            ghost.setY(11);
         }
     }
 
