@@ -1,4 +1,9 @@
-package pacman;
+package pacman.app;
+
+import pacman.app.Game;
+import pacman.entities.Ghost;
+import pacman.entities.PacMan;
+import pacman.state.PacState;
 
 import java.awt.*;
 import java.util.ArrayList;

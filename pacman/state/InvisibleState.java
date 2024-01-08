@@ -1,4 +1,6 @@
-package pacman;
+package pacman.state;
+
+import pacman.entities.PacMan;
 
 /**
  * Représente l'état invisible d'un Pac-Man.

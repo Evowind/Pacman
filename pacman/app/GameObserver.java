@@ -1,4 +1,4 @@
-package pacman;
+package pacman.app;
 
 /**
  * Interface utilisée pour observer les changements dans le jeu Pac-Man.

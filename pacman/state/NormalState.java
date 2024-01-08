@@ -1,4 +1,4 @@
-package pacman;
+package pacman.state;
 
 /**
  * Représente l'état normal d'un Pac-Man.

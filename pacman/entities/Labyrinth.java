@@ -1,4 +1,7 @@
-package pacman;
+package pacman.entities;
+
+import pacman.entities.Cell;
+import pacman.entities.PacMan;
 
 import java.awt.event.KeyEvent;
 import java.util.HashMap;

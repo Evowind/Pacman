@@ -1,4 +1,10 @@
-package pacman;
+package pacman.entities;
+
+import pacman.app.Game;
+import pacman.state.InvisibleState;
+import pacman.state.NormalState;
+import pacman.state.PacState;
+import pacman.state.SuperState;
 
 /**
  * Représente le personnage Pac-Man dans le jeu.

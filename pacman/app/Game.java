@@ -1,4 +1,7 @@
-package pacman;
+package pacman.app;
+
+import pacman.entities.Labyrinth;
+import pacman.entities.PacMan;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

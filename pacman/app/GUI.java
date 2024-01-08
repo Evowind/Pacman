@@ -1,4 +1,8 @@
-package pacman;
+package pacman.app;
+import pacman.entities.Cell;
+import pacman.entities.Ghost;
+import pacman.state.PacState;
+
 import javax.swing.*;
 import java.awt.*;
 

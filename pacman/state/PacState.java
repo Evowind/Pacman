@@ -1,4 +1,6 @@
-package pacman;
+package pacman.state;
+
+import pacman.entities.PacMan;
 
 /**
  * Classe abstraite représentant l'état d'un Pac-Man.

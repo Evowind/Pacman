@@ -1,4 +1,6 @@
-package pacman;
+package pacman.state;
+
+import pacman.entities.PacMan;
 
 /**
  * Représente l'état super d'un Pac-Man.

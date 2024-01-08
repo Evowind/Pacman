@@ -1,4 +1,6 @@
-package pacman;
+package pacman.entities;
+
+import pacman.state.PacState;
 
 import java.awt.*;
 import java.util.Random;

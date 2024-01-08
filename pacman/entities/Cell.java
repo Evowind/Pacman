@@ -1,4 +1,4 @@
-package pacman;
+package pacman.entities;
 
 /**
  * Représente les types de cellules dans le jeu Pac-Man.

@@ -1,4 +1,4 @@
-package pacman;
+package pacman.app;
 
 import javax.swing.*;
 
@@ -23,3 +23,4 @@ public class Main {
         frame.setVisible(true);
     }
 }
+
