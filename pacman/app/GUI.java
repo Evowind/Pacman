@@ -78,7 +78,7 @@ public class GUI extends JPanel implements GameObserver {
         drawPacmanMouth(g2d, game.getPacman().getPlayerX(), game.getPacman().getPlayerY(), game.getPacman().getPlayerDirection());
     }
 
-    //TODO : JavaDoc
+    //TODO : JavaDocs
     private void drawPacmanMouth(Graphics2D g2d, int x, int y, int direction) {
         int startAngle = switch (direction) {
             case 0 -> 45;    // Droite
