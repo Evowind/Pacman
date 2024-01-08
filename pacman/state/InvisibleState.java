@@ -3,12 +3,17 @@ package pacman.state;
 import pacman.entities.PacMan;
 
 /**
- * Représente l'état invisible d'un Pac-Man.
+ * Représente l'état invisible du joueur Pac-Man.
  */
 public class InvisibleState extends PacState {
-    //TODO : JavaDoc
+    /**
+     * Durée maximale de l'état invisible en millisecondes.
+     */
     private static final long TIMEOUT = 10000;
-    //TODO : JavaDoc
+
+    /**
+     * Temps de début de l'état invisible.
+     */
     private final long startTime;
 
     /**
@@ -31,7 +36,7 @@ public class InvisibleState extends PacState {
     /**
      * Renvoie l'état actuel.
      *
-     * @return L'état actuel.
+     * @return L'état actuel (NORMAL si le temps écoulé dépasse TIMEOUT, sinon INVISIBLE).
      */
     @Override
     public State getState() {

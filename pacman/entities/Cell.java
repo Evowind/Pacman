@@ -30,7 +30,7 @@ public enum Cell {
     ORANGE,
 
     /**
-     * Cellule Pac-Dotspéciale de couleur verte.
+     * Cellule Pac-Dot spéciale de couleur verte.
      */
     GREEN,
 

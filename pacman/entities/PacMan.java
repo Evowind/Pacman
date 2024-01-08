@@ -38,10 +38,10 @@ public class PacMan {
     /**
      * Initialise un nouveau joueur Pac-Man avec des paramètres donnés.
      *
-     * @param playerX          Position en X initiale du joueur Pac-Man.
-     * @param playerY          Position en Y initiale du joueur Pac-Man.
-     * @param playerDirection  Direction initiale du joueur Pac-Man.
-     * @param game             Instance du jeu associée à Pac-Man.
+     * @param playerX         Position en X initiale du joueur Pac-Man.
+     * @param playerY         Position en Y initiale du joueur Pac-Man.
+     * @param playerDirection Direction initiale du joueur Pac-Man.
+     * @param game            Instance du jeu associée à Pac-Man.
      */
     public PacMan(int playerX, int playerY, int playerDirection, Game game) {
         this.playerX = playerX;
@@ -77,6 +77,7 @@ public class PacMan {
      * @param playerCellY Position de la cellule en Y du joueur Pac-Man.
      */
     public void checkCellCollisions(int playerCellX, int playerCellY) {
+
         Cell cell = game.labyrinth.getCell(playerCellY, playerCellX);
 
         switch (cell) {
@@ -85,31 +86,46 @@ public class PacMan {
             case ORANGE -> handleOrangeCollision();
             case GREEN -> handleGreenCollision();
             case TELEPORTER -> handleTeleportCollision(playerCellX);
-            default -> {}
+            default -> {
+            }
         }
     }
 
-    // TODO JavaDocs
+    /**
+     * Gère la collision avec une pac-dot, ajoute des points au score du jeu et retire la pac-dot du labyrinthe.
+     */
     private void handlePacDotCollision() {
         game.setScore(game.getScore() + 100);
         game.labyrinth.setCell(Cell.EMPTY, getPlayerY(), getPlayerX());
     }
 
-    // TODO JavaDocs
+    /**
+     * Gère la collision avec une cellule violette.
+     * Ajoute des points au score du jeu, applique l'état invisible au joueur
+     * Pac-Man et retire la cellule violette du labyrinthe.
+     */
     private void handlePurpleCollision() {
         game.setScore(game.getScore() + 300);
         state = new InvisibleState();
         game.labyrinth.setCell(Cell.EMPTY, getPlayerY(), getPlayerX());
     }
 
-    // TODO JavaDocs
+    /**
+     * Gère la collision avec une cellule orange.
+     * Ajoute des points au score du jeu, applique l'état super au joueur
+     * Pac-Man et retire la cellule orange du labyrinthe.
+     */
     private void handleOrangeCollision() {
         game.setScore(game.getScore() + 500);
         state = new SuperState();
         game.labyrinth.setCell(Cell.EMPTY, getPlayerY(), getPlayerX());
     }
 
-    // TODO JavaDocs
+    /**
+     * Gère la collision avec une cellule verte.
+     * Ajoute des points au score du jeu, applique l'effet de la gomme verte
+     * au labyrinthe, réinitialise les fantômes et retire la cellule verte du labyrinthe.
+     */
     private void handleGreenCollision() {
         game.setScore(game.getScore() + 1000);
         game.labyrinth.applyGreenPacGumEffect();
@@ -117,8 +133,13 @@ public class PacMan {
         game.labyrinth.setCell(Cell.EMPTY, getPlayerY(), getPlayerX());
     }
 
-    // TODO JavaDocs
-    private void handleTeleportCollision(int playerCellX){
+    /**
+     * Gère la collision avec un téléporteur.
+     * Téléporte le joueur Pac-Man à la position opposée du téléporteur.
+     *
+     * @param playerCellX Position de la cellule en X du joueur Pac-Man.
+     */
+    private void handleTeleportCollision(int playerCellX) {
         if (playerCellX == 27) {
             playerX = 1;
         } else {
@@ -126,7 +147,9 @@ public class PacMan {
         }
     }
 
+
     // TODO isnt this swapped ? X is column and Y is row ?
+
     /**
      * Renvoie la position en X du joueur Pac-Man.
      *

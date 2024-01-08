@@ -30,7 +30,7 @@ public class Ghost {
     private int currentDirection;
 
     /**
-     * Indique si le fantôme a rencontré un mur lors du mouvement.
+     * Indique si le fantôme à rencontrer un mur lors du mouvement.
      */
     private boolean wall;
 
@@ -90,7 +90,12 @@ public class Ghost {
         }
     }
 
-    //TODO : JavaDoc
+    /**
+     * Tente de définir une nouvelle direction pour le déplacement.
+     *
+     * @param newDirection Nouvelle direction à essayer.
+     * @return true si la nouvelle direction est valide et a été définie, false sinon.
+     */
     private boolean trySetDirection(int newDirection) {
         int[] newCoordinates = calculateNewCoordinates(x, y, newDirection);
 
@@ -102,7 +107,14 @@ public class Ghost {
         return false;
     }
 
-    //TODO : JavaDoc
+    /**
+     * Calcule les nouvelles coordonnées en fonction de la direction spécifiée.
+     *
+     * @param x            Coordonnée x actuelle.
+     * @param y            Coordonnée y actuelle.
+     * @param newDirection Direction pour laquelle calculer les nouvelles coordonnées.
+     * @return Tableau d'entiers représentant les nouvelles coordonnées [nouvelle_x, nouvelle_y].
+     */
     private int[] calculateNewCoordinates(int x, int y, int newDirection) {
         int[] newCoordinates = {x, y};
 

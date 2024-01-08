@@ -6,9 +6,14 @@ import pacman.entities.PacMan;
  * Représente l'état super d'un Pac-Man.
  */
 public class SuperState extends PacState {
-    //TODO JavaDocs
+    /**
+     * Durée maximale de l'état super en millisecondes.
+     */
     private static final long TIMEOUT = 10000;
-    //TODO JavaDocs
+
+    /**
+     * Temps de début de l'état super.
+     */
     private final long startTime;
 
     /**
@@ -31,7 +36,7 @@ public class SuperState extends PacState {
     /**
      * Renvoie l'état actuel.
      *
-     * @return L'état actuel.
+     * @return L'état actuel (NORMAL si le temps écoulé dépasse TIMEOUT, sinon SUPER).
      */
     @Override
     public State getState() {
