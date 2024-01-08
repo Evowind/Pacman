@@ -22,9 +22,10 @@ public class GUI extends JPanel implements GameObserver {
     static final int CELL_SIZE = 30;
 
     /**
+     * Constructeur de base de la classe GUI.
      * Initialise une nouvelle interface graphique pour le jeu Pac-Man.
      *
-     * @param game Instance du jeu Pac-Man.
+     * @param game instance de jeu que l'on souhaite afficher.
      */
     public GUI(Game game) {
         this.game = game;
@@ -46,7 +47,7 @@ public class GUI extends JPanel implements GameObserver {
     /**
      * Méthode appelée pour dessiner les composants graphiques à l'aide de ses sous-méthodes.
      *
-     * @param g Objet Graphics utilisé pour dessiner.
+     * @param g objet Graphics utilisé pour dessiner.
      */
     @Override
     protected void paintComponent(Graphics g) {
@@ -91,10 +92,10 @@ public class GUI extends JPanel implements GameObserver {
     /**
      * Méthode qui dessine la bouche de Pac-Man en fonction de l'orientation.
      *
-     * @param g2d        Objet Graphics2D utilisé pour dessiner.
-     * @param x          Coordonnée x du joueur Pac-Man.
-     * @param y          Coordonnée y du joueur Pac-Man.
-     * @param direction  Direction du joueur Pac-Man.
+     * @param g2d        objet Graphics2D utilisé pour dessiner.
+     * @param x          coordonnée x du joueur Pac-Man.
+     * @param y          coordonnée y du joueur Pac-Man.
+     * @param direction  direction du joueur Pac-Man.
      */
     private void drawPacmanMouth(Graphics2D g2d, int x, int y, int direction) {
         int startAngle = switch (direction) {
@@ -149,10 +150,10 @@ public class GUI extends JPanel implements GameObserver {
     /**
      * Méthode qui dessine une cellule du labyrinthe.
      *
-     * @param g2d       Objet Graphics2D utilisé pour dessiner.
-     * @param x         Coordonnée x de la cellule.
-     * @param y         Coordonnée y de la cellule.
-     * @param cellValue Valeur de la cellule.
+     * @param g2d       objet Graphics2D utilisé pour dessiner.
+     * @param x         coordonnée x de la cellule.
+     * @param y         coordonnée y de la cellule.
+     * @param cellValue valeur de la cellule.
      */
     private void drawCell(Graphics2D g2d, int x, int y, Cell cellValue) {
         switch (cellValue) {
@@ -188,11 +189,11 @@ public class GUI extends JPanel implements GameObserver {
     /**
      * Méthode qui dessine une pacdot.
      *
-     * @param g2d        Objet Graphics2D utilisé pour dessiner.
-     * @param x          Coordonnée x de la pacdot.
-     * @param y          Coordonnée y de la pacdot.
-     * @param color      Couleur de la pacdot.
-     * @param pacdotSize Taille de la pacdot.
+     * @param g2d        objet Graphics2D utilisé pour dessiner.
+     * @param x          coordonnée x de la pacdot.
+     * @param y          coordonnée y de la pacdot.
+     * @param color      couleur de la pacdot.
+     * @param pacdotSize taille de la pacdot.
      */
     private void drawPacdot(Graphics2D g2d, int x, int y, Color color, int pacdotSize) {
         g2d.setColor(color);
@@ -204,8 +205,8 @@ public class GUI extends JPanel implements GameObserver {
     /**
      * Méthode qui renvoie la couleur associée à une valeur de cellule.
      *
-     * @param cellValue Valeur de la cellule.
-     * @return Couleur associée à la cellule.
+     * @param cellValue valeur de la cellule.
+     * @return couleur associée à la cellule.
      */
     private Color getColorForCell(Cell cellValue) {
         return switch (cellValue) {
@@ -218,9 +219,9 @@ public class GUI extends JPanel implements GameObserver {
     }
 
     /**
-     * Renvoie la taille d'une cellule dans le labyrinthe.
+     * Getter pour la variable CELL_SIZE.
      *
-     * @return Taille d'une cellule.
+     * @return taille d'une cellule.
      */
     public static int getCellSize() {
         return CELL_SIZE;
