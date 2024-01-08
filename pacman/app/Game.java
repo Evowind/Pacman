@@ -224,7 +224,11 @@ public class Game implements ActionListener, KeyListener {
      *
      * @return nombre de vies actuel.
      */
-    int getLives() {
+    public int getLives() {
         return lives;
+    }
+
+    public PacMan getPacman() {
+        return pacman;
     }
 }
