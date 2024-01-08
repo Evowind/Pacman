@@ -2,6 +2,9 @@ package pacman.app;
 
 import javax.swing.*;
 
+/**
+ * Class that creates a new window and starts the game.
+ */
 public class Main {
     public static void main(String[] args) {
         JFrame frame = new JFrame("Jeu Pac-Man");

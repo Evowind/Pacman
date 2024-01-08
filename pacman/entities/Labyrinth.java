@@ -5,12 +5,19 @@ import pacman.entities.PacMan;
 
 import java.awt.event.KeyEvent;
 
+/**
+ * Class containing the maze and all methods related to it.
+ */
 public class Labyrinth {
+    /**
+     * Array used as maze.
+     */
     private static Cell[][] LABYRINTH_DATA;
 
-    private PacMan pacman;
-
-    public Labyrinth(PacMan pacman) {
+    /**
+     * Constructor containing the default maze pattern.
+     */
+    public Labyrinth() {
         LABYRINTH_DATA = new Cell[][]{
                 {Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL},
                 {Cell.WALL, Cell.GREEN, Cell.PACDOT, Cell.PACDOT, Cell.PACDOT, Cell.PACDOT, Cell.PACDOT, Cell.PACDOT, Cell.PACDOT, Cell.PACDOT, Cell.PACDOT, Cell.PACDOT, Cell.PACDOT, Cell.WALL, Cell.WALL, Cell.PACDOT, Cell.PACDOT, Cell.PACDOT, Cell.PACDOT, Cell.PACDOT, Cell.PACDOT, Cell.PACDOT, Cell.PACDOT, Cell.PACDOT, Cell.PACDOT, Cell.PACDOT, Cell.PACDOT, Cell.WALL},
@@ -44,10 +51,14 @@ public class Labyrinth {
                 {Cell.WALL, Cell.PURPLE, Cell.PACDOT, Cell.PACDOT, Cell.PACDOT, Cell.PACDOT, Cell.PACDOT, Cell.PACDOT, Cell.PACDOT, Cell.PACDOT, Cell.PACDOT, Cell.PACDOT, Cell.PACDOT, Cell.PACDOT, Cell.PACDOT, Cell.PACDOT, Cell.PACDOT, Cell.PACDOT, Cell.PACDOT, Cell.PACDOT, Cell.PACDOT, Cell.PACDOT, Cell.PACDOT, Cell.PACDOT, Cell.PACDOT, Cell.PACDOT, Cell.ORANGE, Cell.WALL},
                 {Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL},
         };
-        this.pacman = pacman;
     }
 
-    public int countPacdots() {
+    /**
+     * Method used for accessing the number of pacdots still present inside the maze.
+     *
+     * @return Number of pacdots remaining in the maze.
+     */
+     public int countPacdots() {
         int pacdots = 0;
         for (Cell[] cells : LABYRINTH_DATA) {
             for (Cell cell : cells) {
@@ -60,23 +71,35 @@ public class Labyrinth {
         return pacdots;
     }
 
+    /**
+     * Setter for maze cells.
+     *
+     * @param type Type of the cell.
+     * @param y Cell row.
+     * @param x Cell column.
+     */
+    // TODO probably shouldn't be public ?
     public void setCell(Cell type, int y, int x){
         LABYRINTH_DATA[y][x] = type;
     }
 
+    /**
+     * Getter used for reading Cell type.
+     *
+     * @param y Cell row.
+     * @param x Cell column.
+     * @return Returns the type of the selected cell.
+     */
     public Cell getCell(int y, int x){
         return LABYRINTH_DATA[y][x];
     }
 
-    static Cell[][] getCopy() {
-        Cell[][] copy = new Cell[LABYRINTH_DATA.length][LABYRINTH_DATA[0].length];
-        for (int i = 0; i < LABYRINTH_DATA.length; i++) {
-            System.arraycopy(LABYRINTH_DATA[i], 0, copy[i], 0, LABYRINTH_DATA[i].length);
-        }
-        return copy;
-    }
-
-    public void applyGreenPacGumEffect() {
+    /**
+     * Method that applies the effect the Green PacGum.
+     * Swaps some Cells of the maze to create a different layout.
+     */
+    void applyGreenPacGumEffect() {
+        // Store the swaps we plan on doing inside an array
         int[][] swaps = {
                 {1, 7, 9, 1}, {1, 8, 10, 1}, {1, 9, 11, 1},
                 {1, 10, 12, 1}, {1, 11, 13, 1}, {1, 16, 9, 26},
@@ -92,23 +115,47 @@ public class Labyrinth {
                 {23, 11, 25, 12}, {23, 16, 24, 15}, {23, 17, 25, 15}
         };
 
+        // Go through that array and apply each of the swaps
         for (int[] swap : swaps) {
             swapValues(swap[0], swap[1], swap[2], swap[3]);
         }
     }
 
+    /**
+     * Method that swaps the content of two Cells.
+     *
+     * @param srcRow First Cell row.
+     * @param srcCol First Cell column.
+     * @param destRow Second Cell row.
+     * @param destCol Second Cell column.
+     */
     private static void swapValues(int srcRow, int srcCol, int destRow, int destCol) {
         Cell temp = LABYRINTH_DATA[srcRow][srcCol];
         LABYRINTH_DATA[srcRow][srcCol] = LABYRINTH_DATA[destRow][destCol];
         LABYRINTH_DATA[destRow][destCol] = temp;
     }
 
+    /**
+     * Method that returns if a Cell is a valid move.
+     *
+     * @param y Cell row.
+     * @param x Cell column.
+     * @return Returns true if the chosen Cell is not a wall, otherwise return false.
+     */
     static boolean isValidMove(int x, int y) {
         return x >= 0 && x < LABYRINTH_DATA[0].length &&
                 y >= 0 && y < LABYRINTH_DATA.length &&
                 LABYRINTH_DATA[y][x] != Cell.WALL;
     }
 
+    /**
+     * Method to the process the user's KeyListener input.
+     *
+     * @param key Key pressed by the user.
+     * @param playerX Current PacMan Row.
+     * @param playerY Current PacMan Column.
+     * @return Returns the new direction of PacMan.
+     */
     public int processEvent(int key, int playerX, int playerY) {
         if (key == KeyEvent.VK_UP) {
             if (playerY > 0 && LABYRINTH_DATA[playerY - 1][playerX] != Cell.WALL) {
@@ -132,10 +179,20 @@ public class Labyrinth {
         return -2;
     }
 
+    /**
+     * Method to access the vertical size of the maze.
+     *
+     * @return Returns the number of rows in the maze.
+     */
     public int getHeight(){
         return LABYRINTH_DATA.length;
     }
 
+    /**
+     * Method to access the horizontal size of the maze.
+     *
+     * @return Returns the number of columns in the maze.
+     */
     public int getWidth(){
         return LABYRINTH_DATA[0].length;
     }

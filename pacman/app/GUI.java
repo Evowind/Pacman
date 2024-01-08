@@ -89,7 +89,7 @@ public class GUI extends JPanel implements GameObserver {
 
         String scoreText = "Score: " + game.getScore();
         String livesText = "Lives: " + game.getLives();
-        String pacdotsRemainingText = "Pacdots restantes: " + game.getPacdotsRemaining();
+        String pacdotsRemainingText = "Pacdots restantes: " + game.labyrinth.countPacdots();
 
         int lineHeight = 25;
         int margin = 15;
